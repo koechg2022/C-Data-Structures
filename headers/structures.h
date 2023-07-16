@@ -102,6 +102,14 @@ namespace data_structures {
 			linear_node<data_> *front, *rear, *frame;
 			unsigned long size, frame_index;
 
+			void node_shifter(linear_node<data_>* this_node, unsigned long node_index, signed long by) {
+				while ((by != 0) && (this_node != nullptr) && ((node_index != 0) || ((node_index != this->size - 1)))) {
+					this_node = (by > 0) ? this_node->get_next() : this_node->get_previous();
+					node_index = (by > 0) ? node_index + 1 : node_index - 1;
+					by = (by > 0) ? by - 1 : by + 1;
+				}
+			}
+
 			void frame_shifter(signed long by) {
 				while ((by != 0) && (this->frame != nullptr)) {
 					this->frame = (by > 0) ? this->frame->get_next() : this->frame->get_previous();
@@ -253,7 +261,6 @@ namespace data_structures {
 					}
 					
 				}
-				this->frame_index;
 				this->size = this->size + 1;
 			}
 
@@ -310,18 +317,18 @@ namespace data_structures {
 			}
 
 
-			void swap(signed long first_index = 0, signed long second_index = -1) {
+			void swap(signed long first_indexx = 0, signed long second_indexx = -1) {
 				
-				if (((useful_functions::absolute(first_index) > this->size) && (first_index < 0)) || ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
+				if (((useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) || ((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))) {
 					std::string msg = "absolute(";
-					if (((useful_functions::absolute(first_index) > this->size) && (first_index < 0)) && !((useful_functions::absolute(second_index) > this->size) && (second_index < 0))){
-						msg = msg + std::to_string(first_index) + ")";
+					if (((useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) && !((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))){
+						msg = msg + std::to_string(first_indexx) + ")";
 					}
-					else if ((!(useful_functions::absolute(first_index) > this->size) && (first_index < 0)) && ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
-						msg = msg + std::to_string(second_index) + ")";
+					else if ((!(useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) && ((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))) {
+						msg = msg + std::to_string(second_indexx) + ")";
 					}
 					else {
-						msg = msg + std::to_string(first_index) + " & " + "absolute(" + std::to_string(second_index) + ")";
+						msg = msg + std::to_string(first_indexx) + " & " + "absolute(" + std::to_string(second_indexx) + ")";
 					}
 					msg = msg + " must be less than the last index of the linked_list (" + std::to_string(this->size) + ")";
 					throw std::range_error(msg);
@@ -329,8 +336,8 @@ namespace data_structures {
 
 				if (this->size > 1) {
 					unsigned long first, second, first_index, second_index;
-					first = (first_index < 0) ? (unsigned long) this->size + 1 - useful_functions::absolute(first_index) : useful_functions::absolute(first_index);
-					second = (second_index < 0) ? (unsigned long) this->size + 1 - useful_functions::absolute(second_index) : useful_functions::absolute(second_index);
+					first = (first_indexx < 0) ? (unsigned long) this->size + 1 - useful_functions::absolute(first_indexx) : useful_functions::absolute(first_indexx);
+					second = (second_indexx < 0) ? (unsigned long) this->size + 1 - useful_functions::absolute(second_indexx) : useful_functions::absolute(second_indexx);
 					
 					signed long first_to_frame, first_to_front, first_to_rear, *first_minimum;
 					signed long second_to_front, second_to_frame, second_to_rear, *second_minimum;
@@ -343,6 +350,10 @@ namespace data_structures {
 					first_to_frame = (signed long) this->frame_index - (signed long) first;
 					first_to_rear = (signed long) this->size - 1 - (signed long) first;
 					signed long* arr_first[] = {&first_to_front, &first_to_frame, &first_to_rear};
+					// std::cout << "first : " << first << ", & first_index : " << first_index << std::endl;
+					// std::cout << "first_to_front : " << first_to_front << std::endl;
+					// std::cout << "first_to_frame : " << first_to_frame << std::endl;
+					// std::cout << "first_to_rear : " << first_to_rear << std::endl;
 					first_minimum = useful_functions::min(3, arr_first, true);
 					if (first_minimum == &first_to_front) {
 						first_node = this->front;
@@ -362,6 +373,10 @@ namespace data_structures {
 					second_to_frame = (signed long) this->frame_index - (signed long) second;
 					second_to_rear = (signed long) this->size - 1 - (signed long) second;
 					signed long* arr_second[] = {&second_to_front, &second_to_frame, &second_to_rear};
+					// std::cout << "second : " << second << ", & second_index : " << second_index << std::endl;
+					// std::cout << "second_to_front : " << second_to_front << std::endl;
+					// std::cout << "second_to_frame : " << second_to_frame << std::endl;
+					// std::cout << "second_to_rear : " << second_to_rear << std::endl;
 					second_minimum = useful_functions::min(3, arr_second, true);
 					if (second_minimum == &second_to_front) {
 						second_node = this->front;
@@ -377,14 +392,42 @@ namespace data_structures {
 					}
 
 					// swap
+					// std::cout << "Moving first node : " << first_index << ".) " << first_node->get_data() << std::endl;
+					// std::cout << "\tFrom " << first_index << " to " << *first_minimum << std::endl;
+					// std::cout << "Moving second_node : " << second_index << ".) " << second_node->get_data() << std::endl;
+					// std::cout << "\tFrom " << second_index << " to " << *second_minimum << std::endl;
+					this->node_shifter(first_node, first_index, *first_minimum);
+					this->node_shifter(second_node, second_index, *second_minimum);
+					// std::cout << "first node : " << first_index << ".) " << first_node->get_data() << std::endl;
+					// std::cout << "second_node : " << second_index << ".) " << second_node->get_data() << std::endl;
 					data_ temp;
 					temp = first_node->get_data();
 					first_node->set_data(second_node->get_data());
 					second_node->set_data(temp);
-					this->frame = first_node;
-
+					this->frame = second_node;
 				}
 			}
+
+
+			// class risc { // singleton
+			// 	protected:
+			// 		static unsigned long registers[8];
+
+			// 	public:
+			// 		unsigned long operator [](int i) const    {return registers[i];}
+			// 		unsigned long & operator [](int i) {return registers[i];}
+			// 	};
+
+			data_ operator [](signed long index) {
+				return this->peek(index);
+			}
+
+
+			// data_ operator& [](signed long index) {
+			// 	// first move the frame to the proper location
+			// 	this->peek(index);
+				
+			// }
 
 
 	};

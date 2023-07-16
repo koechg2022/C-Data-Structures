@@ -71,5 +71,4 @@ namespace useful_functions {
         return the_answer;
     }
 
-
 }

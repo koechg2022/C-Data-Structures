@@ -20,44 +20,38 @@ std::vector<std::string> imagine_dragons = {
 };
 
 
+std::vector<std::string> the_beetles = {
+    "Blackbird singing in the dead of night",
+    "Take these broken wings and learn to fly",
+    "All your life",
+    "You were only waiting for this moment to arrive",
+    "Blackbird fly",
+    "Blackbird fly",
+    "Into the dawn of a dark black night"
+};
+
+
 void test_linked_list();
 
 
 
 int main(int len, char** args) {
-
     test_linked_list();
-
     return 0;
 }
 
 
 
 void test_linked_list() {
-    data_structures::linear_linked_list<std::string> linked_list, other_list;
-    unsigned short int index;
-    for (index = 0; index < imagine_dragons.size() / 2; index = index + 1) {
+    data_structures::linear_linked_list<std::string> linked_list;
+    signed long index;
+    for (index = 0; index < imagine_dragons.size(); index = index + 1) {
         linked_list.push(imagine_dragons[index]);
     }
+
     for (index = 0; index < linked_list.length(); index = index + 1) {
-        std::cout << index << ".)\t" << linked_list.peek(index) << std::endl;
+        std::cout << ((linked_list.peek(index) == linked_list[index]) ? "Same data" : "Different data") << std::endl;
     }
-    std::cout << "-------------------------------------------------------" << std::endl;
-    linked_list.push("These are the lyrics to Imagine Dragons", 0);
-    for (index = 0; index < linked_list.length(); index = index + 1) {
-        std::cout << index << ".)\t" << linked_list.peek(index) << std::endl;
-    }
-    for (index = imagine_dragons.size() / 2; index < imagine_dragons.size(); index = index + 1) {
-        other_list.push(imagine_dragons[index]);
-    }
-    linked_list = linked_list + other_list;
-    std::cout << "-------------------------------------------------------" << std::endl;
-    for (index = 0; index < linked_list.length(); index = index + 1) {
-        std::cout << index << ".)\t" << linked_list.peek(index) << std::endl;
-    }
-    linked_list.swap();
-    std::cout << "-------------------------------------------------------" << std::endl;
-    for (index = 0; index < linked_list.length(); index = index + 1) {
-        std::cout << index << ".)\t" << linked_list.peek(index) << std::endl;
-    }
+
+
 }
