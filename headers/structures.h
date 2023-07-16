@@ -328,6 +328,11 @@ namespace data_structures {
 				this->size = 0;
 			}
 
+
+
+			/**
+			 * @brief Swap the data at the first_index and second_index passed in.
+			*/
 			void swap(signed long first_indexx = 0, signed long second_indexx = -1) {
 				
 				if (((useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) || ((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))) {
