@@ -30,6 +30,10 @@ namespace data_structures {
 					return this->this_data;
 				}
 
+				// date_& operator[]() {
+				// 	return this->this_data;
+				// }
+
 		};
 
 		template <typename data_, typename indx_ = signed long> class numbered_node : public node_root<data_> {
@@ -150,8 +154,11 @@ namespace data_structures {
 					return *this;
 				}
 				this->reset();
+				// std::cout << "Just reset list " << this << std::endl;
+				// std::cout << "list " << this << " size is " << this->size << std::endl;
 				signed long index;
 				for (index = 0; index < other.length(); index = index + 1) {
+					// std::cout << "Adding " << other[index] << std::endl;
 					this->push(other.peek(index));
 				}
 				return *this;
@@ -164,6 +171,11 @@ namespace data_structures {
 					this->push(other.peek(index));
 				}
 				return *this;
+			}
+
+
+			data_ operator [](signed long index) {
+				return this->peek(index);
 			}
 
 
@@ -316,7 +328,6 @@ namespace data_structures {
 				this->size = 0;
 			}
 
-
 			void swap(signed long first_indexx = 0, signed long second_indexx = -1) {
 				
 				if (((useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) || ((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))) {
@@ -407,27 +418,6 @@ namespace data_structures {
 					this->frame = second_node;
 				}
 			}
-
-
-			// class risc { // singleton
-			// 	protected:
-			// 		static unsigned long registers[8];
-
-			// 	public:
-			// 		unsigned long operator [](int i) const    {return registers[i];}
-			// 		unsigned long & operator [](int i) {return registers[i];}
-			// 	};
-
-			data_ operator [](signed long index) {
-				return this->peek(index);
-			}
-
-
-			// data_ operator& [](signed long index) {
-			// 	// first move the frame to the proper location
-			// 	this->peek(index);
-				
-			// }
 
 
 	};

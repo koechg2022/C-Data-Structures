@@ -43,15 +43,42 @@ int main(int len, char** args) {
 
 
 void test_linked_list() {
-    data_structures::linear_linked_list<std::string> linked_list;
+    data_structures::linear_linked_list<std::string> dragons_list, beetles_list, combined_list;
     signed long index;
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
-        linked_list.push(imagine_dragons[index]);
+        dragons_list.push(imagine_dragons[index]);
     }
 
-    for (index = 0; index < linked_list.length(); index = index + 1) {
-        std::cout << ((linked_list.peek(index) == linked_list[index]) ? "Same data" : "Different data") << std::endl;
+    std::cout << "Imagine Dragons list:\n---------------------------------------------\n";
+
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        std::cout << "\t" << index << ".) " << dragons_list[index] << std::endl;
     }
 
+    for (index = 0; index < the_beetles.size(); index = index + 1) {
+        beetles_list.push(the_beetles[index]);
+    }
+    std::cout << "Beetles list:\n---------------------------------------------\n";
+    for (index = 0; index < beetles_list.length(); index = index + 1) {
+        std::cout << "\t" << index << ".) " << beetles_list[index] << std::endl;
+    }
+    std::cout << "Combined list:\n---------------------------------------------\n";
+    combined_list = dragons_list;
+    combined_list = combined_list + beetles_list;
+    for (index = 0; index < combined_list.length(); index = index + 1) {
+        std::cout << "\t" << index << ".) " << combined_list[index] << std::endl;
+    }
+
+
+    std::cout << "Imagine Dragons list:\n---------------------------------------------\n";
+
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        std::cout << "\t" << index << ".) " << dragons_list[index] << std::endl;
+    }
+
+    std::cout << "Beetles list:\n---------------------------------------------\n";
+    for (index = 0; index < beetles_list.length(); index = index + 1) {
+        std::cout << "\t" << index << ".) " << beetles_list[index] << std::endl;
+    }
 
 }
