@@ -329,101 +329,44 @@ namespace data_structures {
 			}
 
 
-
-			/**
-			 * @brief Swap the data at the first_index and second_index passed in.
-			*/
-			void swap(signed long first_indexx = 0, signed long second_indexx = -1) {
-				
-				if (((useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) || ((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))) {
+			void swap(signed long first_index = 0, signed long second_index = -1) {
+				if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) || ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
 					std::string msg = "absolute(";
-					if (((useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) && !((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))){
-						msg = msg + std::to_string(first_indexx) + ")";
+					if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) && !((useful_functions::absolute(second_index) > this->size) && (second_index < 0))){
+						msg = msg + std::to_string(second_index) + ")";
 					}
-					else if ((!(useful_functions::absolute(first_indexx) > this->size) && (first_indexx < 0)) && ((useful_functions::absolute(second_indexx) > this->size) && (second_indexx < 0))) {
-						msg = msg + std::to_string(second_indexx) + ")";
+					else if ((!(useful_functions::absolute(second_index) > this->size) && (second_index < 0)) && ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
+						msg = msg + std::to_string(second_index) + ")";
 					}
 					else {
-						msg = msg + std::to_string(first_indexx) + " & " + "absolute(" + std::to_string(second_indexx) + ")";
+						msg = msg + std::to_string(second_index) + " & " + "absolute(" + std::to_string(second_index) + ")";
 					}
 					msg = msg + " must be less than the last index of the linked_list (" + std::to_string(this->size) + ")";
 					throw std::range_error(msg);
 				}
 
 				if (this->size > 1) {
-					unsigned long first, second, first_index, second_index;
-					first = (first_indexx < 0) ? (unsigned long) this->size + 1 - useful_functions::absolute(first_indexx) : useful_functions::absolute(first_indexx);
-					second = (second_indexx < 0) ? (unsigned long) this->size + 1 - useful_functions::absolute(second_indexx) : useful_functions::absolute(second_indexx);
+
+
+					unsigned long first_indexx, second_indexx;
+					signed long f_index_to_first, f_index_to_frame, f_index_to_rear, s_index_to_first, s_index_to_frame, s_index_to_rear, *first_min, *second_min;;
+					first_indexx = (first_index < 0) ? (this->size - useful_functions::absolute(first_index) + 1) : useful_functions::absolute(first_index);
+					second_index = (second_index < 0) ? this->size - useful_functions::absolute(second_index) + 1 : useful_functions::absolute(second_index);
+					f_index_to_first = (signed long) first_indexx;
+					s_index_to_first = (signed long) second_indexx;
+					f_index_to_frame = useful_functions::difference((signed long) first_indexx, (signed long) this->frame_index);
+					s_index_to_frame = useful_functions::difference((signed long) second_indexx, (signed long) this->frame_index);
+					f_index_to_rear = useful_functions::difference((signed long) first_indexx, (signed long) this->this->size - 1);
+					s_index_to_rear = useful_functions::difference((signed long) second_indexx, (signed long) this->size - 1);
+
+
+					signed long* for_first[] = {&f_index_to_first, &f_index_to_frame, &f_index_to_rear};
+					signed long* for_second[] = {&s_index_to_first, &s_index_to_frame, &s_index_to_rear};
 					
-					signed long first_to_frame, first_to_front, first_to_rear, *first_minimum;
-					signed long second_to_front, second_to_frame, second_to_rear, *second_minimum;
-					signed long* minimum_first, *minimum_second;
 
-					linear_node<data_>* first_node, *second_node;
-					
-					// get the distances between the first index and the first node
-					first_to_front = (signed long) first;
-					first_to_frame = (signed long) this->frame_index - (signed long) first;
-					first_to_rear = (signed long) this->size - 1 - (signed long) first;
-					signed long* arr_first[] = {&first_to_front, &first_to_frame, &first_to_rear};
-					// std::cout << "first : " << first << ", & first_index : " << first_index << std::endl;
-					// std::cout << "first_to_front : " << first_to_front << std::endl;
-					// std::cout << "first_to_frame : " << first_to_frame << std::endl;
-					// std::cout << "first_to_rear : " << first_to_rear << std::endl;
-					first_minimum = useful_functions::min(3, arr_first, true);
-					if (first_minimum == &first_to_front) {
-						first_node = this->front;
-						first_index = 0;
-					}
-					else if (first_minimum == &first_to_rear) {
-						first_node = this->rear;
-						first_index = this->size - 1;
-					}
-					else {
-						first_node = this->frame;
-						first_index = this->frame_index;
-					}
-
-					// get the distance between the second index and the rear node
-					second_to_front = (signed long) second;
-					second_to_frame = (signed long) this->frame_index - (signed long) second;
-					second_to_rear = (signed long) this->size - 1 - (signed long) second;
-					signed long* arr_second[] = {&second_to_front, &second_to_frame, &second_to_rear};
-					// std::cout << "second : " << second << ", & second_index : " << second_index << std::endl;
-					// std::cout << "second_to_front : " << second_to_front << std::endl;
-					// std::cout << "second_to_frame : " << second_to_frame << std::endl;
-					// std::cout << "second_to_rear : " << second_to_rear << std::endl;
-					second_minimum = useful_functions::min(3, arr_second, true);
-					if (second_minimum == &second_to_front) {
-						second_node = this->front;
-						second_index = 0;
-					}
-					else if (second_minimum == &second_to_rear) {
-						second_node = this->rear;
-						second_index = this->size - 1;
-					}
-					else {
-						second_node = this->frame;
-						second_index = this->frame_index;
-					}
-
-					// swap
-					// std::cout << "Moving first node : " << first_index << ".) " << first_node->get_data() << std::endl;
-					// std::cout << "\tFrom " << first_index << " to " << *first_minimum << std::endl;
-					// std::cout << "Moving second_node : " << second_index << ".) " << second_node->get_data() << std::endl;
-					// std::cout << "\tFrom " << second_index << " to " << *second_minimum << std::endl;
-					this->node_shifter(first_node, first_index, *first_minimum);
-					this->node_shifter(second_node, second_index, *second_minimum);
-					// std::cout << "first node : " << first_index << ".) " << first_node->get_data() << std::endl;
-					// std::cout << "second_node : " << second_index << ".) " << second_node->get_data() << std::endl;
-					data_ temp;
-					temp = first_node->get_data();
-					first_node->set_data(second_node->get_data());
-					second_node->set_data(temp);
-					this->frame = second_node;
 				}
-			}
 
+			}
 
 	};
 

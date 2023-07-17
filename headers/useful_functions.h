@@ -71,4 +71,16 @@ namespace useful_functions {
         return the_answer;
     }
 
+
+    template<typename data_ = signed long> data_ difference(data_ first, data_ second, bool abs = false) {
+        data_ the_answer;
+        if (abs) {
+            the_answer = max<data_>(first, second) - min<data_>(first, second);
+        }
+        else {
+            the_answer = first - second;
+        }
+        return the_answer;
+    }
+
 }
