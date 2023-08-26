@@ -4,7 +4,6 @@
 
 
 
-
 namespace tests {
 
     namespace {
@@ -41,11 +40,30 @@ namespace tests {
         #define purple_background 45
         #define cyan_background 46
         #define white_background 47
+        #define default_background 49
 
-        std::string ansi_escape = "\033[";
+        typedef unsigned short int short_int;
 
-        std::string get_colored_string(std::string the_string, char c = 'b') {
+        const std::string ansi_escape = "\033[";
+        // "\033[<style>;<color>;<bkg>m<the_string>\033[0m"
 
+        bool valid_color(short_int color) {
+            return ((color >= (short_int) black_text) && (color <= (short_int) white_text));
+        }
+
+        bool valid_style(short_int style) {
+            return (((style >= (short_int) no_effect_style) && (style <= (short_int) negative_1_style)) || (style == (short_int) negative_2_style));
+        }
+
+        bool valid_bkg(short_int bkg) {
+            return ((bkg >= (short_int) black_background) && (bkg <= (short_int) default_background));
+        }
+
+        std::string get_styled_string(std::string the_string, short_int style = (short_int) no_effect_style, short_int color = (short_int) black_text, short_int bkg = (short_int) default_background) {
+            style = (valid_style(style)) ? style : (short_int) no_effect_style;
+            color = (valid_color(color)) ? color : (short_int) black_text;
+            bkg = (valid_bkg(bkg)) ? bkg : (short_int) default_background;
+            return "\033[" + std::to_string(int(style)) + ";" + std::to_string(int(color)) + ";" + std::to_string(int(bkg)) + "m" + the_string + "\033[0m";
         }
 
         class test {
