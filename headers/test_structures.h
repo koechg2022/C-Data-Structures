@@ -9,11 +9,51 @@ namespace tests {
 
     namespace {
 
+        // TEXT COLORS
+        #define black_text 30
+        #define red_text 31
+        #define green_text 32
+        #define yellow_text 33
+        #define blue_text 34
+        #define purple_text 35
+        #define cyan_text 36
+        #define white_text 37
+
+
+
+
+        // TEXT STYLE
+        #define no_effect_style 0
+        #define bold_style 1
+        #define underline_style 2
+        #define negative_1_style 3
+        #define negative_2_style 5
+
+
+
+
+        // BACKGROUND COLOR
+        #define black_background 40
+        #define red_background 41
+        #define green_background 42
+        #define yellow_background 43
+        #define blue_background 44
+        #define purple_background 45
+        #define cyan_background 46
+        #define white_background 47
+
+        std::string ansi_escape = "\033[";
+
+        std::string get_colored_string(std::string the_string, char c = 'b') {
+
+        }
+
         class test {
 
             private:
                 std::string test_name, pass_message, fail_message;
                 bool the_test;
+
 
             public:
 
@@ -162,7 +202,7 @@ namespace tests {
             */
             void add_test(std::string name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED", bool condition) {
                 if (name == "TEST ") {
-                    name = name + std::to_string(the_tests.size());
+                    name = name + std::to_string(the_tests.size() + 1);
                 }
                 if (!this->contains(name)) {
                     test new_test = test(name, pass, fail, condition);
@@ -170,7 +210,9 @@ namespace tests {
                 }
             }
 
+            void print_tests() const {
 
+            }
 
     };
 

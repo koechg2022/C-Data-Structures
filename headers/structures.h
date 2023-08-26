@@ -356,7 +356,7 @@ namespace data_structures {
 					s_index_to_first = (signed long) second_indexx;
 					f_index_to_frame = useful_functions::difference((signed long) first_indexx, (signed long) this->frame_index);
 					s_index_to_frame = useful_functions::difference((signed long) second_indexx, (signed long) this->frame_index);
-					f_index_to_rear = useful_functions::difference((signed long) first_indexx, (signed long) this->this->size - 1);
+					f_index_to_rear = useful_functions::difference((signed long) first_indexx, (signed long) this->size - 1);
 					s_index_to_rear = useful_functions::difference((signed long) second_indexx, (signed long) this->size - 1);
 
 
