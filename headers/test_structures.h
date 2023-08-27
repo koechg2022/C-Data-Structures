@@ -210,6 +210,10 @@ namespace test_stuff {
                 return the_answer;
             }
 
+            std::map<std::string, test> get_test_map() const {
+                return this->the_tests;
+            }
+
             test get_test(std::string name) {
                 if (this->contains(name)) {
                     return this->the_tests[name];
