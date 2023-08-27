@@ -60,9 +60,9 @@ namespace tests {
         }
 
         std::string get_styled_string(std::string the_string, short_int style = (short_int) no_effect_style, short_int color = (short_int) black_text, short_int bkg = (short_int) default_background) {
-            style = (valid_style(style)) ? style : (short_int) no_effect_style;
-            color = (valid_color(color)) ? color : (short_int) black_text;
-            bkg = (valid_bkg(bkg)) ? bkg : (short_int) default_background;
+            style = (valid_style((short_int) style)) ? (short_int) style : (short_int) no_effect_style;
+            color = (valid_color((short_int) color)) ? (short_int) color : (short_int) black_text;
+            bkg = (valid_bkg((short_int) bkg)) ? (short_int) bkg : (short_int) default_background;
             return "\033[" + std::to_string(int(style)) + ";" + std::to_string(int(color)) + ";" + std::to_string(int(bkg)) + "m" + the_string + "\033[0m";
         }
 
@@ -195,17 +195,22 @@ namespace tests {
 
         private:
             std::map<std::string, test> the_tests;
+            unsigned long passed_tests, total_tests;
             bool contains(std::string name) {
                 return this->the_tests.find(name) != this->the_tests.end();
             }
-        
+
         public:
 
-            tests() {}
+            tests() {
+                passed_tests = total_tests = 0;
+            }
 
             tests(std::string name, bool condition, std::string pass, std::string fail) {
                 test new_test = test(name, pass, fail, condition);
                 this->the_tests.insert({name, new_test});
+                passed_tests = (condition) ? 1 : 0;
+                total_tests = 1;
             }
 
             /**
@@ -225,11 +230,18 @@ namespace tests {
                 if (!this->contains(name)) {
                     test new_test = test(name, pass, fail, condition);
                     this->the_tests.insert({ name, new_test});
+                    this->passed_tests = (condition) ? this->passed_tests + 1 : this->passed_tests;
+                    this->total_tests = this->total_tests + 1;
                 }
             }
 
-            void print_tests() const {
-
+            void print_all_tests() const {
+                // std::string final_message = std::to_string(this->passed_tests) + " / " + std::to_string(this->total_tests);
+                for (const auto& entry : this->the_tests) {
+                    std::string colored_message = get_styled_string(entry.second.get_message(), (unsigned short int) bold_style, (unsigned short int)((entry.second.get_condition()) ? green_text : red_text), (unsigned short int) default_background);
+                    std::cout << "\t" << entry.first << ":\t" << colored_message << std::endl;
+                }
+                std::cout << get_styled_string(std::to_string(this->passed_tests) + " / " + std::to_string(this->total_tests), (unsigned short int) bold_style, (unsigned short int)((this->passed_tests == this->total_tests) ? green_text : red_text), (unsigned short int) default_background) << std::endl;
             }
 
     };
