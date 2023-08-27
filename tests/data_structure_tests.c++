@@ -61,6 +61,17 @@ void test_linked_list() {
 
     the_tests.add_test(imagine_dragons.size() == dragons_list.length(), "Imagine Dragons linked_list length", "Correctly determined length to be " + std::to_string(imagine_dragons.size()), "Incorrectly determined to be " + std::to_string(dragons_list.length()));
     the_tests.add_test(beetles_list.length() == the_beetles.size(), "Beetles linked_list length", "beetles_list.length() returned " + std::to_string(the_beetles.size()) + " as expected.", "beetles_list.length() returned " + std::to_string(beetles_list.length()) + " instead of " + std::to_string(the_beetles.size()));
+
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        the_tests.add_test(dragons_list.peek(index) == imagine_dragons[index], "dragons_list.peek() method", "Peek method returned expected", "Peek did not return expected. Instead returned\n\t" + dragons_list.peek(index));
+        the_tests.add_test(dragons_list[index] == imagine_dragons[index], "dragons_list square bracket reference", "Bracket referencing returned expected", "Bracket referencing did not return expected");
+    }
+
+    for (index = 0; index < beetles_list.length(); index = index + 1) {
+        the_tests.add_test(beetles_list.peek(index) == the_beetles[index], "beetles_list.peek() method", "Peek method returned expected", "Peek did not return expected. Instead returned\n\t" + beetles_list.peek(index));
+        the_tests.add_test(beetles_list[index] == the_beetles[index], "beetles_list square bracket reference", "Bracket referencing returned expected", "Bracket referencing did not return expected");
+    }
+
     // combined_list = dragons_list + beetles_list;
     // the_tests.add_test(combined_list.length() == dragons_list.length() + beetles_list.length(), "Combined_list length is accurate", "Correctly determined length of combined to be " + std::to_string(dragons_list.length() + beetles_list.length()), "Incorrectly determined length of combined list to be " + std::to_string(combined_list.length()));
 
