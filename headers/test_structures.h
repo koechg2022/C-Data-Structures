@@ -166,62 +166,67 @@ namespace test_stuff {
                 }
 
         };
+
+
+        class test_group {
+
+
+            private:
+
+                std::map<std::string, test> the_tests;
+                std::string group_name;
+                unsigned long passed_tests, total_tests;
+                bool contains(std::string test_name) {
+                    return this->the_tests.find(test_name) != this->the_tests.end();
+                }
+
+            public:
+
+                test_group() {
+                    this->passed_tests = this->total_tests = 0;
+                }
+
+                test_group(std::string group_name, bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
+                    this->group_name = group_name;
+                    test new_test(condition, pass, fail);
+                    this->the_tests.insert({test_name, new_test});
+                }
+                
+                void add_test(bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
+                    if (this->contains(test_name)) {
+                        this->the_tests[test_name] = test(condition, pass, fail);
+                    }
+                    else {
+                        this->the_tests.insert({test_name, test(condition, pass, fail)});
+                    }
+                }
+
+                std::vector<std::string> get_test_names () const {
+                    std::vector<std::string> the_answer;
+                    for (const auto &element : this->the_tests) {
+                        the_answer.push_back(element.first);
+                    }
+                    return the_answer;
+                }
+
+                std::map<std::string, test> get_test_map() const {
+                    return this->the_tests;
+                }
+
+                test get_test(std::string name) {
+                    if (this->contains(name)) {
+                        return this->the_tests[name];
+                    }
+                    return NULL;
+                }
+
+        };
+
+
     }
 
 
-    class test_group {
 
-
-        private:
-
-            std::map<std::string, test> the_tests;
-            std::string group_name;
-            unsigned long passed_tests, total_tests;
-            bool contains(std::string test_name) {
-                return this->the_tests.find(test_name) != this->the_tests.end();
-            }
-
-        public:
-
-            test_group() {
-                this->passed_tests = this->total_tests = 0;
-            }
-
-            test_group(std::string group_name, bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
-                this->group_name = group_name;
-                test new_test(condition, pass, fail);
-                this->the_tests.insert({test_name, new_test});
-            }
-            
-            void add_test(bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
-                if (this->contains(test_name)) {
-                    this->the_tests[test_name] = test(condition, pass, fail);
-                }
-                else {
-                    this->the_tests.insert({test_name, test(condition, pass, fail)});
-                }
-            }
-
-            std::vector<std::string> get_test_names () const {
-                std::vector<std::string> the_answer;
-                for (const auto &element : this->the_tests) {
-                    the_answer.push_back(element.first);
-                }
-                return the_answer;
-            }
-
-            std::map<std::string, test> get_test_map() const {
-                return this->the_tests;
-            }
-
-            test get_test(std::string name) {
-                if (this->contains(name)) {
-                    return this->the_tests[name];
-                }
-                return NULL;
-            }
-
-    };
 
 
 }
