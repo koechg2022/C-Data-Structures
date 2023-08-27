@@ -132,6 +132,7 @@ namespace data_structures {
 			linear_linked_list() {
 				this->front = this->rear = this->frame = nullptr;
 				this->size = 0;
+				// std::cout << "Just called default constructor" << std::endl;
 			}
 
 
@@ -141,33 +142,23 @@ namespace data_structures {
 			}
 
 
-			// ListNode *p = aList.head;
-
-			// //create first node
-			// ListNode *q = head;
-			// q->data = p->data;
-			// q->next = NULL;
-			// size++;
-			// p = p->next;
-
-			// for (unsigned int i = 2; i <= aList.size; i++)
-			// {
-			// 	T newItem = p->data;
-			// 	p = p->next;
-			// 	insert(i,newItem);
-			// 	size++;
-			// }
-
 
 			linear_linked_list(linear_linked_list<data_>& other_list) {
 				if (this == &other_list) {
 					return;
 				}
+				std::cout << "Copy constructor called. Original length is " << this->size << std::endl;
 				~linear_linked_list();
-				signed long index;
+				unsigned long index;
 				for (index = 0; index < other_list.length(); index = index + 1) {
 					this->push(other_list.peek(index));
 				}
+				std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << std::endl;
+			}
+
+
+			~linear_linked_list() {
+				this->reset();
 			}
 
 
@@ -238,10 +229,6 @@ namespace data_structures {
 				return the_answer;
 			}
 
-
-			~linear_linked_list() {
-				this->reset();
-			}
 
 
 			/**
@@ -378,14 +365,16 @@ namespace data_structures {
 			 * @brief Resets the linear_linked_list to be empty and frees all the data.
 			*/
 			void reset() {
+				std::cout << "Inside reset method" << std::endl;
 				this->frame = this->front;
 				while (this->frame != nullptr) {
 					this->front = this->frame->get_next();
-					// std::cout << "Deleting " << this->frame << std::endl;
+					std::cout << "Deleting " << this->frame << std::endl << "\t->\"" << this->frame->get_data() << std::endl;
 					delete this->frame;
 					this->frame = this->front;
 				}
 				this->size = 0;
+				std::cout << "Finished reset call" << std::endl;
 			}
 
 
