@@ -164,9 +164,12 @@ namespace data_structures {
 
 
 
-			// Operator overloading.
+			// Operator Overloading.
 
+			// Assignment Operators
+			
 
+			// Comparison operators
 			bool operator==(linear_linked_list<data_>& other) {
 				if (this == &other) {
 					return true;
@@ -213,21 +216,6 @@ namespace data_structures {
 					exit(EXIT_FAILURE);
 				}
 
-			}
-
-
-			linear_linked_list<data_> operator+(linear_linked_list<data_>& other) {
-				linear_linked_list<data_> the_answer;
-				unsigned long index;
-				for (index = 0; index < this->size; index = index + 1) {
-					std::cout << "Adding " << this->peek(index) << std::endl;
-					the_answer.push(this->peek(index));
-				}
-				for (index = 0; index < other.length(); index = index + 1) {
-					std::cout << "Adding " << this->peek(index) << std::endl;
-					the_answer.push(other.peek(index));
-				}
-				return the_answer;
 			}
 
 
@@ -378,7 +366,17 @@ namespace data_structures {
 				// std::cout << "Finished reset call" << std::endl;
 			}
 
-
+			/**
+			 * @brief This method swaps the data at the first and second index passed in.
+			 * 
+			 * @param first_index Defaults to 0, and is one of the two indexes whose data
+			 * is to be swapped.
+			 * 
+			 * @param second_index Defaults to -1, and is the other of the two indexes whose data
+			 * is to be swapped.
+			 * 
+			 * @returns void.
+			*/
 			void swap(signed long first_index = 0, signed long second_index = -1) {
 				if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) || ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
 					std::string msg = "absolute(";

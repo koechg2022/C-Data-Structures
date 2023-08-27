@@ -36,18 +36,18 @@ std::vector<std::string> the_beetles = {
 tests::all_tests the_tests;
 
 
-void test_linked_list();
+void simple_test_linked_list();
 
 
 
 int main(int len, char** args) {
-    test_linked_list();
+    simple_test_linked_list();
     return 0;
 }
 
 
 
-void test_linked_list() {
+void simple_test_linked_list() {
     data_structures::linear_linked_list<std::string> dragons_list, beetles_list, temp;
     signed long index;
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
@@ -80,8 +80,7 @@ void test_linked_list() {
     the_tests.add_test(dragons_list != beetles_list, "!= operator on different lists with different data", "== operator returned false correctly", "== operator returned true instead of false");
     temp[0] = "Just switched temp's 0th index. It should no longer be, imagine_dragins[0]";
     the_tests.add_test(temp[0] != imagine_dragons[0], "Square brackets can be used to change data at specified index", "Square bracket data assignment worked successfully", "Square bracket data assignment did not work as expected");
-    // the_tests.add_test(beetles_list.length() + dragons_list.length() == combined_list.length(), "Combined with +", "Correctly returned" + std::to_string(beetles_list.length()) + std::to_string(dragons_list.length()), "Incorrectly returned " + std::to_string(combined_list.length()));
-    // the_tests.add_test(combined_list.length() == beetles_list.length(), "linked_linked_list copy constructor", "combined_list with copy constructor call has expected length of " + std::to_string(beetles_list.length()) + ".", "combined_list with copy constructor call did not have expected length of " + std::to_string(beetles_list.length()) + ". Instead it had a length of " + std::to_string(combined_list.length()));
+
     the_tests.print_all_tests();
 
 }
