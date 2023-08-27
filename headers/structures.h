@@ -141,6 +141,24 @@ namespace data_structures {
 			}
 
 
+			// ListNode *p = aList.head;
+
+			// //create first node
+			// ListNode *q = head;
+			// q->data = p->data;
+			// q->next = NULL;
+			// size++;
+			// p = p->next;
+
+			// for (unsigned int i = 2; i <= aList.size; i++)
+			// {
+			// 	T newItem = p->data;
+			// 	p = p->next;
+			// 	insert(i,newItem);
+			// 	size++;
+			// }
+
+
 			linear_linked_list(linear_linked_list<data_>& other_list) {
 				if (this == &other_list) {
 					return;
