@@ -4,7 +4,7 @@
 
 
 
-namespace tests {
+namespace test_stuff {
 
     namespace {
 
@@ -69,14 +69,14 @@ namespace tests {
         class test {
 
             private:
-                std::string test_name, pass_message, fail_message;
+                std::string pass_message, fail_message;
                 bool the_test;
 
 
             public:
 
-                test(bool condition, std::string test_name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED") {
-                    this->test_name = test_name;
+                test(bool condition, std::string pass = "PASSED", std::string fail = "FAILED") {
+                    // this->test_name = test_name;
                     this->pass_message = pass;
                     this->fail_message = fail;
                     this->the_test = condition;
@@ -110,28 +110,6 @@ namespace tests {
                         return this->pass_message;
                     }
                     return this->fail_message;
-                }
-
-                /**
-                 * @brief This method updates the name of the test object.
-                 * 
-                 * @param new_name The new name of the test. The test will be set to have this name.
-                 * 
-                 * @returns void.
-                */
-                void update_test_name(std::string new_name) {
-                    this->test_name = new_name;
-                }
-
-                /**
-                 * @brief Get the name of the test.
-                 * 
-                 * @returns The name of the test.
-                 * 
-                 * @note Constant method.
-                */
-                std::string get_test_name() const {
-                    return this->test_name;
                 }
 
                 /**
@@ -191,57 +169,52 @@ namespace tests {
     }
 
 
-    class all_tests {
+    class test_group {
+
 
         private:
+
             std::map<std::string, test> the_tests;
+            std::string group_name;
             unsigned long passed_tests, total_tests;
-            bool contains(std::string name) {
-                return this->the_tests.find(name) != this->the_tests.end();
+            bool contains(std::string test_name) {
+                return this->the_tests.find(test_name) != this->the_tests.end();
             }
 
         public:
 
-            all_tests() {
-                passed_tests = total_tests = 0;
+            test_group() {
+                this->passed_tests = this->total_tests = 0;
             }
 
-            all_tests(std::string name, bool condition, std::string pass, std::string fail) {
-                test new_test = test(condition, name, pass, fail);
-                this->the_tests.insert({name, new_test});
-                passed_tests = (condition) ? 1 : 0;
-                total_tests = 1;
+            test_group(std::string group_name, bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
+                this->group_name = group_name;
+                test new_test(condition, pass, fail);
+                this->the_tests.insert({test_name, new_test});
             }
-
-            /**
-             * @brief Add a new test to the tests.
-             * 
-             * @param name The name of the test. Defaults to "TEST "
-             * @param pass The pass message for the test being added. Defaults to "PASSED".
-             * @param fail The fail message for the test being added. Defaults to "FAILED".
-             * @param condition Not defaulted. Must be filled in. The condition of the test. Determines if a test is passed or failed.
-             * 
-             * @returns null.
-            */
-            void add_test(bool condition, std::string name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED") {
-                if (name == "TEST ") {
-                    name = name + std::to_string(the_tests.size() + 1);
+            
+            void add_test(bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
+                if (this->contains(test_name)) {
+                    this->the_tests[test_name] = test(condition, pass, fail);
                 }
-                if (!this->contains(name)) {
-                    test new_test = test(condition, name, pass, fail);
-                    this->the_tests.insert({ name, new_test});
-                    this->passed_tests = (condition) ? this->passed_tests + 1 : this->passed_tests;
-                    this->total_tests = this->total_tests + 1;
+                else {
+                    this->the_tests.insert({test_name, test(condition, pass, fail)});
                 }
             }
 
-            void print_all_tests() const {
-                // std::string final_message = std::to_string(this->passed_tests) + " / " + std::to_string(this->total_tests);
-                for (const auto& entry : this->the_tests) {
-                    std::string colored_message = get_styled_string(entry.second.get_message(), (unsigned short int) bold_style, (unsigned short int)((entry.second.get_condition()) ? green_text : red_text), (unsigned short int) default_background);
-                    std::cout << "\t" << entry.first << ":\t" << colored_message << std::endl;
+            std::vector<std::string> get_test_names () const {
+                std::vector<std::string> the_answer;
+                for (const auto &element : this->the_tests) {
+                    the_answer.push_back(element.first);
                 }
-                std::cout << "\tFinal Results: " << get_styled_string(std::to_string(this->passed_tests) + " / " + std::to_string(this->total_tests), (unsigned short int) bold_style, (unsigned short int)((this->passed_tests == this->total_tests) ? green_text : red_text), (unsigned short int) default_background) << std::endl;
+                return the_answer;
+            }
+
+            test get_test(std::string name) {
+                if (this->contains(name)) {
+                    return this->the_tests[name];
+                }
+                return NULL;
             }
 
     };

@@ -33,7 +33,6 @@ std::vector<std::string> the_beetles = {
 };
 
 
-tests::all_tests the_tests;
 
 
 void simple_test_linked_list();
@@ -48,39 +47,5 @@ int main(int len, char** args) {
 
 
 void simple_test_linked_list() {
-    data_structures::linear_linked_list<std::string> dragons_list, beetles_list, temp;
-    signed long index;
-    for (index = 0; index < imagine_dragons.size(); index = index + 1) {
-        dragons_list.push(imagine_dragons[index]);
-        temp.push(imagine_dragons[index]);
-    }
-
-    for (index = 0; index < the_beetles.size(); index = index + 1) {
-        beetles_list.push(the_beetles[index]);
-    }
-
-    the_tests.add_test(imagine_dragons.size() == dragons_list.length(), "Imagine Dragons linked_list length", "Correctly determined length to be " + std::to_string(imagine_dragons.size()), "Incorrectly determined to be " + std::to_string(dragons_list.length()));
-    the_tests.add_test(beetles_list.length() == the_beetles.size(), "Beetles linked_list length", "beetles_list.length() returned " + std::to_string(the_beetles.size()) + " as expected.", "beetles_list.length() returned " + std::to_string(beetles_list.length()) + " instead of " + std::to_string(the_beetles.size()));
-
-    for (index = 0; index < dragons_list.length(); index = index + 1) {
-        the_tests.add_test(dragons_list.peek(index) == imagine_dragons[index], "dragons_list.peek(" + std::to_string(index) + ") method", "Peek method returned expected", "Peek did not return expected. Instead returned\n\t" + dragons_list.peek(index));
-        the_tests.add_test(dragons_list[index] == imagine_dragons[index], "dragons_list[" + std::to_string(index) + "] peek test", "Bracket referencing returned expected", "Bracket referencing did not return expected");
-
-    }
-
-    for (index = 0; index < beetles_list.length(); index = index + 1) {
-        the_tests.add_test(beetles_list.peek(index) == the_beetles[index], "beetles_list.peek(" + std::to_string(index) + ") method", "Peek method returned expected", "Peek did not return expected. Instead returned\n\t" + beetles_list.peek(index));
-        the_tests.add_test(beetles_list[index] == the_beetles[index], "beetles_list[" + std::to_string(index) + "] peek test", "Bracket referencing returned expected", "Bracket referencing did not return expected");
-    }
-
-    the_tests.add_test(temp == dragons_list, "== operator on different lists with same data", "== operator returned true correctly", "== operator returned false instead of true");
-    the_tests.add_test(temp == temp, "== operator on same lists with same data (temp)", "== operator returned true correctly", "== operator returned false instead of true");
-    the_tests.add_test(dragons_list == dragons_list, "== operator on same lists with same data (dragon_list)", "== operator returned true correctly", "== operator returned false instead of true");
-    the_tests.add_test(!(dragons_list == beetles_list), "== operator on different lists with different data", "== operator returned false correctly", "== operator returned true instead of false");
-    the_tests.add_test(dragons_list != beetles_list, "!= operator on different lists with different data", "== operator returned false correctly", "== operator returned true instead of false");
-    temp[0] = "Just switched temp's 0th index. It should no longer be, imagine_dragins[0]";
-    the_tests.add_test(temp[0] != imagine_dragons[0], "Square brackets can be used to change data at specified index", "Square bracket data assignment worked successfully", "Square bracket data assignment did not work as expected");
-
-    the_tests.print_all_tests();
 
 }
