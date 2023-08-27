@@ -48,16 +48,16 @@ int main(int len, char** args) {
 
 
 void test_linked_list() {
-    data_structures::linear_linked_list<std::string> dragons_list, beetles_list, combined_list;
+    data_structures::linear_linked_list<std::string> dragons_list, beetles_list, combined_list, temp;
     signed long index;
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
         dragons_list.push(imagine_dragons[index]);
+        temp.push(imagine_dragons[index]);
     }
 
     for (index = 0; index < the_beetles.size(); index = index + 1) {
         beetles_list.push(the_beetles[index]);
     }
-
 
     the_tests.add_test(imagine_dragons.size() == dragons_list.length(), "Imagine Dragons linked_list length", "Correctly determined length to be " + std::to_string(imagine_dragons.size()), "Incorrectly determined to be " + std::to_string(dragons_list.length()));
     the_tests.add_test(beetles_list.length() == the_beetles.size(), "Beetles linked_list length", "beetles_list.length() returned " + std::to_string(the_beetles.size()) + " as expected.", "beetles_list.length() returned " + std::to_string(beetles_list.length()) + " instead of " + std::to_string(the_beetles.size()));
@@ -72,9 +72,11 @@ void test_linked_list() {
         the_tests.add_test(beetles_list[index] == the_beetles[index], "beetles_list square bracket reference", "Bracket referencing returned expected", "Bracket referencing did not return expected");
     }
 
-    // combined_list = dragons_list + beetles_list;
-    // the_tests.add_test(combined_list.length() == dragons_list.length() + beetles_list.length(), "Combined_list length is accurate", "Correctly determined length of combined to be " + std::to_string(dragons_list.length() + beetles_list.length()), "Incorrectly determined length of combined list to be " + std::to_string(combined_list.length()));
-
+    the_tests.add_test(temp == dragons_list, "== operator on different lists with same data", "== operator returned true correctly", "== operator returned false instead of true");
+    the_tests.add_test(temp == temp, "== operator on same lists with same data (temp)", "== operator returned true correctly", "== operator returned false instead of true");
+    the_tests.add_test(dragons_list == dragons_list, "== operator on same lists with same data (dragon_list)", "== operator returned true correctly", "== operator returned false instead of true");
+    the_tests.add_test(!(dragons_list == beetles_list), "== operator on different lists with different data", "== opator returned false correctly", "== operator returned true instead of false");
+    the_tests.add_test(dragons_list != beetles_list, "!= operator on different lists with different data", "== opator returned false correctly", "== operator returned true instead of false");
 
     the_tests.print_all_tests();
 

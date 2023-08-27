@@ -149,46 +149,39 @@ namespace data_structures {
 			}
 
 
-			// linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
-			// 	if (this == &other) {
-			// 		return *this;
-			// 	}
-			// 	this->reset();
-			// 	// std::cout << "Just reset list " << this << std::endl;
-			// 	// std::cout << "list " << this << " size is " << this->size << std::endl;
-			// 	signed long index;
-			// 	for (index = 0; index < other.length(); index = index + 1) {
-			// 		// std::cout << "Adding " << other[index] << std::endl;
-			// 		this->push(other.peek(index));
-			// 	}
-			// 	return *this;
-			// }
+			bool operator==(linear_linked_list<data_>& other) {
+				if (this == &other) {
+					return true;
+				}
+				if (this->size == other.length()) {
+					unsigned long index;
+					for (index = 0; index < this->size; index = index + 1) {
+						if (this->peek(index) != other.peek(index)) {
+							return false;
+						}
+					}
+					return true;
+				}
+				return false;
+			}
 
 
-			// linear_linked_list<data_> operator=(linear_linked_list<data_> other) {
-			// 	if (this == &other) {
-			// 		return *this;
-			// 	}
-			// 	this->reset();
-			// 	signed long index;
-			// 	for (index = 0; index < other.length(); index = index + 1) {
-			// 		this->push(other.peek(index));
-			// 	}
-			// 	return *this;
-			// }
-
-
-			// linear_linked_list<data_> operator+(linear_linked_list<data_>& other) {
-			// 	signed long index;
-			// 	linear_linked_list<data_>the_answer;
-			// 	for (index = 0; index < this->size; index = index + 1) {
-			// 		the_answer.push(this->peek(index));
-			// 	}
-			// 	for (index = 0; index < other.length(); index = index + 1) {
-			// 		the_answer.push(other.peek(index));
-			// 	}
-			// 	return the_answer;
-			// }
+			bool operator!=(linear_linked_list<data_>& other) {
+				if (this == &other) {
+					return false;
+				}
+				if (this->size != other.length()) {
+					return true;
+				}
+				// the sizes are the same.
+				unsigned long index;
+				for (index = 0; index < this->size; index = index + 1) {
+					if (this->peek(index) != other.peek(index)) {
+						return true;
+					}
+				}
+				return false;
+			}
 
 
 			data_ operator [](signed long index) {
