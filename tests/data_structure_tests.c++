@@ -54,39 +54,16 @@ void test_linked_list() {
         dragons_list.push(imagine_dragons[index]);
     }
 
-    the_tests.add_test(imagine_dragons.size() == dragons_list.length(), "linear_linked_list length", "Correctly determined length to be " + std::to_string(imagine_dragons.size()), "Incorrectly determined to be " + std::to_string(dragons_list.length()));
-
-    std::cout << "Imagine Dragons list:\n---------------------------------------------\n";
-
-    for (index = 0; index < dragons_list.length(); index = index + 1) {
-        std::cout << "\t" << index << ".) " << dragons_list[index] << std::endl;
-    }
-
     for (index = 0; index < the_beetles.size(); index = index + 1) {
         beetles_list.push(the_beetles[index]);
     }
-    std::cout << "Beetles list:\n---------------------------------------------\n";
-    for (index = 0; index < beetles_list.length(); index = index + 1) {
-        std::cout << "\t" << index << ".) " << beetles_list[index] << std::endl;
-    }
-    std::cout << "Combined list:\n---------------------------------------------\n";
-    combined_list = dragons_list;
-    combined_list = combined_list + beetles_list;
-    for (index = 0; index < combined_list.length(); index = index + 1) {
-        std::cout << "\t" << index << ".) " << combined_list[index] << std::endl;
-    }
 
 
-    std::cout << "Imagine Dragons list:\n---------------------------------------------\n";
+    the_tests.add_test(imagine_dragons.size() == dragons_list.length(), "Imagine Dragons linked_list length", "Correctly determined length to be " + std::to_string(imagine_dragons.size()), "Incorrectly determined to be " + std::to_string(dragons_list.length()));
+    the_tests.add_test(beetles_list.length() == the_beetles.size(), "Beetles linked_list length", "beetles_list.length() returned " + std::to_string(the_beetles.size()) + " as expected.", "beetles_list.length() returned " + std::to_string(beetles_list.length()) + " instead of " + std::to_string(the_beetles.size()));
+    // combined_list = dragons_list + beetles_list;
+    // the_tests.add_test(combined_list.length() == dragons_list.length() + beetles_list.length(), "Combined_list length is accurate", "Correctly determined length of combined to be " + std::to_string(dragons_list.length() + beetles_list.length()), "Incorrectly determined length of combined list to be " + std::to_string(combined_list.length()));
 
-    for (index = 0; index < dragons_list.length(); index = index + 1) {
-        std::cout << "\t" << index << ".) " << dragons_list[index] << std::endl;
-    }
-
-    std::cout << "Beetles list:\n---------------------------------------------\n";
-    for (index = 0; index < beetles_list.length(); index = index + 1) {
-        std::cout << "\t" << index << ".) " << beetles_list[index] << std::endl;
-    }
 
     the_tests.print_all_tests();
 

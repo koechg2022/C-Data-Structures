@@ -143,35 +143,52 @@ namespace data_structures {
 				}
 				signed long index;
 				~linear_linked_list();
-				for (index = 0; index < other_list->length(); index = index + 1) {
-					this->push(other_list->peek(index));
+				for (index = 0; index < other_list.length(); index = index + 1) {
+					this->push(other_list.peek(index));
 				}
 			}
 
 
-			linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
-				if (this == &other) {
-					return *this;
-				}
-				this->reset();
-				// std::cout << "Just reset list " << this << std::endl;
-				// std::cout << "list " << this << " size is " << this->size << std::endl;
-				signed long index;
-				for (index = 0; index < other.length(); index = index + 1) {
-					// std::cout << "Adding " << other[index] << std::endl;
-					this->push(other.peek(index));
-				}
-				return *this;
-			}
+			// linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
+			// 	if (this == &other) {
+			// 		return *this;
+			// 	}
+			// 	this->reset();
+			// 	// std::cout << "Just reset list " << this << std::endl;
+			// 	// std::cout << "list " << this << " size is " << this->size << std::endl;
+			// 	signed long index;
+			// 	for (index = 0; index < other.length(); index = index + 1) {
+			// 		// std::cout << "Adding " << other[index] << std::endl;
+			// 		this->push(other.peek(index));
+			// 	}
+			// 	return *this;
+			// }
 
 
-			linear_linked_list<data_>& operator+(linear_linked_list<data_>& other) {
-				signed long index;
-				for (index = 0; index < other.length(); index = index + 1) {
-					this->push(other.peek(index));
-				}
-				return *this;
-			}
+			// linear_linked_list<data_> operator=(linear_linked_list<data_> other) {
+			// 	if (this == &other) {
+			// 		return *this;
+			// 	}
+			// 	this->reset();
+			// 	signed long index;
+			// 	for (index = 0; index < other.length(); index = index + 1) {
+			// 		this->push(other.peek(index));
+			// 	}
+			// 	return *this;
+			// }
+
+
+			// linear_linked_list<data_> operator+(linear_linked_list<data_>& other) {
+			// 	signed long index;
+			// 	linear_linked_list<data_>the_answer;
+			// 	for (index = 0; index < this->size; index = index + 1) {
+			// 		the_answer.push(this->peek(index));
+			// 	}
+			// 	for (index = 0; index < other.length(); index = index + 1) {
+			// 		the_answer.push(other.peek(index));
+			// 	}
+			// 	return the_answer;
+			// }
 
 
 			data_ operator [](signed long index) {
