@@ -142,6 +142,7 @@ namespace data_structures {
 			}
 
 
+			// Copy Constructor
 
 			linear_linked_list(linear_linked_list<data_>& other_list) {
 				if (this == &other_list) {
