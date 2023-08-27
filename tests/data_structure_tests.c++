@@ -1,6 +1,8 @@
 
 #include <vector>
 #include "../headers/structures.h"
+#include "../headers/test_structures.h"
+
 
 
 std::vector<std::string> imagine_dragons = {
@@ -31,6 +33,9 @@ std::vector<std::string> the_beetles = {
 };
 
 
+tests::all_tests the_tests;
+
+
 void test_linked_list();
 
 
@@ -48,6 +53,8 @@ void test_linked_list() {
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
         dragons_list.push(imagine_dragons[index]);
     }
+
+    the_tests.add_test(imagine_dragons.size() == dragons_list.length(), "linear_linked_list length", "Correctly determined length to be " + std::to_string(imagine_dragons.size()), "Incorrectly determined to be " + std::to_string(dragons_list.length()));
 
     std::cout << "Imagine Dragons list:\n---------------------------------------------\n";
 
@@ -80,5 +87,7 @@ void test_linked_list() {
     for (index = 0; index < beetles_list.length(); index = index + 1) {
         std::cout << "\t" << index << ".) " << beetles_list[index] << std::endl;
     }
+
+    the_tests.print_all_tests();
 
 }

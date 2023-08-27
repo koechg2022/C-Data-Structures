@@ -75,7 +75,7 @@ namespace tests {
 
             public:
 
-                test(std::string test_name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED", bool condition) {
+                test(bool condition, std::string test_name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED") {
                     this->test_name = test_name;
                     this->pass_message = pass;
                     this->fail_message = fail;
@@ -191,7 +191,7 @@ namespace tests {
     }
 
 
-    class tests {
+    class all_tests {
 
         private:
             std::map<std::string, test> the_tests;
@@ -202,12 +202,12 @@ namespace tests {
 
         public:
 
-            tests() {
+            all_tests() {
                 passed_tests = total_tests = 0;
             }
 
-            tests(std::string name, bool condition, std::string pass, std::string fail) {
-                test new_test = test(name, pass, fail, condition);
+            all_tests(std::string name, bool condition, std::string pass, std::string fail) {
+                test new_test = test(condition, name, pass, fail);
                 this->the_tests.insert({name, new_test});
                 passed_tests = (condition) ? 1 : 0;
                 total_tests = 1;
@@ -223,12 +223,12 @@ namespace tests {
              * 
              * @returns null.
             */
-            void add_test(std::string name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED", bool condition) {
+            void add_test(bool condition, std::string name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED") {
                 if (name == "TEST ") {
                     name = name + std::to_string(the_tests.size() + 1);
                 }
                 if (!this->contains(name)) {
-                    test new_test = test(name, pass, fail, condition);
+                    test new_test = test(condition, name, pass, fail);
                     this->the_tests.insert({ name, new_test});
                     this->passed_tests = (condition) ? this->passed_tests + 1 : this->passed_tests;
                     this->total_tests = this->total_tests + 1;
@@ -241,7 +241,7 @@ namespace tests {
                     std::string colored_message = get_styled_string(entry.second.get_message(), (unsigned short int) bold_style, (unsigned short int)((entry.second.get_condition()) ? green_text : red_text), (unsigned short int) default_background);
                     std::cout << "\t" << entry.first << ":\t" << colored_message << std::endl;
                 }
-                std::cout << get_styled_string(std::to_string(this->passed_tests) + " / " + std::to_string(this->total_tests), (unsigned short int) bold_style, (unsigned short int)((this->passed_tests == this->total_tests) ? green_text : red_text), (unsigned short int) default_background) << std::endl;
+                std::cout << "\tFinal Results: " << get_styled_string(std::to_string(this->passed_tests) + " / " + std::to_string(this->total_tests), (unsigned short int) bold_style, (unsigned short int)((this->passed_tests == this->total_tests) ? green_text : red_text), (unsigned short int) default_background) << std::endl;
             }
 
     };
