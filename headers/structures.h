@@ -149,7 +149,7 @@ namespace data_structures {
 					return;
 				}
 				std::cout << "Copy constructor called. Original length is " << this->size << std::endl;
-				~linear_linked_list();
+				// ~linear_linked_list();
 				unsigned long index;
 				for (index = 0; index < other_list.length(); index = index + 1) {
 					this->push(other_list.peek(index));
@@ -366,16 +366,16 @@ namespace data_structures {
 			 * @brief Resets the linear_linked_list to be empty and frees all the data.
 			*/
 			void reset() {
-				std::cout << "Inside reset method" << std::endl;
+				// std::cout << "Inside reset method" << std::endl;
 				this->frame = this->front;
 				while (this->frame != nullptr) {
 					this->front = this->frame->get_next();
-					std::cout << "Deleting " << this->frame << std::endl << "\t->\"" << this->frame->get_data() << std::endl;
+					// std::cout << "Deleting " << this->frame << std::endl << "\t->\"" << this->frame->get_data() << std::endl;
 					delete this->frame;
 					this->frame = this->front;
 				}
 				this->size = 0;
-				std::cout << "Finished reset call" << std::endl;
+				// std::cout << "Finished reset call" << std::endl;
 			}
 
 
