@@ -145,12 +145,16 @@ namespace data_structures {
 				if (this == &other_list) {
 					return;
 				}
-				signed long index;
 				~linear_linked_list();
+				signed long index;
 				for (index = 0; index < other_list.length(); index = index + 1) {
 					this->push(other_list.peek(index));
 				}
 			}
+
+
+
+			// Operator overloading.
 
 
 			bool operator==(linear_linked_list<data_>& other) {
@@ -199,6 +203,21 @@ namespace data_structures {
 					exit(EXIT_FAILURE);
 				}
 
+			}
+
+
+			linear_linked_list<data_> operator+(linear_linked_list<data_>& other) {
+				linear_linked_list<data_> the_answer;
+				unsigned long index;
+				for (index = 0; index < this->size; index = index + 1) {
+					std::cout << "Adding " << this->peek(index) << std::endl;
+					the_answer.push(this->peek(index));
+				}
+				for (index = 0; index < other.length(); index = index + 1) {
+					std::cout << "Adding " << this->peek(index) << std::endl;
+					the_answer.push(other.peek(index));
+				}
+				return the_answer;
 			}
 
 

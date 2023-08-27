@@ -73,6 +73,8 @@ void test_linked_list() {
         the_tests.add_test(beetles_list[index] == the_beetles[index], "beetles_list[" + std::to_string(index) + "] peek test", "Bracket referencing returned expected", "Bracket referencing did not return expected");
     }
 
+    combined_list = beetles_list + dragons_list;
+
     the_tests.add_test(temp == dragons_list, "== operator on different lists with same data", "== operator returned true correctly", "== operator returned false instead of true");
     the_tests.add_test(temp == temp, "== operator on same lists with same data (temp)", "== operator returned true correctly", "== operator returned false instead of true");
     the_tests.add_test(dragons_list == dragons_list, "== operator on same lists with same data (dragon_list)", "== operator returned true correctly", "== operator returned false instead of true");
@@ -80,6 +82,7 @@ void test_linked_list() {
     the_tests.add_test(dragons_list != beetles_list, "!= operator on different lists with different data", "== operator returned false correctly", "== operator returned true instead of false");
     temp[0] = "Just switched temp's 0th index. It should no longer be, imagine_dragins[0]";
     the_tests.add_test(temp[0] != imagine_dragons[0], "Square brackets can be used to change data at specified index", "Square bracket data assignment worked successfully", "Square bracket data assignment did not work as expected");
+    the_tests.add_test(beetles_list.length() + dragons_list.length() == combined_list.length(), "Combined with +", "Correctly returned" + std::to_string(beetles_list.length()) + std::to_string(dragons_list.length()), "Incorrectly returned " + std::to_string(combined_list.length()));
     the_tests.print_all_tests();
 
 }
