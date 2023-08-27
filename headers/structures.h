@@ -30,9 +30,13 @@ namespace data_structures {
 					return this->this_data;
 				}
 
-				// date_& operator[]() {
-				// 	return this->this_data;
+				// data_* get_data_ptr() const {
+				// 	return &this->this_data;
 				// }
+
+				data_ &get_data_ref() {
+					return this->this_data;
+				}
 
 		};
 
@@ -184,8 +188,17 @@ namespace data_structures {
 			}
 
 
-			data_ operator [](signed long index) {
-				return this->peek(index);
+			data_& operator [](signed long index) {
+				try {
+					this->peek(index);
+					// frame is now at index.
+					return this->frame->get_data_ref();
+				}
+				catch (std::range_error except) {
+					std::cout << "Illegal index reference " << index << std::endl;
+					exit(EXIT_FAILURE);
+				}
+
 			}
 
 
