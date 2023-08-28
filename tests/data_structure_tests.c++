@@ -33,7 +33,7 @@ std::vector<std::string> the_beetles = {
 };
 
 
-test_stuff::tests data_structures_tests;
+test_stuff::tests tests;
 
 
 void simple_test_linked_list();
@@ -57,9 +57,9 @@ void simple_test_linked_list() {
     for (index = 0; index < the_beetles.size(); index = index + 1) {
         beeltes_list.push(the_beetles[index]);
     }
-    data_structures_tests.create_group("linear_linked_list created");
+    tests.create_group("linear_linked_list created");
     for (index = 0; index < dragons_list.length(); index = index + 1) {
-        data_structures_tests.add_test("linear_linked_list created", 
+        tests.add_test("linear_linked_list created", 
             "dragons_list[" + std::to_string(index) + "] returns expected",
             imagine_dragons[index] == dragons_list[index],
             "dragons_list[" + std::to_string(index) + "] returned correct",
@@ -67,12 +67,12 @@ void simple_test_linked_list() {
         );
     }
     for (index = 0; index < beeltes_list.length(); index = index + 1) {
-        data_structures_tests.add_test("linear_linked_list created", 
+        tests.add_test("linear_linked_list created", 
             "beeltes_list[" + std::to_string(index) + "] returns expected",
-            beeltes_list[index] == dragons_list[index],
+            beeltes_list[index] == the_beetles[index],
             "beeltes_list[" + std::to_string(index) + "] returned correct",
             "beeltes_list[" + std::to_string(index) + "] did not return expected"
         );
     }
-    data_structures_tests.print_tests();
+    tests.print_tests();
 }
