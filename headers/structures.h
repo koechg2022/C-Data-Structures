@@ -148,6 +148,9 @@ namespace data_structures {
 				if (this == &other_list) {
 					return;
 				}
+				// this->reset();
+				// this->front = this->frame = this->rear = nullptr;
+				this->size = 0;
 				std::cout << "Copy constructor called. Original length is " << this->size << std::endl;
 				// ~linear_linked_list();
 				unsigned long index;
@@ -159,6 +162,7 @@ namespace data_structures {
 
 
 			~linear_linked_list() {
+				// std::cout << "Inside destructor" << std::endl;
 				this->reset();
 			}
 
@@ -167,7 +171,7 @@ namespace data_structures {
 			// Operator Overloading.
 
 			// Assignment Operators
-			
+			// TODO CREATE ASSIGNMENT OPERATORS
 
 			// Comparison operators
 			bool operator==(linear_linked_list<data_>& other) {
@@ -218,6 +222,23 @@ namespace data_structures {
 
 			}
 
+			// Arithmatic Operators
+			linear_linked_list<data_> operator+ (linear_linked_list<data_>& other) {
+				linear_linked_list<data_>* the_answer = new linear_linked_list<data_>();
+				unsigned long index;
+				for (index = 0; index < this->size; index = index + 1) {
+					std::cout << "pushing " << index << ".) \"" << this->peek(index) << "\"" << std::endl;
+					the_answer->push(this->peek(index));
+				}
+				std::cout << "---------------------------------------------------" << std::endl;
+				for (index = 0; index < other.length(); index = index + 1) {
+					std::cout << "pushing " << index << ".) " << other.peek(index) << "\"" << std::endl;
+					the_answer->push(other.peek(index));
+				}
+				std::cout << "\tthe_answer.length() " << the_answer->length() << std::endl;
+				std::cout << "About to return out of + operator" << std::endl;
+				return *the_answer;
+			}
 
 
 			/**

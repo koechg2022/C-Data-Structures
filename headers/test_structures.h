@@ -289,7 +289,7 @@ namespace test_stuff {
             void print_tests() const {
                 std::string colored_string;
                 unsigned long passed = 0, total = 0;
-                std::cout << "\x1B[2J";
+                // std::cout << "\x1B[2J";
                 for (const auto& this_group : this->groups) {
                     std::cout << get_styled_string(this_group.first, bold_style, (this_group.second.get_passed_tests() == this_group.second.get_total_tests()) ? green_text : ((this_group.second.get_passed_tests() == 0) ? red_text : yellow_text), default_background);
                     std::cout << " : " << this_group.second.get_passed_tests() << " / " << this_group.second.get_total_tests() << std::endl;

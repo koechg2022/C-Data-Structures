@@ -81,15 +81,27 @@ void simple_test_linked_list() {
         "beetles_list.length()",
         beeltes_list.length() == the_beetles.size(),
         "beeltles_list.length() returned " + std::to_string(beeltes_list.length()),
-        "beeltles_list.length() returned " + std::to_string(beeltes_list.length()) + " instead of " + std::to_string(the_beetles.size())
+        "beeltles_list.length() returned " + std::to_string(beeltes_list.length()) + 
+        " instead of " + std::to_string(the_beetles.size())
     );
 
     tests.add_test("linear_linked_list lengths are correct",
         "dragons_list.length()",
         dragons_list.length() == imagine_dragons.size(),
         "dragons_list.length() returned " + std::to_string(dragons_list.length()),
-        "dragons_list.length() returned " + std::to_string(dragons_list.length()) + " instead of " + std::to_string(imagine_dragons.size())
+        "dragons_list.length() returned " + std::to_string(dragons_list.length()) + 
+        " instead of " + std::to_string(imagine_dragons.size())
     );
 
-    tests.print_tests();
+    data_structures::linear_linked_list<std::string> combined;
+    std::cout << "Combined created" << std::endl;
+    combined = dragons_list + beeltes_list;
+    // std::cout << "combined.length() : " << combined.length() << std::endl;
+    std::cout << "dragons_list.length() : " << dragons_list.length() << std::endl;
+    std::cout << "beetles_list.length() : " << beeltes_list.length() << std::endl;
+    for (index = 0; index < combined.length(); index = index + 1) {
+        std::cout << index << ".) " << combined[index] << std::endl;
+    }
+    std::cout << "Done" << std::endl;
+    // tests.print_tests();
 }
