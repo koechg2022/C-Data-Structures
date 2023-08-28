@@ -92,8 +92,5 @@ void simple_test_linked_list() {
         "dragons_list.length() returned " + std::to_string(dragons_list.length()) + 
         " instead of " + std::to_string(imagine_dragons.size())
     );
-
-    // data_structures::linear_linked_list<std::string> combined;
-    // std::cout << "Combined created" << std::endl;
     tests.print_tests();
 }
