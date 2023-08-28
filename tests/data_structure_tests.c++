@@ -74,5 +74,22 @@ void simple_test_linked_list() {
             "beeltes_list[" + std::to_string(index) + "] did not return expected"
         );
     }
+
+    tests.create_group("linear_linked_list lengths are correct");
+
+    tests.add_test("linear_linked_list lengths are correct",
+        "beetles_list.length()",
+        beeltes_list.length() == the_beetles.size(),
+        "beeltles_list.length() returned " + std::to_string(beeltes_list.length()),
+        "beeltles_list.length() returned " + std::to_string(beeltes_list.length()) + " instead of " + std::to_string(the_beetles.size())
+    );
+
+    tests.add_test("linear_linked_list lengths are correct",
+        "dragons_list.length()",
+        dragons_list.length() == imagine_dragons.size(),
+        "dragons_list.length() returned " + std::to_string(dragons_list.length()),
+        "dragons_list.length() returned " + std::to_string(dragons_list.length()) + " instead of " + std::to_string(imagine_dragons.size())
+    );
+
     tests.print_tests();
 }

@@ -299,6 +299,7 @@ namespace test_stuff {
                         // colored_string = useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background);
                         std::cout << "\t" << this_group_stuff.first << " : " << get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
                     }
+                    std::cout << std::endl;
                 }
                 std::cout << std::endl << std::endl;
                 std::cout << get_styled_string("Final results " + std::to_string(passed), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << " / " << get_styled_string(std::to_string(total), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << std::endl;
