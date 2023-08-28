@@ -33,6 +33,7 @@ std::vector<std::string> the_beetles = {
 };
 
 
+test_stuff::tests data_structures_tests;
 
 
 void simple_test_linked_list();
@@ -47,5 +48,31 @@ int main(int len, char** args) {
 
 
 void simple_test_linked_list() {
+    unsigned long index;
+    data_structures::linear_linked_list<std::string> dragons_list, beeltes_list;
+    for (index = 0; index < imagine_dragons.size(); index = index + 1) {
+        dragons_list.push(imagine_dragons[index]);
+    }
 
+    for (index = 0; index < the_beetles.size(); index = index + 1) {
+        beeltes_list.push(the_beetles[index]);
+    }
+    data_structures_tests.create_group("linear_linked_list created");
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        data_structures_tests.add_test("linear_linked_list created", 
+            "dragons_list[" + std::to_string(index) + "] returns expected",
+            imagine_dragons[index] == dragons_list[index],
+            "dragons_list[" + std::to_string(index) + "] returned correct",
+            "dragons_list[" + std::to_string(index) + "] did not return expected"
+        );
+    }
+    for (index = 0; index < beeltes_list.length(); index = index + 1) {
+        data_structures_tests.add_test("linear_linked_list created", 
+            "beeltes_list[" + std::to_string(index) + "] returns expected",
+            beeltes_list[index] == dragons_list[index],
+            "beeltes_list[" + std::to_string(index) + "] returned correct",
+            "beeltes_list[" + std::to_string(index) + "] did not return expected"
+        );
+    }
+    data_structures_tests.print_tests();
 }
