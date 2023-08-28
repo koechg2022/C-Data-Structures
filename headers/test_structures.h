@@ -266,16 +266,41 @@ namespace test_stuff {
                 this->groups.insert({group_name, new_group});
             }
 
+            /**
+             * @brief This creates a new group, or overrides an old group
+             * and creates a new group with no tests in it.
+             * 
+             * @param group_name The name of the group to be created or added.
+             * 
+             * @returns void.
+            */
             void create_group(std::string group_name) {
                 test_group new_group;
                 new_group.set_group_name(group_name);
                 this->groups.insert({group_name, new_group});
             }
 
+            /**
+             * @brief Check if a specific group exists or not.
+             * 
+             * @param to_find The group to check for.
+             * 
+             * @returns true if the to_find group exists, false otherwise.
+            */
             bool group_exists(std::string to_find) {
                 return this->group_contained(to_find);
             }
 
+            /**
+             * @brief Adds a new test to the tests, either to an existing group, or to a new group.
+             * @param group The group to add the test to, or create the group then add the test to.
+             * @param test_name The name of the test that is being added.
+             * @param condition The condition of the test, either a pass or a fail.
+             * @param pass The message to be displayed if the test is passed.
+             * @param fail The message to be displayed if the test is failed.
+             * 
+             * @returns void.
+            */
             void add_test(std::string group, std::string test_name, bool condition, std::string pass = "PASSED", std::string fail = "FAILED") {
                 if (this->group_contained(group)) {
                     this->groups[group].add_test(condition, test_name, pass, fail);
@@ -286,6 +311,12 @@ namespace test_stuff {
                 }
             }
 
+            /**
+             * @brief Print all the tests, and the groups that they are in, and
+             * the total number of tests that passed over the total number of tests.
+             * 
+             * @returns void.
+            */
             void print_tests() const {
                 std::string colored_string;
                 unsigned long passed = 0, total = 0;
