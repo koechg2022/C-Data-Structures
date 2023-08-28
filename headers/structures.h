@@ -147,14 +147,14 @@ namespace data_structures {
 				// this->reset();
 				// this->front = this->frame = this->rear = nullptr;
 				this->size = 0;
-				std::cout << "Copy constructor called. Original length is " << this->size << std::endl;
+				// std::cout << "Copy constructor called. Original length is " << this->size << std::endl;
 				// ~linear_linked_list();
 				unsigned long index;
 				for (index = 0; index < other_list.length(); index = index + 1) {
 					this->push(other_list.peek(index));
 				}
-				std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << std::endl;
-				std::cout << "At end of copy constructor call, data in this object is :" << std::endl;
+				// std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << std::endl;
+				// std::cout << "At end of copy constructor call, data in this object is :" << std::endl;
 				for (index = 0; index < this->size; index = index + 1) {
 					std::cout << "\t" << this->peek(index) << std::endl;
 				}
@@ -174,6 +174,7 @@ namespace data_structures {
 			// TODO CREATE ASSIGNMENT OPERATORS
 
 			// Comparison operators
+
 			bool operator==(linear_linked_list<data_>& other) {
 				if (this == &other) {
 					return true;
@@ -221,20 +222,6 @@ namespace data_structures {
 				}
 
 			}
-
-			// Arithmatic Operators
-			// linear_linked_list<data_> operator+ (linear_linked_list<data_>& other) {
-			// 	linear_linked_list<data_> the_answer;
-			// 	unsigned long index;
-			// 	for (index = 0; index < this->size; index = index + 1) {
-			// 		the_answer.push(this->peek(index));
-			// 	}
-			// 	for (index = 0; index < other.length(); index = index + 1) {
-			// 		the_answer.push(other.peek(index));
-			// 	}
-				
-			// 	return the_answer;
-			// }
 
 
 			/**
@@ -382,6 +369,7 @@ namespace data_structures {
 				this->size = 0;
 				// std::cout << "Finished reset call" << std::endl;
 			}
+
 
 			/**
 			 * @brief This method swaps the data at the first and second index passed in.
