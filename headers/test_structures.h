@@ -2,69 +2,14 @@
 #include <iostream>
 #include <map>
 
+#include "useful_functions.h"
+
 
 
 namespace test_stuff {
 
     namespace {
 
-        // TEXT COLORS
-        #define black_text 30
-        #define red_text 31
-        #define green_text 32
-        #define yellow_text 33
-        #define blue_text 34
-        #define purple_text 35
-        #define cyan_text 36
-        #define white_text 37
-
-
-
-
-        // TEXT STYLE
-        #define no_effect_style 0
-        #define bold_style 1
-        #define underline_style 2
-        #define negative_1_style 3
-        #define negative_2_style 5
-
-
-
-
-        // BACKGROUND COLOR
-        #define black_background 40
-        #define red_background 41
-        #define green_background 42
-        #define yellow_background 43
-        #define blue_background 44
-        #define purple_background 45
-        #define cyan_background 46
-        #define white_background 47
-        #define default_background 49
-
-        typedef unsigned short int short_int;
-
-        const std::string ansi_escape = "\033[";
-        // "\033[<style>;<color>;<bkg>m<the_string>\033[0m"
-
-        bool valid_color(short_int color) {
-            return ((color >= (short_int) black_text) && (color <= (short_int) white_text));
-        }
-
-        bool valid_style(short_int style) {
-            return (((style >= (short_int) no_effect_style) && (style <= (short_int) negative_1_style)) || (style == (short_int) negative_2_style));
-        }
-
-        bool valid_bkg(short_int bkg) {
-            return ((bkg >= (short_int) black_background) && (bkg <= (short_int) default_background));
-        }
-
-        std::string get_styled_string(std::string the_string, short_int style = (short_int) no_effect_style, short_int color = (short_int) black_text, short_int bkg = (short_int) default_background) {
-            style = (valid_style((short_int) style)) ? (short_int) style : (short_int) no_effect_style;
-            color = (valid_color((short_int) color)) ? (short_int) color : (short_int) black_text;
-            bkg = (valid_bkg((short_int) bkg)) ? (short_int) bkg : (short_int) default_background;
-            return "\033[" + std::to_string(int(style)) + ";" + std::to_string(int(color)) + ";" + std::to_string(int(bkg)) + "m" + the_string + "\033[0m";
-        }
 
         class test {
 
@@ -170,7 +115,6 @@ namespace test_stuff {
 
         class test_group {
 
-
             private:
 
                 std::map<std::string, test> the_tests;
@@ -192,6 +136,10 @@ namespace test_stuff {
                     this->the_tests.insert({test_name, new_test});
                 }
                 
+                void set_group_name(std::string new_name) {
+                    this->group_name = new_name;
+                }
+
                 void add_test(bool condition, std::string test_name, std::string pass = "PASSED", std::string fail = "FAILED") {
                     if (this->contains(test_name)) {
                         this->the_tests[test_name] = test(condition, pass, fail);
@@ -220,12 +168,76 @@ namespace test_stuff {
                     return NULL;
                 }
 
+                unsigned long get_passed_tests() const {
+                    return this->passed_tests;
+                }
+
+                unsigned long get_total_tests() const {
+                    return this->total_tests;
+                }
+
         };
 
 
     }
 
 
+    class tests {
+
+        private:
+            std::map<std::string, test_group> groups;
+            unsigned long passed_tests, total_tests;
+
+            bool group_contained(std::string group_name) const {
+                return this->groups.find(group_name) != this->groups.end();
+            }
+
+        public:
+            
+            tests() {}
+
+            tests(std::string group_name, bool condition, std::string test_name = "TEST ", std::string pass = "PASSED", std::string fail = "FAILED") {
+                test_group new_group(group_name, condition, test_name, pass, fail);
+                this->groups.insert({group_name, new_group});
+            }
+
+            void create_group(std::string group_name) {
+                test_group new_group;
+                new_group.set_group_name(group_name);
+                this->groups.insert({group_name, new_group});
+            }
+
+            bool group_exists(std::string to_find) {
+                return this->group_contained(to_find);
+            }
+
+            void add_test(std::string group, std::string test_name, bool condition, std::string pass = "PASSED", std::string fail = "FAILED") {
+                if (this->group_contained(group)) {
+                    this->groups[group].add_test(condition, test_name, pass, fail);
+                }
+                else {
+                    test_group new_group(group, condition, test_name, pass, fail);
+                    this->groups.insert({group, new_group});
+                }
+            }
+
+            void print_tests() const {
+                std::string colored_string;
+                unsigned long passed = 0, total = 0;
+                for (const auto& this_group : this->groups) {
+                    std::cout << useful_functions::get_styled_string(this_group.first, bold_style, (this_group.second.get_passed_tests() == this_group.second.get_total_tests()) ? green_text : ((this_group.second.get_passed_tests() == 0) ? red_text : yellow_text), default_background);
+                    std::cout << this_group.second.get_passed_tests() << " / " << this_group.second.get_total_tests() << std::endl;
+                    passed = passed + this_group.second.get_passed_tests();
+                    total = total + this_group.second.get_total_tests();
+                    for (const auto& this_group_stuff : this_group.second.get_test_map()) {
+                        // colored_string = useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background);
+                        std::cout << "\t" << this_group_stuff.first << " : " << useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
+                    }
+                }
+                std::cout << useful_functions::get_styled_string(std::to_string(passed), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << " / " << useful_functions::get_styled_string(std::to_string(total), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << std::endl;
+            }
+
+    };
 
 
 
