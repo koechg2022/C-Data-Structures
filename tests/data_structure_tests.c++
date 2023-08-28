@@ -93,15 +93,7 @@ void simple_test_linked_list() {
         " instead of " + std::to_string(imagine_dragons.size())
     );
 
-    data_structures::linear_linked_list<std::string> combined;
-    std::cout << "Combined created" << std::endl;
-    combined = dragons_list + beeltes_list;
-    // std::cout << "combined.length() : " << combined.length() << std::endl;
-    std::cout << "dragons_list.length() : " << dragons_list.length() << std::endl;
-    std::cout << "beetles_list.length() : " << beeltes_list.length() << std::endl;
-    for (index = 0; index < combined.length(); index = index + 1) {
-        std::cout << index << ".) " << combined[index] << std::endl;
-    }
-    std::cout << "Done" << std::endl;
-    // tests.print_tests();
+    // data_structures::linear_linked_list<std::string> combined;
+    // std::cout << "Combined created" << std::endl;
+    tests.print_tests();
 }

@@ -30,10 +30,6 @@ namespace data_structures {
 					return this->this_data;
 				}
 
-				// data_* get_data_ptr() const {
-				// 	return &this->this_data;
-				// }
-
 				data_ &get_data_ref() {
 					return this->this_data;
 				}
@@ -158,6 +154,10 @@ namespace data_structures {
 					this->push(other_list.peek(index));
 				}
 				std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << std::endl;
+				std::cout << "At end of copy constructor call, data in this object is :" << std::endl;
+				for (index = 0; index < this->size; index = index + 1) {
+					std::cout << "\t" << this->peek(index) << std::endl;
+				}
 			}
 
 
@@ -223,22 +223,18 @@ namespace data_structures {
 			}
 
 			// Arithmatic Operators
-			linear_linked_list<data_> operator+ (linear_linked_list<data_>& other) {
-				linear_linked_list<data_>* the_answer = new linear_linked_list<data_>();
-				unsigned long index;
-				for (index = 0; index < this->size; index = index + 1) {
-					std::cout << "pushing " << index << ".) \"" << this->peek(index) << "\"" << std::endl;
-					the_answer->push(this->peek(index));
-				}
-				std::cout << "---------------------------------------------------" << std::endl;
-				for (index = 0; index < other.length(); index = index + 1) {
-					std::cout << "pushing " << index << ".) " << other.peek(index) << "\"" << std::endl;
-					the_answer->push(other.peek(index));
-				}
-				std::cout << "\tthe_answer.length() " << the_answer->length() << std::endl;
-				std::cout << "About to return out of + operator" << std::endl;
-				return *the_answer;
-			}
+			// linear_linked_list<data_> operator+ (linear_linked_list<data_>& other) {
+			// 	linear_linked_list<data_> the_answer;
+			// 	unsigned long index;
+			// 	for (index = 0; index < this->size; index = index + 1) {
+			// 		the_answer.push(this->peek(index));
+			// 	}
+			// 	for (index = 0; index < other.length(); index = index + 1) {
+			// 		the_answer.push(other.peek(index));
+			// 	}
+				
+			// 	return the_answer;
+			// }
 
 
 			/**
