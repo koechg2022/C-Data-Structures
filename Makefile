@@ -1,6 +1,6 @@
 
 create_test:
-	clang++ tests/data_structures.c++ -o objects/tests
+	clang++ tests/data_structure_tests.c++ -o objects/tests
 
 run_tests : objects/tests
 	./objects/tests

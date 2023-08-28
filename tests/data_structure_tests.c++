@@ -92,5 +92,6 @@ void simple_test_linked_list() {
         "dragons_list.length() returned " + std::to_string(dragons_list.length()) + 
         " instead of " + std::to_string(imagine_dragons.size())
     );
+    std::cout << "\x1B[2J";
     tests.print_tests();
 }
