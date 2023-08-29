@@ -261,12 +261,13 @@ namespace data_structures {
 			*/
 			void push(data_ new_data, signed long index = -1) {
 				unsigned long add_to;
+				// std::cout << "Trying to add \"" << new_data << "\" to index " << index << std::endl;
 				if ((absolute(index) > this->size + 1) && (index < 0)) {
 					// std::string msg = "For negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size);
 					throw std::range_error("Cannot push negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size));
 				}
-
 				add_to = (index < 0) ? this->size + 1 - absolute(index) : absolute(index);
+				std::cout << "pushing new data \"" << new_data << "\" to index " << add_to << ", with passed in index of " << index << std::endl;
 				if (this->size == 0) {
 					// std::cout << "In this->size == 0 branch" << std::endl;
 					this->front = this->rear = this->frame = new linear_node<data_>(new_data);
@@ -277,19 +278,27 @@ namespace data_structures {
 					if (add_to == 0) {
 						// std::cout << "\tIn add_to == 0 branch" << std::endl;
 						// terminal at front
+						// std::cout << "1..." << std::endl;
 						this->front->set_previous(new_node);
+						// std::cout << "2..." << std::endl;
 						this->front->get_previous()->set_next(this->front);
+						// std::cout << "3..." << std::endl;
 						this->front = this->front->get_previous();
+						// std::cout << "4..." << std::endl;
 						this->frame = this->front;
+						// std::cout << "5..." << std::endl;
 
 					}
 
 					else if (add_to == this->size) {
 						// terminal at end
+						std::cout << "\tAdding to the end " << std::endl;
 						this->rear->set_next(new_node);
 						this->rear->get_next()->set_previous(this->rear);
 						this->rear = this->rear->get_next();
 						this->frame = this->rear;
+						// std::cout << "now previous is " << this->rear->get_previous()->get_data() << std::endl;
+						// std::cout << "now next is " << ((this->rear->get_next() == nullptr) ? "NULL" : this->rear->get_next()->get_data()) << std::endl;
 					}
 
 					else {
@@ -349,6 +358,7 @@ namespace data_structures {
 				}
 				peek_index = (index < 0) ? (((unsigned long) this->size) - absolute(index) + 1) : ((unsigned long) index);
 				if (peek_index == 0) {
+					// std::cout << "about to peek at index 0" << std::endl;
 					this->frame = this->front;
 					this->frame_index = 0;
 				}

@@ -44,7 +44,7 @@ void simple_test_linked_list();
 
 int main(int len, char** args) {
     simple_test_linked_list();
-    std::cout << "\x1B[2J";
+    // std::cout << "\x1B[2J";
     tests.print_tests();
     return 0;
 }
@@ -57,11 +57,12 @@ void simple_test_linked_list() {
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
         dragons_list.push(imagine_dragons[index]);
     }
-
+    std::cout << "\n\n\n";
     for (index = 0; index < the_beetles.size(); index = index + 1) {
         beeltes_list.push(the_beetles[index]);
     }
     tests.create_group("linear_linked_list created");
+    std::cout << "\n\n\n";
     for (index = 0; index < dragons_list.length(); index = index + 1) {
         tests.add_test("linear_linked_list created", 
             "dragons_list[" + std::to_string(index) + "] returns expected",
@@ -96,12 +97,17 @@ void simple_test_linked_list() {
         "dragons_list.length() returned " + std::to_string(dragons_list.length()) + 
         " instead of " + std::to_string(imagine_dragons.size())
     );
-    // data_structures::linear_linked_list<std::string> temp = beeltes_list;
-    // std::cout << "Before swap:" << std::endl;
-    // temp.swap();
-    // std::cout << "After swap:" << std::endl;
-    // for (index = 0; index < temp.length(); index = index + 1) {
-    //     std::cout << "\t" << std::to_string(index) << ".) " << "\"" << temp[index] << "\"" << std::endl;
-    // }
+    data_structures::linear_linked_list<std::string> new_test_list;
+    std::cout << "\n\n\n";
+    for (index = beeltes_list.length() - 1; index >= 0; index = index + 1) {
+        std::cout << "About to add \"" << beeltes_list.peek(index);
+        new_test_list.push(beeltes_list.peek(index), 0);
+    }
+
+    for (index = 0; index < new_test_list.length(); index = index + 1) {
+        std::cout << "\t" << new_test_list[index] << std::endl;
+        // tests.add_test("", );
+    }
+
 }
 
