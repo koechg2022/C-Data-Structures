@@ -10,6 +10,17 @@ namespace data_structures {
 
 	namespace {
 
+		template <typename data_> data_ absolute(data_ value) {
+			return ((value < 0) ? (data_) (value * -1) : (data_) value);
+		}
+
+		template<typename data_> data_* absolute(data_* value) {
+			if (*value < 0) {
+				*value = (data_) (*value * -1);
+			}
+			return value;
+		}
+
 		template <typename data_> class node_root {
 
 			protected:
@@ -250,12 +261,12 @@ namespace data_structures {
 			*/
 			void push(data_ new_data, signed long index = -1) {
 				unsigned long add_to;
-				if ((useful_functions::absolute(index) > this->size + 1) && (index < 0)) {
+				if ((absolute(index) > this->size + 1) && (index < 0)) {
 					// std::string msg = "For negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size);
 					throw std::range_error("Cannot push negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size));
 				}
 
-				add_to = (index < 0) ? this->size + 1 - useful_functions::absolute(index) : useful_functions::absolute(index);
+				add_to = (index < 0) ? this->size + 1 - absolute(index) : absolute(index);
 				if (this->size == 0) {
 					// std::cout << "In this->size == 0 branch" << std::endl;
 					this->front = this->rear = this->frame = new linear_node<data_>(new_data);
@@ -333,10 +344,10 @@ namespace data_structures {
 					throw std::range_error(std::string("Cannot peek empty linked list"));
 				}
 				unsigned long peek_index;
-				if ((useful_functions::absolute(index) > this->size) && (index < 0)) {
+				if ((absolute(index) > this->size) && (index < 0)) {
 					throw std::range_error(std::string("absolute(index) cannot be greater than the size of the linear_linked_list (") + std::to_string(this->size));
 				}
-				peek_index = (index < 0) ? (((unsigned long) this->size) - useful_functions::absolute(index) + 1) : ((unsigned long) index);
+				peek_index = (index < 0) ? (((unsigned long) this->size) - absolute(index) + 1) : ((unsigned long) index);
 				if (peek_index == 0) {
 					this->frame = this->front;
 					this->frame_index = 0;
@@ -383,12 +394,12 @@ namespace data_structures {
 			 * @returns void.
 			*/
 			void swap(signed long first_index = 0, signed long second_index = -1) {
-				if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) || ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
+				if (((absolute(second_index) > this->size) && (second_index < 0)) || ((absolute(second_index) > this->size) && (second_index < 0))) {
 					std::string msg = "absolute(";
-					if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) && !((useful_functions::absolute(second_index) > this->size) && (second_index < 0))){
+					if (((absolute(second_index) > this->size) && (second_index < 0)) && !((absolute(second_index) > this->size) && (second_index < 0))){
 						msg = msg + std::to_string(second_index) + ")";
 					}
-					else if ((!(useful_functions::absolute(second_index) > this->size) && (second_index < 0)) && ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
+					else if ((!(absolute(second_index) > this->size) && (second_index < 0)) && ((absolute(second_index) > this->size) && (second_index < 0))) {
 						msg = msg + std::to_string(second_index) + ")";
 					}
 					else {
@@ -403,8 +414,8 @@ namespace data_structures {
 
 					unsigned long first_indexx, second_indexx;
 					signed long f_index_to_first, f_index_to_frame, f_index_to_rear, s_index_to_first, s_index_to_frame, s_index_to_rear, *first_min, *second_min;;
-					first_indexx = (first_index < 0) ? (this->size - useful_functions::absolute(first_index) + 1) : useful_functions::absolute(first_index);
-					second_index = (second_index < 0) ? this->size - useful_functions::absolute(second_index) + 1 : useful_functions::absolute(second_index);
+					first_indexx = (first_index < 0) ? (this->size - absolute(first_index) + 1) : absolute(first_index);
+					second_index = (second_index < 0) ? this->size - absolute(second_index) + 1 : absolute(second_index);
 					f_index_to_first = (signed long) first_indexx;
 					s_index_to_first = (signed long) second_indexx;
 					f_index_to_frame = useful_functions::difference((signed long) first_indexx, (signed long) this->frame_index);

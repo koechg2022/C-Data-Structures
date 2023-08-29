@@ -36,12 +36,16 @@ std::vector<std::string> the_beetles = {
 test_stuff::tests tests;
 
 
+
+
 void simple_test_linked_list();
 
 
 
 int main(int len, char** args) {
     simple_test_linked_list();
+    std::cout << "\x1B[2J";
+    tests.print_tests();
     return 0;
 }
 
@@ -92,6 +96,12 @@ void simple_test_linked_list() {
         "dragons_list.length() returned " + std::to_string(dragons_list.length()) + 
         " instead of " + std::to_string(imagine_dragons.size())
     );
-    std::cout << "\x1B[2J";
-    tests.print_tests();
+    // data_structures::linear_linked_list<std::string> temp = beeltes_list;
+    // std::cout << "Before swap:" << std::endl;
+    // temp.swap();
+    // std::cout << "After swap:" << std::endl;
+    // for (index = 0; index < temp.length(); index = index + 1) {
+    //     std::cout << "\t" << std::to_string(index) << ".) " << "\"" << temp[index] << "\"" << std::endl;
+    // }
 }
+
