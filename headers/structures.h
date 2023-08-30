@@ -267,7 +267,7 @@ namespace data_structures {
 					throw std::range_error("Cannot push negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size));
 				}
 				add_to = (index < 0) ? this->size + 1 - absolute(index) : absolute(index);
-				std::cout << "pushing new data \"" << new_data << "\" to index " << add_to << ", with passed in index of " << index << std::endl;
+				// std::cout << "pushing new data \"" << new_data << "\" to index " << add_to << ", with passed in index of " << index << std::endl;
 				if (this->size == 0) {
 					// std::cout << "In this->size == 0 branch" << std::endl;
 					this->front = this->rear = this->frame = new linear_node<data_>(new_data);
@@ -292,7 +292,7 @@ namespace data_structures {
 
 					else if (add_to == this->size) {
 						// terminal at end
-						std::cout << "\tAdding to the end " << std::endl;
+						// std::cout << "\tAdding to the end " << std::endl;
 						this->rear->set_next(new_node);
 						this->rear->get_next()->set_previous(this->rear);
 						this->rear = this->rear->get_next();

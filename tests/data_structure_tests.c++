@@ -1,4 +1,5 @@
 
+#include <cstdlib>
 #include <vector>
 #include "../headers/structures.h"
 #include "../headers/test_structures.h"
@@ -44,7 +45,7 @@ void simple_test_linked_list();
 
 int main(int len, char** args) {
     simple_test_linked_list();
-    // std::cout << "\x1B[2J";
+    std::cout << "\x1B[2J";
     tests.print_tests();
     return 0;
 }
@@ -62,7 +63,7 @@ void simple_test_linked_list() {
         beeltes_list.push(the_beetles[index]);
     }
     tests.create_group("linear_linked_list created");
-    std::cout << "\n\n\n";
+    // std::cout << "\n\n\n";
     for (index = 0; index < dragons_list.length(); index = index + 1) {
         tests.add_test("linear_linked_list created", 
             "dragons_list[" + std::to_string(index) + "] returns expected",
@@ -98,13 +99,15 @@ void simple_test_linked_list() {
         " instead of " + std::to_string(imagine_dragons.size())
     );
 
-    for (index = 2; index < dragons_list.length(); index = index + 3) {
+    srand((unsigned) time(NULL));
+    unsigned long ref;
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        ref = (unsigned long) rand() % ((int) dragons_list.length());
         tests.add_test("linear_linked_list a-linear peeking",
-        "dragons_list[" + std::to_string(index) + "]",
-        dragons_list[index] == imagine_dragons[index],
+        "dragons_list[" + std::to_string(ref) + "]",
+        dragons_list[ref] == imagine_dragons[ref],
         "Returned correct data",
-        "Returned \"" + dragons_list[index] + "\" instead of \"" + imagine_dragons[index] + "\""
-        );
+        "Returned \"" + dragons_list[ref] + "\" instead of \"" + imagine_dragons[ref] + "\"");
     }
 
 }
