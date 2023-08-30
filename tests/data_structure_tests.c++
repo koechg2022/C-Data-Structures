@@ -57,7 +57,7 @@ void simple_test_linked_list() {
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
         dragons_list.push(imagine_dragons[index]);
     }
-    std::cout << "\n\n\n";
+    // std::cout << "\n\n\n";
     for (index = 0; index < the_beetles.size(); index = index + 1) {
         beeltes_list.push(the_beetles[index]);
     }
@@ -97,16 +97,14 @@ void simple_test_linked_list() {
         "dragons_list.length() returned " + std::to_string(dragons_list.length()) + 
         " instead of " + std::to_string(imagine_dragons.size())
     );
-    data_structures::linear_linked_list<std::string> new_test_list;
-    std::cout << "\n\n\n";
-    for (index = beeltes_list.length() - 1; index >= 0; index = index + 1) {
-        std::cout << "About to add \"" << beeltes_list.peek(index);
-        new_test_list.push(beeltes_list.peek(index), 0);
-    }
 
-    for (index = 0; index < new_test_list.length(); index = index + 1) {
-        std::cout << "\t" << new_test_list[index] << std::endl;
-        // tests.add_test("", );
+    for (index = 2; index < dragons_list.length(); index = index + 3) {
+        tests.add_test("linear_linked_list a-linear peeking",
+        "dragons_list[" + std::to_string(index) + "]",
+        dragons_list[index] == imagine_dragons[index],
+        "Returned correct data",
+        "Returned \"" + dragons_list[index] + "\" instead of \"" + imagine_dragons[index] + "\""
+        );
     }
 
 }

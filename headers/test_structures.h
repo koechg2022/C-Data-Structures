@@ -306,8 +306,10 @@ namespace test_stuff {
                     this->groups[group].add_test(condition, test_name, pass, fail);
                 }
                 else {
-                    test_group new_group(group, condition, test_name, pass, fail);
+                    test_group new_group;
+                    new_group.set_group_name(group);
                     this->groups.insert({group, new_group});
+                    this->groups[group].add_test(condition, test_name, pass, fail);
                 }
             }
 
