@@ -45,7 +45,7 @@ void simple_test_linked_list();
 
 int main(int len, char** args) {
     simple_test_linked_list();
-    std::cout << "\x1B[2J";
+    // std::cout << "\x1B[2J";
     tests.print_tests();
     return 0;
 }
@@ -108,6 +108,21 @@ void simple_test_linked_list() {
         dragons_list[ref] == imagine_dragons[ref],
         "Returned correct data",
         "Returned \"" + dragons_list[ref] + "\" instead of \"" + imagine_dragons[ref] + "\"");
+    }
+    std::cout << "--------------------------------------------------" << std::endl;
+    signed long signed_index;
+    for (signed_index = -1; signed_index > -1 * (dragons_list.length()); signed_index = signed_index - 1) {
+        // std::cout << "Testing " << signed_index << std::endl;
+        // std::cout << "imagine_dragons[" << std::to_string(imagine_dragons.size() + signed_index) << "] : " << imagine_dragons[imagine_dragons.size() + signed_index] << std::endl;
+        // std::cout << "dragons_list.peek(" << signed_index << ") : " << dragons_list.peek(signed_index) << std::endl;
+        tests.add_test("linear_linked_list Negative Reference",
+            "dragons_list[" + std::to_string(signed_index) + "]",
+            dragons_list[signed_index] == imagine_dragons[imagine_dragons.size() + signed_index],
+            "dragons_list[" + std::to_string(signed_index) + "] returned expected",
+            "dragons_list[" + std::to_string(signed_index) + "] returned" + dragons_list[signed_index] + " instead of " +
+            imagine_dragons[imagine_dragons.size() + signed_index - 1]
+        );
+        // std::cout << "Added test" << std::endl;
     }
 
 }

@@ -349,6 +349,7 @@ namespace data_structures {
 			 * @throws std::range_error if the linear_linked_list is empty, or an unreachable index is referenced.
 			*/
 			data_ peek(signed long index = -1) {
+				// std::cout << "Raw peeking index " << index << std::endl;
 				if (this->size == 0) {
 					throw std::range_error(std::string("Cannot peek empty linked list"));
 				}
@@ -356,7 +357,8 @@ namespace data_structures {
 				if ((absolute(index) > this->size) && (index < 0)) {
 					throw std::range_error(std::string("absolute(index) cannot be greater than the size of the linear_linked_list (") + std::to_string(this->size));
 				}
-				peek_index = (index < 0) ? (((unsigned long) this->size) - absolute(index) + 1) : ((unsigned long) index);
+				peek_index = (index < 0) ? (((unsigned long) this->size) - absolute(index) ) : ((unsigned long) index);
+				// std::cout << "Peek index is " << peek_index << ", and size is " << this->size << std::endl;
 				if (peek_index == 0) {
 					// std::cout << "about to peek at index 0" << std::endl;
 					this->frame = this->front;
