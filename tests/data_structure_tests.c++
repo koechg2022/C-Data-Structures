@@ -48,6 +48,7 @@ void simple_test_linked_list();
 int main(int len, char** args) {
     bool clear_before = false, only_fails = false;
     int index, increase = 1;
+
     for (index = 0; index < len; index = index + increase) {
         if (useful_functions::same_char(args[index][0], '-')) {
             if (index >= len) {
@@ -63,26 +64,33 @@ int main(int len, char** args) {
                     default_background
                 ) << "\"" << std::endl;
                 exit(EXIT_FAILURE);
+                return 1;
             }
             // there is at least 1 argument
+            if (useful_functions::same_string(args[index], (char*) "--clearfirst") || useful_functions::same_string(args[index], (char*) "-cf")) {
+                clear_before = true;
+            }
+            // else {
+            //     std::cout << "\"" <<  args[index] << "\" not recognized as the same as \"--clearfirst\"" << std::endl;
+            // }
             if (useful_functions::same_string(args[index], (char*) "--toprint") || useful_functions::same_string(args[index], (char*) "-tp")) {
+                // std::cout << "\"" << args[index] << "\" recognized as the same as \"--toprint\", or \"-tp\"" << std::endl;
                 if (useful_functions::same_string(args[index + 1], (char*) "true")) {
                     only_fails = true;
                 }
             }
+            // else {
+            //     std::cout << "\"" << args[index] << "\" not recognized as the same as \"--toprint\", or \"-tp\"" << std::endl;
+            // }
             increase = 2;
         }
         else {
-
             increase = 1;
         }
     }
-    if (clear_before) {
-        std::cout << "\x1B[2J";
-        printf("Just cleared\n");
-    }
+
     simple_test_linked_list();
-    tests.print_tests(only_fails);
+    tests.print_tests("Tests for linear_linked_list:\n", only_fails, clear_before);
     return 0;
 }
 
@@ -145,7 +153,7 @@ void simple_test_linked_list() {
         "Returned correct data",
         "Returned \"" + dragons_list[ref] + "\" instead of \"" + imagine_dragons[ref] + "\"");
     }
-    std::cout << "--------------------------------------------------" << std::endl;
+    // std::cout << "--------------------------------------------------" << std::endl;
     signed long signed_index;
     for (signed_index = -1; signed_index > -1 * (dragons_list.length()); signed_index = signed_index - 1) {
         // std::cout << "Testing " << signed_index << std::endl;
@@ -160,6 +168,54 @@ void simple_test_linked_list() {
         );
         // std::cout << "Added test" << std::endl;
     }
+
+    dragons_list.reset();
+    tests.add_test("linear_linked_list reset method is correct",
+        "reset re-set's the size",
+        dragons_list.length() == 0,
+        "Size is 0",
+        "Size is " + std::to_string(dragons_list.length())
+    );
+    // bool except_thrown = false;
+    try {
+        dragons_list.peek(0);
+        tests.add_test("linear_linked_list reset method is correct",
+            "reset removes all data peek method",
+            false,
+            "data at index 0 retrieved",
+            "data at index 0 should not have been retrieved, but was"
+        );
+    }
+    catch (std::range_error except) {
+
+        tests.add_test("linear_linked_list reset method is correct",
+            "reset removes all data peek method",
+            true,
+            "data at index 0 retrieved",
+            "data at index 0 should not have been retrieved, but was"
+        );
+
+        try {
+            dragons_list[0];
+            tests.add_test("linear_linked_list reset method is correct",
+                "reset removes all data, []",
+                false,
+                "data at index 0 retrieved",
+                "data at index 0 should not have been retrieved, but was"
+            );
+        }
+        catch (std::range_error inner_except) {
+            tests.add_test("linear_linked_list reset method is correct",
+                "reset removes all data []",
+                true,
+                "data at index 0 retrieved",
+                "data at index 0 should not have been retrieved, but was"
+            );
+        }
+
+    }
+
+
 
 }
 

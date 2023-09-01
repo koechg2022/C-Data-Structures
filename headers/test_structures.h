@@ -323,10 +323,13 @@ namespace test_stuff {
              * 
              * @returns void.
             */
-            void print_tests(bool only_fails = false) const {
+            void print_tests(std::string title, bool only_fails = false, bool clear_first = false) const {
                 std::string colored_string;
                 unsigned long passed = 0, total = 0;
-                
+                if (clear_first) {
+                    std::cout << "\x1B[2J" << std::endl;
+                }
+                std::cout << title << std::endl;
                 for (const auto& this_group : this->groups) {
                     std::cout << useful_functions::get_styled_string(this_group.first, bold_style, (this_group.second.get_passed_tests() == this_group.second.get_total_tests()) ? green_text : ((this_group.second.get_passed_tests() == 0) ? red_text : yellow_text), default_background);
                     std::cout << " : " << this_group.second.get_passed_tests() << " / " << this_group.second.get_total_tests() << std::endl;
