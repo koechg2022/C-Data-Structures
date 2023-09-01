@@ -2,7 +2,11 @@
 #include <iostream>
 #include <map>
 
-// #include "useful_functions.h"
+#ifndef useful_functions_h
+
+#include "useful_functions.h"
+
+#endif
 
 
 
@@ -10,63 +14,63 @@ namespace test_stuff {
 
     namespace {
 
-        // TEXT COLORS
-        #define black_text 30
-        #define red_text 31
-        #define green_text 32
-        #define yellow_text 33
-        #define blue_text 34
-        #define purple_text 35
-        #define cyan_text 36
-        #define white_text 37
+        // // TEXT COLORS
+        // #define black_text 30
+        // #define red_text 31
+        // #define green_text 32
+        // #define yellow_text 33
+        // #define blue_text 34
+        // #define purple_text 35
+        // #define cyan_text 36
+        // #define white_text 37
 
 
 
 
-        // TEXT STYLE
-        #define no_effect_style 0
-        #define bold_style 1
-        #define underline_style 2
-        #define negative_1_style 3
-        #define negative_2_style 5
+        // // TEXT STYLE
+        // #define no_effect_style 0
+        // #define bold_style 1
+        // #define underline_style 2
+        // #define negative_1_style 3
+        // #define negative_2_style 5
 
 
 
 
-        // BACKGROUND COLOR
-        #define black_background 40
-        #define red_background 41
-        #define green_background 42
-        #define yellow_background 43
-        #define blue_background 44
-        #define purple_background 45
-        #define cyan_background 46
-        #define white_background 47
-        #define default_background 49
+        // // BACKGROUND COLOR
+        // #define black_background 40
+        // #define red_background 41
+        // #define green_background 42
+        // #define yellow_background 43
+        // #define blue_background 44
+        // #define purple_background 45
+        // #define cyan_background 46
+        // #define white_background 47
+        // #define default_background 49
 
-        typedef unsigned short int short_int;
+        // typedef unsigned short int short_int;
 
-        // const std::string ansi_escape = "\033[";
-        // "\033[<style>;<color>;<bkg>m<the_string>\033[0m"
+        // // const std::string ansi_escape = "\033[";
+        // // "\033[<style>;<color>;<bkg>m<the_string>\033[0m"
 
-        bool valid_color(short_int color) {
-            return ((color >= (short_int) black_text) && (color <= (short_int) white_text));
-        }
+        // bool valid_color(short_int color) {
+        //     return ((color >= (short_int) black_text) && (color <= (short_int) white_text));
+        // }
 
-        bool valid_style(short_int style) {
-            return (((style >= (short_int) no_effect_style) && (style <= (short_int) negative_1_style)) || (style == (short_int) negative_2_style));
-        }
+        // bool valid_style(short_int style) {
+        //     return (((style >= (short_int) no_effect_style) && (style <= (short_int) negative_1_style)) || (style == (short_int) negative_2_style));
+        // }
 
-        bool valid_bkg(short_int bkg) {
-            return ((bkg >= (short_int) black_background) && (bkg <= (short_int) default_background));
-        }
+        // bool valid_bkg(short_int bkg) {
+        //     return ((bkg >= (short_int) black_background) && (bkg <= (short_int) default_background));
+        // }
 
-        std::string get_styled_string(std::string the_string, short_int style = (short_int) no_effect_style, short_int color = (short_int) black_text, short_int bkg = (short_int) default_background) {
-            style = (valid_style((short_int) style)) ? (short_int) style : (short_int) no_effect_style;
-            color = (valid_color((short_int) color)) ? (short_int) color : (short_int) black_text;
-            bkg = (valid_bkg((short_int) bkg)) ? (short_int) bkg : (short_int) default_background;
-            return "\033[" + std::to_string(int(style)) + ";" + std::to_string(int(color)) + ";" + std::to_string(int(bkg)) + "m" + the_string + "\033[0m";
-        }
+        // std::string get_styled_string(std::string the_string, short_int style = (short_int) no_effect_style, short_int color = (short_int) black_text, short_int bkg = (short_int) default_background) {
+        //     style = (valid_style((short_int) style)) ? (short_int) style : (short_int) no_effect_style;
+        //     color = (valid_color((short_int) color)) ? (short_int) color : (short_int) black_text;
+        //     bkg = (valid_bkg((short_int) bkg)) ? (short_int) bkg : (short_int) default_background;
+        //     return "\033[" + std::to_string(int(style)) + ";" + std::to_string(int(color)) + ";" + std::to_string(int(bkg)) + "m" + the_string + "\033[0m";
+        // }
 
 
         class test {
@@ -324,7 +328,7 @@ namespace test_stuff {
                 unsigned long passed = 0, total = 0;
                 
                 for (const auto& this_group : this->groups) {
-                    std::cout << get_styled_string(this_group.first, bold_style, (this_group.second.get_passed_tests() == this_group.second.get_total_tests()) ? green_text : ((this_group.second.get_passed_tests() == 0) ? red_text : yellow_text), default_background);
+                    std::cout << useful_functions::get_styled_string(this_group.first, bold_style, (this_group.second.get_passed_tests() == this_group.second.get_total_tests()) ? green_text : ((this_group.second.get_passed_tests() == 0) ? red_text : yellow_text), default_background);
                     std::cout << " : " << this_group.second.get_passed_tests() << " / " << this_group.second.get_total_tests() << std::endl;
                     passed = passed + this_group.second.get_passed_tests();
                     total = total + this_group.second.get_total_tests();
@@ -332,18 +336,18 @@ namespace test_stuff {
                         // colored_string = useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background);
                         if (only_fails) {
                             if (this_group_stuff.second.get_condition() == false) {
-                                std::cout << "\t" << this_group_stuff.first << " : " << get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
+                                std::cout << "\t" << this_group_stuff.first << " : " << useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
                             }
                         }
                         else {
-                            std::cout << "\t" << this_group_stuff.first << " : " << get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
+                            std::cout << "\t" << this_group_stuff.first << " : " << useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
                         }
                         
                     }
                     std::cout << std::endl;
                 }
                 std::cout << std::endl << std::endl;
-                std::cout << get_styled_string("Final results " + std::to_string(passed), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << " / " << get_styled_string(std::to_string(total), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << std::endl;
+                std::cout << useful_functions::get_styled_string("Final results " + std::to_string(passed), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << " / " << useful_functions::get_styled_string(std::to_string(total), bold_style, (passed == total) ? green_text : ((passed == 0) ? red_text : yellow_text), default_background) << std::endl;
             }
 
     };

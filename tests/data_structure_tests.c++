@@ -45,15 +45,44 @@ test_stuff::tests tests;
 
 void simple_test_linked_list();
 
-bool any(int len, char** to_search, char* to_find) {
-    return true;
-}
-
 int main(int len, char** args) {
+    bool clear_before = false, only_fails = false;
+    int index, increase = 1;
+    for (index = 0; index < len; index = index + increase) {
+        if (useful_functions::same_char(args[index][0], '-')) {
+            if (index >= len) {
+                if (useful_functions::same_string(args[index], (char*) "--all") || useful_functions::same_string(args[index], (char*) "-al")) {
+                    clear_before = true;
+                    only_fails = true;
+                    break;
+                }
+                std::cout << useful_functions::get_styled_string(
+                    "Missing argument for flag \"" + useful_functions::to_std_string(args[index]),
+                    bold_style, 
+                    red_text,
+                    default_background
+                ) << "\"" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+            // there is at least 1 argument
+            if (useful_functions::same_string(args[index], (char*) "--toprint") || useful_functions::same_string(args[index], (char*) "-tp")) {
+                if (useful_functions::same_string(args[index + 1], (char*) "true")) {
+                    only_fails = true;
+                }
+            }
+            increase = 2;
+        }
+        else {
+
+            increase = 1;
+        }
+    }
+    if (clear_before) {
+        std::cout << "\x1B[2J";
+        printf("Just cleared\n");
+    }
     simple_test_linked_list();
-    // std::cout << ((useful_functions::same_string("HELLO WORLD", "hello world")) ? "The same string" : "Different Strings") << std::endl;
-    // std::cout << "\x1B[2J";
-    tests.print_tests(true);
+    tests.print_tests(only_fails);
     return 0;
 }
 
