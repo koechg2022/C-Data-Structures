@@ -46,7 +46,7 @@ void simple_test_linked_list();
 int main(int len, char** args) {
     simple_test_linked_list();
     // std::cout << "\x1B[2J";
-    tests.print_tests();
+    tests.print_tests(true);
     return 0;
 }
 

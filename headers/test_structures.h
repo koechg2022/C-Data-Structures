@@ -319,7 +319,7 @@ namespace test_stuff {
              * 
              * @returns void.
             */
-            void print_tests() const {
+            void print_tests(bool only_fails = false) const {
                 std::string colored_string;
                 unsigned long passed = 0, total = 0;
                 
@@ -330,7 +330,15 @@ namespace test_stuff {
                     total = total + this_group.second.get_total_tests();
                     for (const auto& this_group_stuff : this_group.second.get_test_map()) {
                         // colored_string = useful_functions::get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background);
-                        std::cout << "\t" << this_group_stuff.first << " : " << get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
+                        if (only_fails) {
+                            if (this_group_stuff.second.get_condition() == false) {
+                                std::cout << "\t" << this_group_stuff.first << " : " << get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
+                            }
+                        }
+                        else {
+                            std::cout << "\t" << this_group_stuff.first << " : " << get_styled_string(this_group_stuff.second.get_message(), bold_style, (this_group_stuff.second.get_condition()) ? green_text : red_text, default_background) << std::endl;
+                        }
+                        
                     }
                     std::cout << std::endl;
                 }
