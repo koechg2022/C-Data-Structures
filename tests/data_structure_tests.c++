@@ -4,6 +4,12 @@
 #include "../headers/structures.h"
 #include "../headers/test_structures.h"
 
+#ifndef useful_functions_h
+
+#include "../headers/useful_functions.h"
+
+#endif
+
 
 
 std::vector<std::string> imagine_dragons = {
@@ -37,14 +43,15 @@ std::vector<std::string> the_beetles = {
 test_stuff::tests tests;
 
 
-
-
 void simple_test_linked_list();
 
-
+bool any(int len, char** to_search, char* to_find) {
+    return true;
+}
 
 int main(int len, char** args) {
     simple_test_linked_list();
+    // std::cout << ((useful_functions::same_string("HELLO WORLD", "hello world")) ? "The same string" : "Different Strings") << std::endl;
     // std::cout << "\x1B[2J";
     tests.print_tests(true);
     return 0;
