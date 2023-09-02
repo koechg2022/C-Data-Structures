@@ -490,6 +490,54 @@ void useful_functions_tests() {
 
     }
 
-    
+    // tests for difference
+
+    for (index = 0; index < limit; index = index + 1) {
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<signed long> distr( -1 * limit, limit);
+        signed_long = (signed long) distr(gen);
+        other = (signed long) distr(gen);
+        if (signed_long >= other) {
+            tests.add_test(
+                "useful_functions tests",
+                "diffrence(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::difference<signed long>(signed_long, other, false) == signed_long - other,
+                "Correctly returned " + std::to_string(signed_long - other),
+                "Incorrectly returned " + std::to_string(useful_functions::difference<signed long>(signed_long, other, false))
+            );
+        }
+        else {
+            tests.add_test(
+                "useful_functions tests",
+                "diffrence(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::difference<signed long>(signed_long, other, false) == other - signed_long,
+                "Correctly returned " + std::to_string(other - signed_long),
+                "Incorrectly returned " + std::to_string(useful_functions::difference<signed long>(signed_long, other, false))
+            );
+        }
+
+        if (useful_functions::absolute(signed_long) >= useful_functions::absolute(other)) {
+            tests.add_test(
+                "useful_functions tests",
+                "diffrence(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::difference<signed long>(signed_long, other, true) == useful_functions::absolute(signed_long) - useful_functions::absolute(other),
+                "Correctly returned " + std::to_string(useful_functions::absolute(signed_long) - useful_functions::absolute(other)),
+                "Incorrectly returned " + std::to_string(useful_functions::difference<signed long>(signed_long, other, true))
+            );
+        }
+
+        else {
+            tests.add_test(
+                "useful_functions tests",
+                "diffrence(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::difference<signed long>(signed_long, other, true) == useful_functions::absolute(other) - useful_functions::absolute(signed_long),
+                "Correctly returned " + std::to_string(useful_functions::absolute(other) - useful_functions::absolute(signed_long)),
+                "Incorrectly returned " + std::to_string(useful_functions::difference<signed long>(signed_long, other, true))
+            );
+        }
+
+    }
 
 }

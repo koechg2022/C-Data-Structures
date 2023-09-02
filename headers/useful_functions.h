@@ -121,14 +121,20 @@ namespace useful_functions {
     }
 
     template<typename data_ = signed long> data_ difference(data_ first, data_ second, bool abs = false) {
-        data_ the_answer;
+        // data_ the_answer;
+        // if (abs) {
+        //     the_answer = useful_functions::max<data_>(first, second, abs) - useful_functions::min<data_>(first, second, abs);
+        // }
+        // else {
+        //     the_answer = first - second;
+        // }
+        // return the_answer;
         if (abs) {
-            the_answer = useful_functions::max<data_>(first, second, abs) - useful_functions::min<data_>(first, second, abs);
+            return max<data_>(absolute(first), absolute(second), abs) - min<data_>(absolute(first), absolute(second), abs);
         }
-        else {
-            the_answer = first - second;
-        }
-        return the_answer;
+
+        return max<data_>(first, second, abs) - min<data_>(first, second, abs);
+
     }
 
     bool is_caps(char c) {
