@@ -67,7 +67,7 @@ namespace useful_functions {
             if (a == b) {
                 return a;
             }
-            return (absolute(a) > absolute(b)) ? a : b;
+            return (absolute(a) >= absolute(b)) ? a : b;
         }
         return (a >= b) ? a : b;
     }
@@ -77,7 +77,7 @@ namespace useful_functions {
             if (*a == *b) {
                 return a;
             }
-            return (absolute(*a) > absolute(*b)) ? a : b;
+            return (absolute(*a) >= absolute(*b)) ? a : b;
         }
         return (*a >= *b) ? a : b;
     }
@@ -96,7 +96,7 @@ namespace useful_functions {
             if (a == b) {
                 return a;
             }
-            return (absolute(a) < absolute(b)) ? a : b;
+            return (absolute(a) <= absolute(b)) ? a : b;
         }
         return (a <= b) ? a : b;
     }
@@ -106,7 +106,7 @@ namespace useful_functions {
             if (*a == *b) {
                 return a;
             }
-            return (absolute(*a) < absolute(*b)) ? a : b;
+            return (absolute(*a) <= absolute(*b)) ? a : b;
         }
         return (*a <= *b) ? a : b;
     }
@@ -123,7 +123,7 @@ namespace useful_functions {
     template<typename data_ = signed long> data_ difference(data_ first, data_ second, bool abs = false) {
         data_ the_answer;
         if (abs) {
-            the_answer = max<data_>(first, second) - min<data_>(first, second);
+            the_answer = useful_functions::max<data_>(first, second, abs) - useful_functions::min<data_>(first, second, abs);
         }
         else {
             the_answer = first - second;

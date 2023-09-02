@@ -1,5 +1,5 @@
 
-#include <cstdlib>
+#include <random>
 #include <vector>
 #include "../headers/structures.h"
 #include "../headers/test_structures.h"
@@ -44,6 +44,10 @@ test_stuff::tests tests;
 
 
 void simple_test_linked_list();
+
+
+void useful_functions_tests();
+
 
 int main(int len, char** args) {
     bool clear_before = false, only_fails = false;
@@ -90,7 +94,8 @@ int main(int len, char** args) {
     }
 
     simple_test_linked_list();
-    tests.print_tests("Tests for linear_linked_list:\n", only_fails, clear_before);
+    useful_functions_tests();
+    tests.print_tests("Data Structures & useful functions tests:\n", only_fails, clear_before);
     return 0;
 }
 
@@ -169,6 +174,23 @@ void simple_test_linked_list() {
         // std::cout << "Added test" << std::endl;
     }
 
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
+    }
+    std::cout << "--------------------------------------------------------------" << std::endl;
+    for (index = 0; index < dragons_list.length() / 2; index = index + 1) {
+        std::string first_before = dragons_list[index];
+        std::string second_before = dragons_list[dragons_list.length() - 1 - index];
+        std::cout << "index : " << index << std::endl;
+        std::cout << "Before swap, first : \"" << first_before << std::endl;
+        std::cout << "Before swap, second : \"" << second_before << std::endl;
+        dragons_list.swap(index, dragons_list.length() - 1 - index);
+        std::cout << "After swap, first : \"" << first_before << std::endl;
+        std::cout << "After swap, second : \"" << second_before << std::endl;
+        std::cout << "--------------------------------------------------------------" << std::endl;
+    }
+
+
     dragons_list.reset();
     tests.add_test("linear_linked_list reset method is correct",
         "reset re-set's the size",
@@ -219,3 +241,255 @@ void simple_test_linked_list() {
 
 }
 
+
+void useful_functions_tests() {
+    unsigned long unsigned_long;
+    unsigned long const limit = 1000;
+    for (unsigned_long = 0; unsigned_long < limit; unsigned_long = unsigned_long + 1) {
+        tests.add_test(
+            "useful_functions tests",
+            "absolute((unsigned long) " + std::to_string(unsigned_long) + ")",
+            ((useful_functions::absolute<unsigned long>(unsigned_long) >= 0) && (useful_functions::absolute<unsigned long>(unsigned_long) == unsigned_long)),
+            "Correctly returned absolute value of " + std::to_string(unsigned_long),
+            "useful_functions::absolute(" + std::to_string(unsigned_long) + ") : " + std::to_string(useful_functions::absolute<unsigned long>(unsigned_long))
+        );
+    }
+    signed long signed_long, other, index;
+    for (signed_long = -1000; signed_long <= limit; signed_long = signed_long + 1) {
+        tests.add_test(
+            "useful_functions tests",
+            "absolute((signed long) " + std::to_string(signed_long) + ")",
+            ((useful_functions::absolute<signed long>(signed_long) >= 0) && (useful_functions::absolute<signed long>(signed_long) == ((signed_long < 0) ? signed_long * -1 : signed_long))),
+            "Correctly returned absolute value of " + std::to_string(signed_long),
+            "useful_functions::absolute(" + std::to_string(signed_long) + ") : " + std::to_string(useful_functions::absolute<signed long>(signed_long))
+        );
+    }
+
+    // tests for min/max both with and without pointers
+
+    for (index = 0; index < limit; index = index + 1) {
+        std::random_device rd; // obtain a random number from hardware
+        std::mt19937 gen(rd()); // seed the generator
+        std::uniform_int_distribution<signed long> distr(-1 * limit, limit); // define the range
+        signed_long = (signed long) distr(gen);
+        other = (signed long) distr(gen);
+        // std::cout << "signed_long is " << signed_long << ", and other is " << other << std::endl;
+
+        // first 3 branches for abs = false
+        if (signed_long == other) {
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::max<signed long>(signed_long, other, false) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::max<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", false)",
+                useful_functions::max<signed long>(&signed_long, &other, false) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::max<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::min<signed long>(signed_long, other, false) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::min<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", false)",
+                useful_functions::min<signed long>(&signed_long, &other, false) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::min<signed long>(signed_long, other, false))
+            );
+
+        }
+        
+        else if (signed_long > other) {
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::max<signed long>(signed_long, other, false) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::max<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", false)",
+                useful_functions::max<signed long>(&signed_long, &other, false) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::max<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::min<signed long>(signed_long, other, false) == other,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::min<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", false)",
+                useful_functions::min<signed long>(&signed_long, &other, false) == &other,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::min<signed long>(signed_long, other, false))
+            );
+
+        }
+
+        else {
+            
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::max<signed long>(signed_long, other, false) == other,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::max<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", false)",
+                useful_functions::max<signed long>(&signed_long, &other, false) == &other,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::max<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", false)",
+                useful_functions::min<signed long>(signed_long, other, false) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::min<signed long>(signed_long, other, false))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", false)",
+                useful_functions::min<signed long>(&signed_long, &other, false) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::min<signed long>(signed_long, other, false))
+            );
+
+        }
+        
+
+        // next 3 branches for abs = true
+        if (useful_functions::absolute(signed_long) == useful_functions::absolute(other)) {
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::max<signed long>(signed_long, other, true) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::max<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", true)",
+                useful_functions::max<signed long>(&signed_long, &other, true) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::max<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::min<signed long>(signed_long, other, true) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::min<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", true)",
+                useful_functions::min<signed long>(&signed_long, &other, true) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::min<signed long>(signed_long, other, true))
+            );
+        }
+
+        else if (useful_functions::absolute(signed_long) > useful_functions::absolute(other)) {
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::max<signed long>(signed_long, other, true) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::max<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", true)",
+                useful_functions::max<signed long>(&signed_long, &other, true) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::max<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::min<signed long>(signed_long, other, true) == other,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::min<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", true)",
+                useful_functions::min<signed long>(&signed_long, &other, true) == &other,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::min<signed long>(signed_long, other, true))
+            );
+        }
+
+        else {
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::max<signed long>(signed_long, other, true) == other,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::max<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::max(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", true)",
+                useful_functions::max<signed long>(&signed_long, &other, true) == &other,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::max<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(" + std::to_string(signed_long) + ", " + std::to_string(other) + ", true)",
+                useful_functions::min<signed long>(signed_long, other, true) == signed_long,
+                "Correctly returned the max",
+                "Returned " + std::to_string(useful_functions::min<signed long>(signed_long, other, true))
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "useful_functions::min(&" + std::to_string(signed_long) + ", &" + std::to_string(other) + ", true)",
+                useful_functions::min<signed long>(&signed_long, &other, true) == &signed_long,
+                "Correctly returned the max",
+                "Returned pointer to " + std::to_string(useful_functions::min<signed long>(signed_long, other, true))
+            );
+
+        }
+
+    }
+
+    
+
+}
