@@ -2,6 +2,12 @@
 create_tests:
 	clang++ tests/data_structure_tests.c++ -o objects/tests
 
+create_debug_tests:
+	clang++ tests/data_structure_tests.c++ -o objects/tests -g
+
+run_debug_tests:
+	gdb objects/tests
+
 run_tests : create_tests
 	./objects/tests
 

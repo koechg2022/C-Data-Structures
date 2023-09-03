@@ -435,7 +435,7 @@ namespace data_structures {
 					signed long first, second, *for_first, *for_second;
 
 					linear_node<data_> *first_temp, *second_temp;
-					data_ first_data, second_data;
+					data_ temp;
 
 					first = (first_index < 0) ? (((unsigned long) this->size) - useful_functions::absolute(first_index)) : ((unsigned long) first_index);
 					second = (second_index < 0) ? (((unsigned long) this->size) - useful_functions::absolute(second_index)) : ((unsigned long) second_index);
@@ -461,52 +461,51 @@ namespace data_structures {
 					// Best distance to first index passed in
 					if (for_first == &front_to_first) {
 						// shortest distance is from front to first
-						// std::cout << "\tShortest distance to first (" << first << ") is from front (0)" << std::endl;
+						std::cout << "\tShortest distance to first (" << first << ") is from front (0)" << std::endl;
 						first_temp = this->front;
-						this->node_shifter(first_temp, (unsigned long) 0, (signed long) *for_first);
+						this->node_shifter(first_temp, (unsigned long) 0, (signed long) *for_first - 1);
 					}
 
 					else if (for_first == &frame_to_first) {
 						// shortest distance is from frame to first
-						// std::cout << "\tShortest distance to first (" << first << ") is from frame (" << this->frame_index << ")" << std::endl;
+						std::cout << "\tShortest distance to first (" << first << ") is from frame (" << this->frame_index << ")" << std::endl;
 						first_temp = this->frame;
-						this->node_shifter(first_temp, (unsigned long) this->frame_index, (this->frame_index > first) ? ((signed long) *for_first) : (-1 * ((signed long) *for_first)));
+						this->node_shifter(first_temp, (unsigned long) this->frame_index, (this->frame_index > first) ? ((signed long) (*for_first - 1)) : (-1 * ((signed long) (*for_first - 1))));
 					}
 					else {
 						// shortest distance is from rear to first
-						// std::cout << "\tShortest distance to first (" << first << ") is from rear (" << this->size - 1 << ")" << std::endl;
+						std::cout << "\tShortest distance to first (" << first << ") is from rear (" << this->size - 1 << ")" << std::endl;
 						first_temp = this->rear;
-						this->node_shifter(first_temp, (unsigned long) this->size - 1, (signed long) *for_first);
+						this->node_shifter(first_temp, (unsigned long) this->size - 1, (signed long) *for_first - 1);
 					}
 
 
 					// Best distance to second index passed in
 					if (for_second == &front_to_second) {
 						// shortest distance is from front second
-						// std::cout << "\tShortest distance to second (" << second << ") is from front (0)" << std::endl;
+						std::cout << "\tShortest distance to second (" << second << ") is from front (0)" << std::endl;
 						second_temp = this->front;
-						this->node_shifter(second_temp, (unsigned long) 0, (signed long) *for_second);
+						this->node_shifter(second_temp, (unsigned long) 0, (signed long) *for_second - 1);
 					}
 
 					else if (for_second == &frame_to_second) {
 						// shortest distance is from frame to second
-						// std::cout << "\tShortest distance to second (" << second << ") is from frame (" << this->frame_index << ")" << std::endl;
+						std::cout << "\tShortest distance to second (" << second << ") is from frame (" << this->frame_index << ")" << std::endl;
 						second_temp = this->frame;
-						this->node_shifter(second_temp, (unsigned long) this->frame_index, (this->frame_index > second) ? ((signed long) *for_second) : (-1 * ((signed long) *for_second)));
+						this->node_shifter(second_temp, (unsigned long) this->frame_index, (this->frame_index > second) ? ((signed long) *for_second - 1) : (-1 * ((signed long) (*for_second - 1))));
 					}
 
 					else {
 						// shortest distance is from rear to second
-						// std::cout << "\tShortest distance to second (" << second << ") is from rear (" << this->size - 1 << ")" << std::endl;
+						std::cout << "\tShortest distance to second (" << second << ") is from rear (" << this->size - 1 << ")" << std::endl;
 						second_temp = this->rear;
-						this->node_shifter(second_temp, ((unsigned long) (this->size - 1)), (signed long) *for_second);
+						this->node_shifter(second_temp, ((unsigned long) (this->size - 1)), (signed long) (*for_second - 1));
 					}
 
 					// first_temp and second_temp are now pointed at the proper nodes.
-					first_data = first_temp->get_data();
-					second_data = second_temp->get_data();
-					second_temp->set_data(first_data);
-					first_temp->set_data(second_data);
+					temp = first_temp->get_data();
+					first_temp->set_data(second_temp->get_data());
+					second_temp->set_data(temp);
 
 					
 				}
