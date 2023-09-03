@@ -184,7 +184,7 @@ void simple_test_linked_list() {
         // std::string first_before = dragons_list[index];
         // std::string second_before = dragons_list[dragons_list.length() - 1 - index];
         dragons_list.swap(index, dragons_list.length() - 1 - index);
-        std::cout << std::endl;
+        // std::cout << std::endl;
         // std::cout << "--------------------------------------------------------------" << std::endl;
     }
     std::cout << "After swap" << std::endl;
