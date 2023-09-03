@@ -540,4 +540,123 @@ void useful_functions_tests() {
 
     }
 
+    // tests for string functions
+
+    char letter;
+    for (letter = 0; letter < sizeof(letter) * 8; letter = letter + 1) {
+        if (letter >= 'A' && letter <= 'Z') {
+            tests.add_test(
+                "useful_functions tests",
+                "is_caps(" + std::to_string(letter) + ")",
+                useful_functions::is_caps(letter),
+                "Accurately recognized that \"" + std::to_string(letter) + "\" is a capital letter",
+                "Innacurately reported that \"" + std::to_string(letter) + "\" is not a capital letter"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "is_letter(" + std::to_string(letter) + ")",
+                useful_functions::is_letter(letter),
+                "Accurately determined that \"" + std::to_string(letter) + "\" is a letter",
+                "Inaccurately reported that \"" + std::to_string(letter) + "\" is not a letter"
+            );
+
+            // add to_lower case test here
+            tests.add_test(
+                "useful_functions tests",
+                "to_caps(" + std::to_string(letter) + ")",
+                useful_functions::to_caps(letter) == letter,
+                "Accurately converted a capital letter to capital letter form",
+                "Innacurately converted a capital letter into a different version of it's form"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "to_lower(" + std::to_string(letter) + ")",
+                useful_functions::to_lower(letter) == (letter + ('a' - 'A')),
+                "Correctly converted a capital letter into a lower case letter",
+                "Did not correctly convert a capital letter into a lower case letter. Instead converted it into \"" + std::to_string(useful_functions::to_lower(letter)) + "\""
+            );
+
+        }
+        else if (letter >= 'a' && letter <= 'z') {
+            tests.add_test(
+                "useful_functions tests",
+                "is_lower(" + std::to_string(letter) + ")",
+                useful_functions::is_lower(letter),
+                "Accurately recognized that \"" + std::to_string(letter) + "\" is a lower case letter",
+                "Innacurately reported that \"" + std::to_string(letter) + "\" is not a lower case letter"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "is_letter(" + std::to_string(letter) + ")",
+                useful_functions::is_letter(letter),
+                "Accurately determined that \"" + std::to_string(letter) + "\" is a letter",
+                "Inaccurately reported that \"" + std::to_string(letter) + "\" is not a letter"
+            );
+
+            // add to_caps case test here
+            tests.add_test(
+                "useful_functions tests",
+                "to_lower(" + std::to_string(letter) + ")",
+                useful_functions::to_lower(letter) == letter,
+                "Accurately converted a lower letter to it's same lower letter form",
+                "Did not converted a lower letter to it's same lower letter form"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "to_caps(" + std::to_string(letter) + ")",
+                useful_functions::to_caps(letter) == (letter - ('a' - 'A')),
+                "Correctly converted a lower case letter into it's capital letter case form",
+                "Did not correctly converted a lower case letter into it's capital letter case form"
+            );
+
+        }
+        else {
+            tests.add_test(
+                "useful_functions tests",
+                "is_letter(" + std::to_string(letter) + ")",
+                !useful_functions::is_letter(letter),
+                "Accurately determined that \"" + std::to_string(letter) + "\" is not a letter",
+                "Inaccurately reported that \"" + std::to_string(letter) + "\" is a letter"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "is_caps(" + std::to_string(letter) + ")",
+                !useful_functions::is_caps(letter),
+                "is_caps(" + std::to_string(letter) + ") returned false",
+                "is_caps(" + std::to_string(letter) + ") returned true instead of false"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "is_lower(" + std::to_string(letter) + ")",
+                !useful_functions::is_lower(letter),
+                "is_lower(" + std::to_string(letter) + ") returned false",
+                "is_lower(" + std::to_string(letter) + ") returned true instead of false"
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "to_caps(" + std::to_string(letter) + ")",
+                useful_functions::to_caps(letter) == letter,
+                "to_caps(" + std::to_string(letter) + ") returned \"" + std::to_string(letter) + "\" as expected",
+                "to_caps(" + std::to_string(letter) + ") returned \"" + std::to_string(useful_functions::to_caps(letter)) + "\" instead of " + std::to_string(letter)
+            );
+
+            tests.add_test(
+                "useful_functions tests",
+                "to_lower(" + std::to_string(letter) + ")",
+                useful_functions::to_lower(letter) == letter,
+                "to_lower(" + std::to_string(letter) + ") returned \"" + std::to_string(letter) + "\" as expected",
+                "to_lower(" + std::to_string(letter) + ") returned \"" + std::to_string(useful_functions::to_lower(letter)) + "\" instead of " + std::to_string(letter)
+            );
+
+        }
+
+    }
+
 }
