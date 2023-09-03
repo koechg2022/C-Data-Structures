@@ -543,7 +543,7 @@ void useful_functions_tests() {
     // tests for string functions
 
     char letter, c;
-    for (letter = 0; letter < sizeof(letter) * 8; letter = letter + 1) {
+    for (letter = 0; letter < sizeof(letter) * 8 * 32; letter = letter + 1) {
         if (letter >= 'A' && letter <= 'Z') {
             tests.add_test(
                 "useful_functions tests",
@@ -578,7 +578,7 @@ void useful_functions_tests() {
                 "Did not correctly convert a capital letter into a lower case letter. Instead converted it into \"" + std::to_string(useful_functions::to_lower(letter)) + "\""
             );
 
-            for (c = 0; c < sizeof(c) * 8; c = c + 1) {
+            for (c = 0; c < sizeof(c) * 8 * 32; c = c + 1) {
                 if (c == letter) {
                     tests.add_test(
                         "useful_functions tests",
@@ -634,7 +634,7 @@ void useful_functions_tests() {
                 "Did not correctly converted a lower case letter into it's capital letter case form"
             );
 
-            for (c = 0; c < sizeof(c) * 8; c = c + 1) {
+            for (c = 0; c < sizeof(c) * 8 * 32; c = c + 1) {
                 if (c == letter) {
                     tests.add_test(
                         "useful_functions tests",
@@ -700,5 +700,6 @@ void useful_functions_tests() {
         }
 
     }
+    
 
 }
