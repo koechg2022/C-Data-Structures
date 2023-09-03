@@ -542,7 +542,7 @@ void useful_functions_tests() {
 
     // tests for string functions
 
-    char letter;
+    char letter, c;
     for (letter = 0; letter < sizeof(letter) * 8; letter = letter + 1) {
         if (letter >= 'A' && letter <= 'Z') {
             tests.add_test(
@@ -578,6 +578,27 @@ void useful_functions_tests() {
                 "Did not correctly convert a capital letter into a lower case letter. Instead converted it into \"" + std::to_string(useful_functions::to_lower(letter)) + "\""
             );
 
+            for (c = 0; c < sizeof(c) * 8; c = c + 1) {
+                if (c == letter) {
+                    tests.add_test(
+                        "useful_functions tests",
+                        "same_char(" + std::to_string(c) + ", " + std::to_string(letter) + ", false)",
+                        useful_functions::same_char(c, letter, false),
+                        "Correctly determined that \"" + std::to_string(c) + "\" is the same as \"" + std::to_string(letter),
+                        "Incorrectly determined that \"" + std::to_string(c) + "\" is not the same as \"" + std::to_string(letter)
+                    );
+                }
+                else if (c == useful_functions::to_caps(letter) || c == useful_functions::to_lower(letter)) {
+                    tests.add_test(
+                        "useful_functions tests",
+                        "same_char(" + std::to_string(c) + ", " + std::to_string(letter) + ", true)",
+                        useful_functions::same_char(c, letter, true),
+                        "Correctly determined that \"" + std::to_string(c) + "\" is the same as \"" + std::to_string(letter),
+                        "Incorrectly determined that \"" + std::to_string(c) + "\" is not the same as \"" + std::to_string(letter)
+                    );
+                }
+            }
+
         }
         else if (letter >= 'a' && letter <= 'z') {
             tests.add_test(
@@ -612,6 +633,27 @@ void useful_functions_tests() {
                 "Correctly converted a lower case letter into it's capital letter case form",
                 "Did not correctly converted a lower case letter into it's capital letter case form"
             );
+
+            for (c = 0; c < sizeof(c) * 8; c = c + 1) {
+                if (c == letter) {
+                    tests.add_test(
+                        "useful_functions tests",
+                        "same_char(" + std::to_string(c) + ", " + std::to_string(letter) + ", false)",
+                        useful_functions::same_char(c, letter, false),
+                        "Correctly determined that \"" + std::to_string(c) + "\" is the same as \"" + std::to_string(letter),
+                        "Incorrectly determined that \"" + std::to_string(c) + "\" is not the same as \"" + std::to_string(letter)
+                    );
+                }
+                else if (c == useful_functions::to_caps(letter) || c == useful_functions::to_lower(letter)) {
+                    tests.add_test(
+                        "useful_functions tests",
+                        "same_char(" + std::to_string(c) + ", " + std::to_string(letter) + ", true)",
+                        useful_functions::same_char(c, letter, true),
+                        "Correctly determined that \"" + std::to_string(c) + "\" is the same as \"" + std::to_string(letter),
+                        "Incorrectly determined that \"" + std::to_string(c) + "\" is not the same as \"" + std::to_string(letter)
+                    );
+                }
+            }
 
         }
         else {
