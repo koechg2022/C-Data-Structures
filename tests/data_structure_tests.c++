@@ -95,7 +95,7 @@ int main(int len, char** args) {
 
     simple_test_linked_list();
     useful_functions_tests();
-    tests.print_tests("Data Structures & useful functions tests:\n", only_fails, clear_before);
+    // tests.print_tests("Data Structures & useful functions tests:\n", only_fails, clear_before);
     return 0;
 }
 
@@ -174,20 +174,22 @@ void simple_test_linked_list() {
         // std::cout << "Added test" << std::endl;
     }
 
+    std::cout << "Before swap" << std::endl;
     for (index = 0; index < dragons_list.length(); index = index + 1) {
         std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
     }
-    std::cout << "--------------------------------------------------------------" << std::endl;
+    dragons_list[dragons_list.length() / 2];
+    // std::cout << "--------------------------------------------------------------" << std::endl;
     for (index = 0; index < dragons_list.length() / 2; index = index + 1) {
-        std::string first_before = dragons_list[index];
-        std::string second_before = dragons_list[dragons_list.length() - 1 - index];
-        std::cout << "index : " << index << std::endl;
-        std::cout << "Before swap, first : \"" << first_before << std::endl;
-        std::cout << "Before swap, second : \"" << second_before << std::endl;
+        // std::string first_before = dragons_list[index];
+        // std::string second_before = dragons_list[dragons_list.length() - 1 - index];
         dragons_list.swap(index, dragons_list.length() - 1 - index);
-        std::cout << "After swap, first : \"" << first_before << std::endl;
-        std::cout << "After swap, second : \"" << second_before << std::endl;
-        std::cout << "--------------------------------------------------------------" << std::endl;
+        std::cout << std::endl;
+        // std::cout << "--------------------------------------------------------------" << std::endl;
+    }
+    std::cout << "After swap" << std::endl;
+    for (index = 0; index < dragons_list.length(); index = index + 1) {
+        std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
     }
 
 

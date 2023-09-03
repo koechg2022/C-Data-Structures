@@ -407,40 +407,95 @@ namespace data_structures {
 			 * @returns void.
 			*/
 			void swap(signed long first_index = 0, signed long second_index = -1) {
-				if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) || ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
-					std::string msg = "absolute(";
-					if (((useful_functions::absolute(second_index) > this->size) && (second_index < 0)) && !((useful_functions::absolute(second_index) > this->size) && (second_index < 0))){
-						msg = msg + std::to_string(second_index) + ")";
-					}
-					else if ((!(useful_functions::absolute(second_index) > this->size) && (second_index < 0)) && ((useful_functions::absolute(second_index) > this->size) && (second_index < 0))) {
-						msg = msg + std::to_string(second_index) + ")";
-					}
-					else {
-						msg = msg + std::to_string(second_index) + " & " + "absolute(" + std::to_string(second_index) + ")";
-					}
-					msg = msg + " must be less than the last index of the linked_list (" + std::to_string(this->size) + ")";
-					throw std::range_error(msg);
+
+
+				if (((first_index < 0) && (((unsigned long) useful_functions::absolute<signed long>(first_index)) > this->size)) ||
+					((second_index < 0) && (((unsigned long) useful_functions::absolute<signed long>(second_index)) > this->size)) ||
+					(((signed long) first_index) >= this->size) || (((signed long) second_index) >= this->size)) {
+						std::string msg;
+						if ((first_index < 0) && (((unsigned long) useful_functions::absolute<signed long>(first_index)) > this->size) ||
+							(((signed long) first_index) >= this->size)
+						) {
+							msg = "illegal first_index : " + std::to_string(first_index);
+						}
+
+						if ((second_index < 0) && (((unsigned long) useful_functions::absolute<signed long>(second_index)) > this->size) ||
+							(((signed long) second_index) >= this->size)
+						) {
+							msg = "illegal second_index : " + std::to_string(second_index);
+						}
+						throw std::range_error(useful_functions::get_styled_string(msg, bold_style, red_text, default_background));
 				}
 
 				if (this->size > 1) {
-
-
-					unsigned long first_indexx, second_indexx;
-					signed long f_index_to_first, f_index_to_frame, f_index_to_rear, s_index_to_first, s_index_to_frame, s_index_to_rear, *first_min, *second_min;;
-					first_indexx = (first_index < 0) ? (this->size - useful_functions::absolute(first_index) + 1) : useful_functions::absolute(first_index);
-					second_index = (second_index < 0) ? this->size - useful_functions::absolute(second_index) + 1 : useful_functions::absolute(second_index);
-					f_index_to_first = (signed long) first_indexx;
-					s_index_to_first = (signed long) second_indexx;
-					f_index_to_frame = useful_functions::difference((signed long) first_indexx, (signed long) this->frame_index);
-					s_index_to_frame = useful_functions::difference((signed long) second_indexx, (signed long) this->frame_index);
-					f_index_to_rear = useful_functions::difference((signed long) first_indexx, (signed long) this->size - 1);
-					s_index_to_rear = useful_functions::difference((signed long) second_indexx, (signed long) this->size - 1);
-
-
-					signed long* for_first[] = {&f_index_to_first, &f_index_to_frame, &f_index_to_rear};
-					signed long* for_second[] = {&s_index_to_first, &s_index_to_frame, &s_index_to_rear};
+					// swap happens here. Determine shortest route then do the thing.
 					
+					signed long front_to_first, frame_to_first, rear_to_first;
+					signed long front_to_second, frame_to_second, rear_to_second;
+					signed long first, second, *for_first, *for_second;
 
+					linear_node<data_> *first_temp, *second_temp;
+
+					first = (first_index < 0) ? (((unsigned long) this->size) - useful_functions::absolute(first_index)) : ((unsigned long) first_index);
+					second = (second_index < 0) ? (((unsigned long) this->size) - useful_functions::absolute(second_index)) : ((unsigned long) second_index);
+
+					// for first distances
+					front_to_first = useful_functions::difference<signed long>((signed long) 0, (signed long) first, false);
+					frame_to_first = useful_functions::difference<signed long>((signed long) this->frame_index, (signed long) first, false);
+					rear_to_first = useful_functions::difference<signed long>(((signed long) this->size - 1), (signed long) first, false);
+
+
+					// for second distances
+					front_to_second = useful_functions::difference<unsigned long>((signed long) 0, (signed long) second, false);
+					frame_to_second = useful_functions::difference<unsigned long>((signed long) this->frame_index, (signed long) second, false);
+					rear_to_second = useful_functions::difference<unsigned long>(((signed long) this->size - 1), (signed long) second, false);
+
+
+					signed long* first_distances[] = {&front_to_first, &frame_to_first, &rear_to_first};
+					signed long* second_distances[] = {&front_to_second, &frame_to_second, &rear_to_second};
+
+					for_first = useful_functions::min<signed long>(3, first_distances, true);
+					for_second = useful_functions::min<signed long>(3, second_distances, true);
+
+					// Best distance to first index passed in
+					if (for_first == &front_to_first) {
+						// shortest distance is from front to first
+						std::cout << "\tShortest distance to first (" << first << ") is from front (0)" << std::endl;
+
+					}
+
+					else if (for_first == &frame_to_first) {
+						// shortest distance is from frame to first
+						std::cout << "\tShortest distance to first (" << first << ") is from frame (" << this->frame_index << ")" << std::endl;
+
+					}
+					else {
+						// shortest distance is from rear to first
+						std::cout << "\tShortest distance to first (" << first << ") is from rear (" << this->size - 1 << ")" << std::endl;
+
+					}
+
+
+					// Best distance to second index passed in
+					if (for_second == &front_to_second) {
+						// shortest distance is from front second
+						std::cout << "\tShortest distance to second (" << second << ") is from front (0)" << std::endl;
+
+					}
+
+					else if (for_second == &frame_to_second) {
+						// shortest distance is from frame to second
+						std::cout << "\tShortest distance to second (" << second << ") is from frame (" << this->frame_index << ")" << std::endl;
+
+					}
+
+					else {
+						// shortest distance is from rear to second
+						std::cout << "\tShortest distance to second (" << second << ") is from rear (" << this->size - 1 << ")" << std::endl;
+
+					}
+
+					
 				}
 
 			}
