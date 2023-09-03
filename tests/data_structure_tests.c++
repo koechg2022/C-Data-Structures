@@ -174,23 +174,49 @@ void simple_test_linked_list() {
         // std::cout << "Added test" << std::endl;
     }
 
-    std::cout << "Before swap" << std::endl;
-    for (index = 0; index < dragons_list.length(); index = index + 1) {
-        std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
-    }
-    dragons_list[dragons_list.length() / 2];
+    // std::cout << "Before swap" << std::endl;
+    // for (index = 0; index < dragons_list.length(); index = index + 1) {
+    //     std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
+    // }
+    // dragons_list[dragons_list.length() / 2];
     // std::cout << "--------------------------------------------------------------" << std::endl;
     for (index = 0; index < dragons_list.length() / 2; index = index + 1) {
-        // std::string first_before = dragons_list[index];
-        // std::string second_before = dragons_list[dragons_list.length() - 1 - index];
+        std::cout << "--------------------------------------------------------------" << std::endl;
+        std::string first_before = dragons_list[index];
+        std::string second_before = dragons_list[dragons_list.length() - 1 - index];
+        std::cout << "Before swap" << std::endl;
+        std::cout << "\tdragons_list[" << std::to_string(index) << "] : " << dragons_list[index] << std::endl;
+        std::cout << "\tdragons_list[" << std::to_string(dragons_list.length() - 1 - index) << "] : " << dragons_list[dragons_list.length() - 1 - index] << std::endl;
         dragons_list.swap(index, dragons_list.length() - 1 - index);
+        std::cout << "After swap" << std::endl;
+        std::cout << "\tdragons_list[" << std::to_string(index) << "] : " << dragons_list[index] << std::endl;
+        std::cout << "\tdragons_list[" << std::to_string(dragons_list.length() - 1 - index) << "] : " << dragons_list[dragons_list.length() - 1 - index] << std::endl;
+        tests.add_test(
+            "linear_linked_list swap method",
+            "dragons_list.swap(" + std::to_string(index) + ", " + std::to_string(dragons_list.length() - 1 - index) + ")",
+            dragons_list[index] == second_before, 
+            "Correctly swapped data at " + std::to_string(index) + " & " + std::to_string(dragons_list.length() - 1 - index),
+            "Before swap, index " + std::to_string(index) + " : " + first_before + " & index " + std::to_string(dragons_list.length() - 1 - index) + " : " + second_before + ". After swapping data at " + std::to_string(dragons_list.length() - 1 - index) + " : " +
+            "dragons_list[" + std::to_string(index) + "] : " + dragons_list[index] + ", & dragons_list[" + std::to_string(dragons_list.length() - 1 - index) + "] : " +
+            dragons_list[dragons_list.length() - 1 - index]
+        );
+
+        tests.add_test(
+            "linear_linked_list swap method",
+            "dragons_list.swap(" + std::to_string(dragons_list.length() - 1 - index) + ", " + std::to_string(index) + ")",
+            dragons_list[dragons_list.length() - 1 - index] == first_before, 
+            "Correctly swapped data at " + std::to_string(index) + " & " + std::to_string(dragons_list.length() - 1 - index),
+            "Before swap, index " + std::to_string(index) + " : " + first_before + " & index " + std::to_string(dragons_list.length() - 1 - index) + " : " + second_before + ". After swapping data at " + std::to_string(dragons_list.length() - 1 - index) + " : " +
+            "dragons_list[" + std::to_string(index) + "] : " + dragons_list[index] + ", & dragons_list[" + std::to_string(dragons_list.length() - 1 - index) + "] : " +
+            dragons_list[dragons_list.length() - 1 - index]
+        );
         // std::cout << std::endl;
         // std::cout << "--------------------------------------------------------------" << std::endl;
     }
-    std::cout << "After swap" << std::endl;
-    for (index = 0; index < dragons_list.length(); index = index + 1) {
-        std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
-    }
+    // std::cout << "After swap" << std::endl;
+    // for (index = 0; index < dragons_list.length(); index = index + 1) {
+    //     std::cout << index << ".) \"" << dragons_list[index] << "\"" << std::endl;
+    // }
 
 
     dragons_list.reset();
