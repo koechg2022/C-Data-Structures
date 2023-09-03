@@ -186,8 +186,6 @@ namespace data_structures {
 				this->reset();
 			}
 
-
-
 			// Operator Overloading.
 
 			// Assignment Operators
