@@ -1,6 +1,6 @@
 
 create_tests:
-	clang++ tests/data_structure_tests.c++ -o objects/tests
+	clang++ tests/data_structure_tests.c++ -o objects/tests -std=c++14
 
 create_debug_tests:
 	clang++ tests/data_structure_tests.c++ -o objects/tests -g
