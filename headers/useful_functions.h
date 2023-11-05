@@ -212,4 +212,14 @@ namespace useful_functions {
         return the_answer;
     }
 
+    char* new_char_ptr(char* the_string) {
+        unsigned long index;
+        char* the_answer = (char*) malloc(sizeof(char) * string_length(the_string));
+        for (index = 0; the_string[index] != '\0'; index = index + 1) {
+            the_answer[index] = the_string[index];
+        }
+        the_answer[index] = '\0';
+        return the_answer;
+    }
+
 }

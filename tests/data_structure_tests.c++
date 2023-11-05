@@ -24,8 +24,7 @@ std::vector<std::string> imagine_dragons = {
     "I was the curse of the man that was living life, living life just to please",
     "Oh the mouth of the river....",
     "And the wrath of the giver.....",
-    "With the hands at the center......",
-    "Oh the mouth of the river......."
+    "With the hands at the center......"
 };
 
 
@@ -50,7 +49,7 @@ void useful_functions_tests();
 
 
 int main(int len, char** args) {
-    bool clear_before = false, only_fails = false;
+    bool clear_before = false, only_fails = true;
     int index, increase = 1;
 
     for (index = 0; index < len; index = index + increase) {
@@ -103,13 +102,13 @@ int main(int len, char** args) {
 
 void simple_test_linked_list() {
     unsigned long index;
-    data_structures::linear_linked_list<std::string> dragons_list, beeltes_list;
+    data_structures::linear_linked_list<std::string> dragons_list, beetles_list;
     for (index = 0; index < imagine_dragons.size(); index = index + 1) {
         dragons_list.push(imagine_dragons[index]);
     }
     // std::cout << "\n\n\n";
     for (index = 0; index < the_beetles.size(); index = index + 1) {
-        beeltes_list.push(the_beetles[index]);
+        beetles_list.push(the_beetles[index]);
     }
     tests.create_group("linear_linked_list created");
     // std::cout << "\n\n\n";
@@ -121,12 +120,12 @@ void simple_test_linked_list() {
             "dragons_list[" + std::to_string(index) + "] did not return expected"
         );
     }
-    for (index = 0; index < beeltes_list.length(); index = index + 1) {
+    for (index = 0; index < beetles_list.length(); index = index + 1) {
         tests.add_test("linear_linked_list created", 
-            "beeltes_list[" + std::to_string(index) + "] returns expected",
-            beeltes_list[index] == the_beetles[index],
-            "beeltes_list[" + std::to_string(index) + "] returned correct",
-            "beeltes_list[" + std::to_string(index) + "] did not return expected"
+            "beetles_list[" + std::to_string(index) + "] returns expected",
+            beetles_list[index] == the_beetles[index],
+            "beetles_list[" + std::to_string(index) + "] returned correct",
+            "beetles_list[" + std::to_string(index) + "] did not return expected"
         );
     }
 
@@ -134,9 +133,9 @@ void simple_test_linked_list() {
 
     tests.add_test("linear_linked_list lengths are correct",
         "beetles_list.length()",
-        beeltes_list.length() == the_beetles.size(),
-        "beeltles_list.length() returned " + std::to_string(beeltes_list.length()),
-        "beeltles_list.length() returned " + std::to_string(beeltes_list.length()) + 
+        beetles_list.length() == the_beetles.size(),
+        "beeltles_list.length() returned " + std::to_string(beetles_list.length()),
+        "beeltles_list.length() returned " + std::to_string(beetles_list.length()) + 
         " instead of " + std::to_string(the_beetles.size())
     );
 
@@ -221,6 +220,7 @@ void simple_test_linked_list() {
 
     }
 
+    
 
 
 }

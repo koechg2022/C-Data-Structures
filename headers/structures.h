@@ -401,6 +401,23 @@ namespace data_structures {
 				// std::cout << "Finished reset call" << std::endl;
 			}
 
+			
+			void swap(signed long first = 0, signed long last = -1) {
+				if (this->size == 0) {
+					throw std::range_error("No data in linked list to swap around");
+				}
+				
+				if ((first < 0) && ((((signed long) this->size) + first) >= this->size)) {
+					throw std::range_error("Illegal index " + std::to_string(first) + " passed in");
+				}
+
+				if ((last < 0) && ((((signed long) this->size) + last) >= this->size)) {
+					throw std::range_error("Illegal index " + std::to_string(last) + " passed in");
+				}
+
+			}
+
+
 
 	};
 
