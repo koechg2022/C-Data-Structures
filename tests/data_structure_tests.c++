@@ -220,9 +220,6 @@ void simple_test_linked_list() {
 
     }
 
-    
-
-
 }
 
 
