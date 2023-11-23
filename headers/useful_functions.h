@@ -1,225 +1,189 @@
-
-
-#define useful_functions_h "useful_functions.h"
-
-
-
-
-
 namespace useful_functions {
 
 
     // TEXT COLORS
-    #define black_text 30
-    #define red_text 31
-    #define green_text 32
-    #define yellow_text 33
-    #define blue_text 34
-    #define purple_text 35
-    #define cyan_text 36
-    #define white_text 37
+    #define black_txt 30
+    #define red_txt 31
+    #define green_txt 32
+    #define yellow_txt 33
+    #define blue_txt 34
+    #define purple_txt 35
+    #define cyan_txt 36
+    #define white_txt 37
+
+
 
 
 
 
     // TEXT STYLE
-    #define no_effect_style 0
+    #define no_style 0
     #define bold_style 1
-    #define underline_style 2
-    #define negative_1_style 3
-    #define negative_2_style 5
+    #define uline_style 2
+    #define neg_1_style 3
+    #define neg_2_style 5
 
 
 
 
     // BACKGROUND COLOR
-    #define black_background 40
-    #define red_background 41
-    #define green_background 42
-    #define yellow_background 43
-    #define blue_background 44
-    #define purple_background 45
-    #define cyan_background 46
-    #define white_background 47
-    #define default_background 49
-
-    typedef unsigned short int short_int;
-
-    // const std::string ansi_escape = "\033[";
-    // "\033[<style>;<color>;<bkg>m<the_string>\033[0m"
+    #define black_bkg 40
+    #define red_bkg 41
+    #define green_bkg 42
+    #define yellow_bkg 43
+    #define blue_bkg 44
+    #define purple_bkg 45
+    #define cyan_bkg 46
+    #define white_bkg 47
+    #define default_bkg 49
 
 
-    const char case_diff = 'a' - 'A';
 
-    template <typename data_> data_ absolute(data_ value) {
-        return ((value < 0) ? (data_) (value * -1) : (data_) value);
-    }
 
-    template<typename data_> data_* absolute(data_* value) {
-        if (*value < 0) {
-            *value = (data_) (*value * -1);
+    typedef unsigned short int us;
+    typedef unsigned char bytes;
+
+
+
+    namespace {
+
+        /* 
+            Using escape sequence to print colors
+            esc_start<style>;<color>;<bkg>m<the_string>esc_stop
+        */
+
+        const char* esc_start = "\033[";
+        const char* esc_stop = "\033[m";
+        
+
+        const char* merge_const = "merge";
+        const char* select_const = "select";
+        const char* insert_const = "insert";
+        const char* bubble_const = "bubble";
+
+
+        const char case_diff = 'a' - 'A';
+        const char A = 'A', Z = 'Z', a = 'a', z = 'z', zero = '0', nine = '9';
+
+        bool valid_text_color(us color) {
+            return ((color) >= (us) black_txt) && (color <= (us) white_txt);
         }
-        return value;
-    }
 
-    template <typename data_> data_ max(data_ a, data_ b, bool abs) {
-        if (abs) {
-            if (a == b) {
-                return a;
-            }
-            return (absolute(a) >= absolute(b)) ? a : b;
+        bool valid_style(us color) {
+            return (color >= (us) no_style) && (color <= (us) neg_1_style) || (color == (us) neg_2_style);
         }
-        return (a >= b) ? a : b;
-    }
 
-    template <typename data_> data_* max(data_* a, data_* b, bool abs) {
-        if (abs) {
-            if (*a == *b) {
-                return a;
-            }
-            return (absolute(*a) >= absolute(*b)) ? a : b;
+        bool valid_bkg_color(us color) {
+            return (color >= (us) black_bkg) && (color <= (us) default_bkg);
         }
-        return (*a >= *b) ? a : b;
-    }
 
-    template <typename data_> data_* max(unsigned int len, data_* arr[], bool abs = false) {
-        unsigned int index;
-        data_* the_answer = arr[0];
-        for (index = 1; index < len; index = index + 1) {
-            the_answer = max(arr[index], the_answer, abs);
+        template <typename data_> void swap(data_& first, data_& second) {
+            data_ temp = first;
+            first = second;
+            second = first;
         }
-        return the_answer;
+
     }
 
-    template <typename data_> data_ min(data_ a, data_ b, bool abs) {
-        if (abs) {
-            if (a == b) {
-                return a;
-            }
-            return (absolute(a) <= absolute(b)) ? a : b;
-        }
-        return (a <= b) ? a : b;
+    /*=====================================useful functions generic=====================================*/
+
+    template <typename data_> data_ absolute(data_ val) {
+        return (val < 0) ? val * -1 : val;
     }
 
-    template <typename data_> data_* min(data_* a, data_* b, bool abs) {
-        if (abs) {
-            if (*a == *b) {
-                return a;
-            }
-            return (absolute(*a) <= absolute(*b)) ? a : b;
-        }
-        return (*a <= *b) ? a : b;
+    
+    template <typename data_> data_ max_data(data_ first, data_ second) {
+        return (first >= second) ? first : second;
     }
 
-    template <typename data_> data_* min(unsigned int len, data_* arr[], bool abs = false) {
-        unsigned int index;
-        data_* the_answer = arr[0];
-        for (index = 1; index < len; index = index + 1) {
-            the_answer = min(the_answer, arr[index], abs);
+
+    template <typename data_> data_ min_data(data_ first, data_ second) {
+        return (first <= second) ? first : second;
+    }
+
+
+    template <typename data_> unsigned long max_in_list(data_ list[], unsigned long length) {
+        unsigned long the_answer = 0, index;
+        for (index = 0; index < length; index = index + 1) {
+            the_answer = (max_data(list[index], list[the_answer]) == list[index]) ? index : the_answer;
         }
         return the_answer;
     }
 
-    template<typename data_ = signed long> data_ difference(data_ first, data_ second, bool abs = false) {
-        // data_ the_answer;
-        // if (abs) {
-        //     the_answer = useful_functions::max<data_>(first, second, abs) - useful_functions::min<data_>(first, second, abs);
-        // }
-        // else {
-        //     the_answer = first - second;
-        // }
-        // return the_answer;
-        if (abs) {
-            return max<data_>(absolute(first), absolute(second), abs) - min<data_>(absolute(first), absolute(second), abs);
+
+    template <typename data_> unsigned long min_in_list(data_ list[], unsigned long length) {
+        unsigned long the_answer = 0, index;
+        for (index = 0; index < length; index = index + 1) {
+            the_answer = (min_data(list[index], list[the_answer]) == list[index]) ? index : the_answer;
         }
-
-        return max<data_>(first, second, abs) - min<data_>(first, second, abs);
-
+        return the_answer;
     }
+
+
+    template <typename data_> unsigned long max_data_ptr(data_* list[], unsigned long length) {
+        unsigned long the_answer = 0, index;
+        for (index = 0; index < length; index = index + 1) {
+            the_answer = (max_data(*list[index], *list[the_answer]) == *list[index]) ? index : the_answer;
+        }
+        return the_answer;
+    }
+
+
+    template <typename data_> unsigned long min_data_ptr(data_* list[], unsigned long length) {
+        unsigned long the_answer = 0, index;
+        for (index = 0; index < length; index = index + 1) {
+            the_answer = (min_data(*list[index], *list[the_answer]) == *list[index]) ? index : the_answer;
+        }
+        return the_answer;
+    }
+
+
+    /*=====================================useful functions chars=====================================*/
+
 
     bool is_caps(char c) {
-        return ((c >= 'A') && (c <= 'Z')) ? true : false;
+        return (c >= A) && (c <= Z);
     }
 
     bool is_lower(char c) {
-        return ((c >= 'a') && (c <= 'z')) ? true : false;
+        return (c >= a) && (c <= z);
+    }
+
+    bool is_number(char c) {
+        return (c >= zero) && (c <= nine);
     }
 
     bool is_letter(char c) {
-        return ((is_caps(c)) || (is_lower(c))) ? true : false;
+        return is_caps(c) || is_lower(c);
     }
 
     char to_caps(char c) {
-        return ((is_letter(c)) && (is_lower(c))) ? (c - case_diff) : c;
+        return (is_letter(c) && is_lower(c)) ? c - case_diff : c;
     }
 
     char to_lower(char c) {
-        return ((is_letter(c)) && (is_caps(c))) ? (c + case_diff) : c;
+        return (is_letter(c) && is_caps(c)) ? c + case_diff : c;
     }
 
     unsigned long string_length(char* the_string) {
-        unsigned long the_answer;
-        for (the_answer = 0; the_string[the_answer] != '\0'; the_answer = the_answer + 1) {}
+        unsigned long the_answer = 0;
+        for (; the_string[the_answer] != '\0'; the_answer++);
         return the_answer;
     }
 
-    bool same_char(char first, char second, bool ignore_case = true) {
-        if (ignore_case) {
-            // std::cout << "\t\tto_caps(first) : " << to_caps(first) << ", to_caps(second) : " << to_caps(second) << std::endl;
-            // std::cout << "\t\t\tabout to return " << std::to_string((to_caps(first) == to_caps(second)) ? true : false) << std::endl;
-            return (to_caps(first) == to_caps(second)) ? true : false;
-        }
-        return (first == second) ? true : false;
+    bool same_char(char a, char b, bool ignore_case = true) {
+        return is_letter(a) && is_letter(b) ? to_caps(a) == to_caps(b) : a == b;
     }
 
-    bool same_string(char* first, char* second, bool ignore_case = true) {
+    bool same_string(char* first, char* sec, bool ignore_case = true) {
         unsigned long index;
-        for (index = 0; first[index] != '\0' && second[index] != '\0'; index = index + 1) {
-            if (!same_char(first[index], second[index], ignore_case)) {
-                // std::cout << "\t\"" << first[index] << "\", and \"" << second[index] << "\" are different" << std::endl;
+        for (index = 0; first[index] != '\0' && second[index] != '\0'; index++) {
+            if (!same_char(first[index], sec[index], ignore_case)) {
                 return false;
             }
-            // std::cout << "Continuing...";
         }
-        return ((first[index] == second[index]) && (first[index] == '\0')) ? true : false;
+        return (first[index] == sec[index] == '\0');
     }
 
-    bool valid_color(short_int color) {
-        return ((color >= (short_int) black_text) && (color <= (short_int) white_text));
-    }
-
-    bool valid_style(short_int style) {
-        return (((style >= (short_int) no_effect_style) && (style <= (short_int) negative_1_style)) || (style == (short_int) negative_2_style));
-    }
-
-    bool valid_bkg(short_int bkg) {
-        return ((bkg >= (short_int) black_background) && (bkg <= (short_int) default_background));
-    }
-
-    std::string get_styled_string(std::string the_string, short_int style = (short_int) no_effect_style, short_int color = (short_int) black_text, short_int bkg = (short_int) default_background) {
-        style = (valid_style((short_int) style)) ? (short_int) style : (short_int) no_effect_style;
-        color = (valid_color((short_int) color)) ? (short_int) color : (short_int) black_text;
-        bkg = (valid_bkg((short_int) bkg)) ? (short_int) bkg : (short_int) default_background;
-        return "\033[" + std::to_string(int(style)) + ";" + std::to_string(int(color)) + ";" + std::to_string(int(bkg)) + "m" + the_string + "\033[0m";
-    }
-
-    std::string to_std_string(char* the_string) {
-        std::string the_answer = "";
-        unsigned long index;
-        for (index = 0; the_string[index] != '\0'; index = index + 1) {
-            the_answer = the_answer + std::to_string(the_string[index]);
-        }
-        return the_answer;
-    }
-
-    char* new_char_ptr(char* the_string) {
-        unsigned long index;
-        char* the_answer = (char*) malloc(sizeof(char) * string_length(the_string));
-        for (index = 0; the_string[index] != '\0'; index = index + 1) {
-            the_answer[index] = the_string[index];
-        }
-        the_answer[index] = '\0';
-        return the_answer;
-    }
 
 }

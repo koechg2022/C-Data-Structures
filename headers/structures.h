@@ -243,151 +243,31 @@ namespace data_structures {
 			}
 
 
-			/**
-			 * @brief Check if the linear_linked_list is empty or not.
-			 * @returns {@code true} if the linear_linked_list, but {@code false} otherwise.
-			*/
 			bool empty() const {
 				return (this->size == 0);
 			}
 
-
-			/**
-			 * @brief Get the size of the linked list as an unsigned long.
-			 * @returns An {@code unsigned long} of the length of the linear_linked_list.
-			*/
 			unsigned long length() const {
 				return this->size;
 			}
 
 
-			/**
-			 * @brief Pushes new data onto the linear_linked_list.
-			 * @note A negative index will reference linear_linked_list.length() + index. Just like in python lists.
-			 * @param new_data The data to be pushed onto the linear_linked_list.
-			 * @param index The index where the data will go on the linear_linked_list.
-			*/
 			void push(data_ new_data, signed long index = -1) {
 				unsigned long add_to;
-				// std::cout << "Trying to add \"" << new_data << "\" to index " << index << std::endl;
-				if ((useful_functions::absolute(index) > this->size + 1) && (index < 0)) {
-					// std::string msg = "For negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size);
-					throw std::range_error("Cannot push negative 'index', absolute(index) cannot be greater than the size of the linear_linked_list (" + std::to_string(this->size));
-				}
-				add_to = (index < 0) ? this->size + 1 - useful_functions::absolute(index) : useful_functions::absolute(index);
-				// std::cout << "pushing new data \"" << new_data << "\" to index " << add_to << ", with passed in index of " << index << std::endl;
-				if (this->size == 0) {
-					// std::cout << "In this->size == 0 branch" << std::endl;
-					this->front = this->rear = this->frame = new linear_node<data_>(new_data);
-				}
-				else {
-					// std::cout << "In else branch" << std::endl;
-					linear_node<data_>* new_node = new linear_node<data_>(new_data);
-					if (add_to == 0) {
-						// std::cout << "\tIn add_to == 0 branch" << std::endl;
-						// terminal at front
-						// std::cout << "1..." << std::endl;
-						this->front->set_previous(new_node);
-						// std::cout << "2..." << std::endl;
-						this->front->get_previous()->set_next(this->front);
-						// std::cout << "3..." << std::endl;
-						this->front = this->front->get_previous();
-						// std::cout << "4..." << std::endl;
-						this->frame = this->front;
-						// std::cout << "5..." << std::endl;
-
-					}
-
-					else if (add_to == this->size) {
-						// terminal at end
-						// std::cout << "\tAdding to the end " << std::endl;
-						this->rear->set_next(new_node);
-						this->rear->get_next()->set_previous(this->rear);
-						this->rear = this->rear->get_next();
-						this->frame = this->rear;
-						// std::cout << "now previous is " << this->rear->get_previous()->get_data() << std::endl;
-						// std::cout << "now next is " << ((this->rear->get_next() == nullptr) ? "NULL" : this->rear->get_next()->get_data()) << std::endl;
-					}
-
-					else {
-						// not terminal. Adding to somewhere in the middle.
-						signed long front_to_target, rear_to_target, frame_to_target;
-						front_to_target = ((signed long) add_to);
-						rear_to_target = ((signed long) add_to) - ((signed long) this->size - 1);
-						frame_to_target = ((signed long) add_to) - ((signed long) this->frame_index);
-						signed long* distances[] = {&front_to_target, &rear_to_target, &frame_to_target};
-						signed long* minimum = useful_functions::min(3, distances, true);
-						// std::cout << "\n\nAdding to index : " << add_to << " (" << index << ")" << std::endl;
-						// std::cout << "front_to_target : " << front_to_target << std::endl;
-						// std::cout << "rear_to_target : " << rear_to_target << std::endl;
-						// std::cout << "frame_to_target : " << frame_to_target << std::endl;
-						// std::cout << "minimum : " << *minimum << std::endl;
-						// std::cout << "frame_info : " << this->frame_index << ".)\t" << this->frame->get_data() << std::endl;
-						if (minimum == &front_to_target) {
-							this->frame = this->front;
-							this->frame_index = 0;
-						}
-						else if (minimum == &rear_to_target) {
-							this->frame = this->rear;
-							this->frame_index = this->size - 1;
-						}
-						this->frame_shifter(*minimum);
-						// std::cout << "frame_info : " << this->frame_index << ".)\t" << this->frame->get_data() << std::endl;
-						new_node->set_previous(this->frame->get_previous());
-						new_node->set_next(this->frame);
-						this->frame->get_previous()->set_next(new_node);
-						this->frame->set_previous(new_node);
-
-					}
-					
-				}
+				
 				this->size = this->size + 1;
 			}
 
 
-			/**
-			 * @brief Check for data on the linear_linked_list. By default, data at the end of the linked list is looked at.
-			 * 
-			 * @note A negative index will reference linear_linked_list.length() + index. Just like in python lists.
-			 * 
-			 * @param index The index whose data is to be looked at in the linear_linked_list.
-			 * 
-			 * @returns The data at the specifed index in the linear_linked_list.
-			 * 
-			 * @throws std::range_error if the linear_linked_list is empty, or an unreachable index is referenced.
-			*/
 			data_ peek(signed long index = -1) {
 				// std::cout << "Raw peeking index " << index << std::endl;
 				if (this->size == 0) {
 					throw std::range_error(std::string("Cannot peek empty linked list"));
 				}
-				unsigned long peek_index;
-				if ((useful_functions::absolute(index) > this->size) && (index < 0)) {
-					throw std::range_error(std::string("absolute(index) cannot be greater than the size of the linear_linked_list (") + std::to_string(this->size));
-				}
-				peek_index = (index < 0) ? (((unsigned long) this->size) - useful_functions::absolute(index) ) : ((unsigned long) index);
-				// std::cout << "Peek index is " << peek_index << ", and size is " << this->size << std::endl;
-				if (peek_index == 0) {
-					// std::cout << "about to peek at index 0" << std::endl;
-					this->frame = this->front;
-					this->frame_index = 0;
-				}
-				else if (peek_index == this->size - 1) {
-					this->frame = this->rear;
-					this->frame_index = this->size - 1;
-				}
-				else {
-					signed long shift = (signed long) peek_index - (signed long) this->frame_index;
-					this->frame_shifter(shift);
-				}
-				
 				return this->frame->get_data();
 			}
 
 
-			/**
-			 * @brief Resets the linear_linked_list to be empty and frees all the data.
-			*/
 			void reset() {
 				// std::cout << "Inside reset method" << std::endl;
 				this->frame = this->front;
@@ -400,23 +280,6 @@ namespace data_structures {
 				this->size = 0;
 				// std::cout << "Finished reset call" << std::endl;
 			}
-
-			
-			void swap(signed long first = 0, signed long last = -1) {
-				if (this->size == 0) {
-					throw std::range_error("No data in linked list to swap around");
-				}
-				
-				if ((first < 0) && ((((signed long) this->size) + first) >= this->size)) {
-					throw std::range_error("Illegal index " + std::to_string(first) + " passed in");
-				}
-
-				if ((last < 0) && ((((signed long) this->size) + last) >= this->size)) {
-					throw std::range_error("Illegal index " + std::to_string(last) + " passed in");
-				}
-
-			}
-
 
 
 	};
