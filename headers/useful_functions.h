@@ -177,7 +177,7 @@ namespace useful_functions {
 
     bool same_string(char* first, char* sec, bool ignore_case = true) {
         unsigned long index;
-        for (index = 0; first[index] != '\0' && second[index] != '\0'; index++) {
+        for (index = 0; first[index] != '\0' && sec[index] != '\0'; index++) {
             if (!same_char(first[index], sec[index], ignore_case)) {
                 return false;
             }
