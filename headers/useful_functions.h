@@ -297,7 +297,7 @@ namespace useful_functions {
             }
 
             // get the midway point.
-            unsigned long mid_index = (length - start) / 2;
+            unsigned long mid_index = start + (length - start) / 2;
             rec_merge_sort(list, start, mid_index, ascending);
             // fprintf(stdout, "Reached\n");
             rec_merge_sort(list, mid_index + 1, length, ascending);
