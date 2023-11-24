@@ -145,6 +145,9 @@ namespace useful_functions {
      * 
      * @param length `(length)` : The length of the array lassed in.
      * 
+     * @note Not Tested. But pretty sure it works because it's based off
+     * the max_data function which was tested and does work.
+     * 
      * @returns `(unsigned long)` : The index of the largest piece of data in the list.
      * 
     */
@@ -157,6 +160,22 @@ namespace useful_functions {
     }
 
 
+    /**
+     * @brief Get the smallest value in an array of a generic type of data.
+     * 
+     * @note Any piece of data can be passed in, but it must be capable of
+     * the greater than or equal to & less than or equal to comparables.
+     * 
+     * @param list `(list)` : An array of length `length` whose smallest piece of data is to be returned.
+     * 
+     * @param length `(length)` : The length of the array lassed in.
+     * 
+     * @note Not Tested. But pretty sure it works because it's based off
+     * the min_data function which was tested and does work.
+     * 
+     * @returns `(unsigned long)` : The index of the smallest piece of data in the list.
+     * 
+    */
     template <typename data_> unsigned long min_in_list(data_ list[], unsigned long length) {
         unsigned long the_answer = 0, index;
         for (index = 0; index < length; index = index + 1) {
