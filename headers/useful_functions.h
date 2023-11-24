@@ -128,7 +128,29 @@ namespace useful_functions {
         }
 
 
-
+        /**
+         * @brief Implementation of Bubble sort.
+         * 
+         * @note Bubble sort is different from insertion sort in that it "bubbles" the largest or smallest
+         * value to the end of the list being sorted and doesn't maintain an sorted section as it does so.
+         * 
+         * @note Bubble sort is different from selection sort in that "bubbles" the largest or smallest
+         * value to the end of the list being sorted and doesn't maintain a sorted section in the same way as selection sort.
+         * 
+         * @note Bubble sort is unique compared to selection sort and insertion sort in that it "bubbles"
+         * the largest or smallest value to the end of the list.
+         * 
+         * 
+         * @param list `(unsigned long* array)` The list to be sorted.
+         * 
+         * @param length `(unsigned long int)` The length of the list to be sorted.
+         * 
+         * @param increasing `(bool)` A bool specifying whether the sorting algorithm should sort the data
+         * in ascending or descending order.
+         * 
+         * 
+         * @returns void.
+        */
         template <typename data_> void bubble_sort(data_ list[], unsigned long length, bool ascending = true) {
             unsigned long from_left, from_right;
             data_ temp;
@@ -143,7 +165,25 @@ namespace useful_functions {
         }
 
 
-
+        /**
+         * @brief Implementation of selection_sort.
+         * 
+         * @note Selection sort is different from bubble sort in that it maintains
+         * a sorted and unsorted section of the list, and continually `selecting` and adding the smallest piece 
+         * of data (if sorting in increasing order), or the largest piece of data (if sorting 
+         * in a decreasing order) to the end of the sorted list.
+         * 
+         * 
+         * 
+         * @param list `(unsigned long* array)` The list to be sorted.
+         * 
+         * @param length `(unsigned long int)` The length of the list to be sorted.
+         * 
+         * @param increasing `(bool)` A bool specifying whether the sorting algorithm should sort the data
+         * in ascending or descending order.
+         * 
+         * @returns void
+        */
         template <typename data_> void selection_sort(data_* list, unsigned long length, bool ascending = true) {
             unsigned long adding_index, checking_index;
             for (checking_index = 0; checking_index < length - 1; checking_index = checking_index + 1) {
@@ -158,20 +198,36 @@ namespace useful_functions {
         }
 
 
-
+        /**
+         * @brief Implementation of insertion sort algorithm.
+         * 
+         * @note Insertion sort is different from bubble sort in that it maintains
+         * a sorted and unsorted section of the list, and continually `inserts` data
+         * from the unsorted section into the sorted section at the proper location in the sorted section.
+         * 
+         * 
+         * @note Insertion sort is very similar to the selection sort algorithm in that
+         * it maintains a sorted and unsorted section of the list and inserts data into the sorted
+         * section at the proper location of the sorted list.
+         * 
+         * @param list `(unsigned long* array)` The list to be sorted.
+         * 
+         * @param length `(unsigned long int)` The length of the list to be sorted.
+         * 
+         * @param increasing `(bool)` A bool specifying whether the sorting algorithm should sort the data
+         * in ascending or descending order.
+         * 
+         * @returns void
+        */
         template <typename data_> void insertion_sort(data_* list, unsigned long length, bool ascending = true) {
-            unsigned long sort_index, outer_limit;
+            unsigned long sort_index, limit;
             data_ temp;
-            for (outer_limit = 1; outer_limit < length; outer_limit = outer_limit + 1) {
-                sort_index = outer_limit;
-                temp = list[outer_limit];
-                while ((sort_index > 0) && ((!(ascending) && (list[sort_index] <= list[sort_index - 1]))) || (((ascending) && (list[sort_index] >= list[sort_index - 1])))) {
-                    // swap(list[sort_index], list[sort_index - 1]);
-                    fprintf(stdout, "swapping index %lu and %lu : %li and %li\n", sort_index, sort_index - 1, list[sort_index], list[sort_index - 1]);
+            for (limit = 1; limit < length; limit = limit + 1) {
+                temp = list[sort_index = limit];
+                while ((sort_index > 0) && (((ascending) && (list[sort_index - 1] >= temp)) || ((!ascending) && (list[sort_index - 1] <= temp)))) {
                     list[sort_index] = list[sort_index - 1];
                     sort_index = sort_index - 1;
                 }
-                fprintf(stdout, "--------\n");
                 list[sort_index] = temp;
             }
         }
@@ -555,15 +611,15 @@ namespace useful_functions {
     template <typename data_> void sort_list(data_ list[], unsigned long length, char* sort = (char*) "bubble", bool ascending = true) {
         
         if (same_string((char*) "bubble", sort)) {
-            bubble_sort(list, length, ascending);
+            bubble_sort<data_>(list, length, ascending);
         }
 
         else if (same_string((char *) "selection", sort)) {
-            selection_sort(list, length, ascending);
+            selection_sort<data_>(list, length, ascending);
         }
 
         else if (same_string((char *) "insertion", sort)) {
-            insertion_sort(list, length, ascending);
+            insertion_sort<data_>(list, length, ascending);
         }
         else {
             fprintf(stdout, "Not yet implemented %s\n for sorting algorithms", sort);
