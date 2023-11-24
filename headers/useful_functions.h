@@ -117,26 +117,65 @@ namespace useful_functions {
             return (color >= (us) black_bkg) && (color <= (us) default_bkg);
         }
 
+
+        //-------------------------------------Sorting Algorithms-------------------------------------
+
+
         template <typename data_> void swap(data_& first, data_& second) {
             data_ temp = first;
             first = second;
             second = temp;
         }
 
+
+
         template <typename data_> void bubble_sort(data_ list[], unsigned long length, bool ascending = true) {
             unsigned long from_left, from_right;
             data_ temp;
             for (from_right = length - 1; from_right > 0; from_right = from_right - 1) {
                 for (from_left = 0; from_left < from_right; from_left = from_left + 1) {
-                    if ( (ascending) && (list[from_left] > list[from_right]) ) {
-                        swap(list[from_left], list[from_right]);
-                    }
-                    else if ( !(ascending) && (list[from_left] < list[from_right]) ) {
+
+                    if ((!(ascending) && (list[from_left] < list[from_right])) || ((ascending) && (list[from_left] > list[from_right]))) {
                         swap(list[from_left], list[from_right]);
                     }
                 }
             }
         }
+
+
+
+        template <typename data_> void selection_sort(data_* list, unsigned long length, bool ascending = true) {
+            unsigned long adding_index, checking_index;
+            for (checking_index = 0; checking_index < length - 1; checking_index = checking_index + 1) {
+
+                for (adding_index = checking_index + 1; adding_index < length; adding_index = adding_index + 1) {
+                    if ((((ascending) && (list[checking_index] > list[adding_index]))) || ((!(ascending) && (list[checking_index] < list[adding_index])))) {
+                        swap(list[checking_index], list[adding_index]);
+                    }
+                }
+
+            }
+        }
+
+
+
+        template <typename data_> void insertion_sort(data_* list, unsigned long length, bool ascending = true) {
+            unsigned long sort_index, outer_limit;
+            data_ temp;
+            for (outer_limit = 1; outer_limit < length; outer_limit = outer_limit + 1) {
+                sort_index = outer_limit;
+                temp = list[outer_limit];
+                while ((sort_index > 0) && ((!(ascending) && (list[sort_index] <= list[sort_index - 1]))) || (((ascending) && (list[sort_index] >= list[sort_index - 1])))) {
+                    // swap(list[sort_index], list[sort_index - 1]);
+                    fprintf(stdout, "swapping index %lu and %lu : %li and %li\n", sort_index, sort_index - 1, list[sort_index], list[sort_index - 1]);
+                    list[sort_index] = list[sort_index - 1];
+                    sort_index = sort_index - 1;
+                }
+                fprintf(stdout, "--------\n");
+                list[sort_index] = temp;
+            }
+        }
+
 
     }
 
@@ -514,10 +553,20 @@ namespace useful_functions {
 
 
     template <typename data_> void sort_list(data_ list[], unsigned long length, char* sort = (char*) "bubble", bool ascending = true) {
-        // fprintf(stdout, "Inside sort_list\n");
+        
         if (same_string((char*) "bubble", sort)) {
-            // fprintf(stdout, "Inside bubble sorting branch\n");
             bubble_sort(list, length, ascending);
+        }
+
+        else if (same_string((char *) "selection", sort)) {
+            selection_sort(list, length, ascending);
+        }
+
+        else if (same_string((char *) "insertion", sort)) {
+            insertion_sort(list, length, ascending);
+        }
+        else {
+            fprintf(stdout, "Not yet implemented %s\n for sorting algorithms", sort);
         }
 
     }

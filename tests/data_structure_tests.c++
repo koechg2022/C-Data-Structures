@@ -141,20 +141,112 @@ void useful_function_num() {
     }
 
 
-    // fprintf(stdout, "Reached\n");
-    // fprintf(stdout, "100^5 : %ld\n", useful_functions::power<signed long, signed long>(10, 5));
 
-    unsigned long u_list[limit];
+    //===============sorting algorithm tests====================//
 
-    for (index = 0; index < 20; index = index + 1) {
-        val = get_random<unsigned long>();
-        u_list[index] = val;
+
+
+    //======================bubble sort=======================//
+    unsigned long u_list[limit], other_list[limit];
+    signed long s_list[limit], so_list[limit];
+
+    for (index = 0; index < limit; index = index + 1) {
+        u_list[index] = get_random<unsigned long>();
     }
 
-    print_list(u_list, 20);
-    useful_functions::sort_list<unsigned long>(u_list, 20, (char *) "bubble", true);
-    fprintf(stdout, "------------------------------------------------------------------\n");
-    print_list(u_list, 20);
+    useful_functions::sort_list<unsigned long>(u_list, limit, (char *) "bubble", true);
+    for (index = 0; index < limit; index = index + 1) {
+        other_list[index] = u_list[limit - index - 1];
+    }
+    useful_functions::sort_list<unsigned long>(other_list, limit, (char *) "bubble", false);
+
+    for (index = 0; index < limit; index = index + 1) {
+        (u_list[index] == other_list[limit - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit; index = index + 1) {
+        s_list[index] = get_random<signed long>();
+    }
+    useful_functions::sort_list(s_list, limit, (char *) "bubble", true);
+    for (index = 0; index < limit; index = index + 1) {
+        so_list[index] = s_list[limit - index - 1];
+    }
+    useful_functions::sort_list<signed long>(so_list, limit, (char *) "bubble", false);
+
+    for (index = 0; index < limit; index = index + 1) {
+        (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
+    }
+
+
+    //======================selection sort=======================//
+
+    for (index = 0; index < limit; index = index + 1) {
+        u_list[index] = get_random<unsigned long>();
+    }
+
+    useful_functions::sort_list<unsigned long>(u_list, limit, (char *) "selection", true);
+    for (index = 0; index < limit; index = index + 1) {
+        other_list[index] = u_list[limit - index - 1];
+    }
+    useful_functions::sort_list<unsigned long>(other_list, limit, (char *) "selection", false);
+
+    for (index = 0; index < limit; index = index + 1) {
+        (u_list[index] == other_list[limit - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit; index = index + 1) {
+        s_list[index] = get_random<signed long>();
+    }
+    useful_functions::sort_list(s_list, limit, (char *) "selection", true);
+    for (index = 0; index < limit; index = index + 1) {
+        so_list[index] = s_list[limit - index - 1];
+    }
+    useful_functions::sort_list<signed long>(so_list, limit, (char *) "selection", false);
+
+    for (index = 0; index < limit; index = index + 1) {
+        (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
+    }
+
+
+    //======================insertion sort=======================//
+    // Not working as supposed to be. Needs work
+
+    // for (index = 0; index < limit; index = index + 1) {
+    //     u_list[index] = get_random<unsigned long>();
+    // }
+
+    // useful_functions::sort_list<unsigned long>(u_list, limit, (char *) "insertion", true);
+    // for (index = 0; index < limit; index = index + 1) {
+    //     other_list[index] = u_list[limit - index - 1];
+    // }
+    // useful_functions::sort_list<unsigned long>(other_list, limit, (char *) "insertion", false);
+
+    // for (index = 0; index < limit; index = index + 1) {
+    //     (u_list[index] == other_list[limit - index - 1]) ? passed++ : failed++;
+    // }
+
+    // for (index = 0; index < limit; index = index + 1) {
+    //     s_list[index] = get_random<signed long>();
+    // }
+    // useful_functions::sort_list(s_list, limit, (char *) "insertion", true);
+    // for (index = 0; index < limit; index = index + 1) {
+    //     so_list[index] = s_list[limit - index - 1];
+    // }
+    // useful_functions::sort_list<signed long>(so_list, limit, (char *) "insertion", false);
+
+    // for (index = 0; index < limit; index = index + 1) {
+    //     (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
+    // }
+
+    // for display
+
+    signed long a_list[10];
+    for (index = 0; index < 10; index = index + 1) {
+        a_list[index] = get_random<signed long>();
+    }
+    print_list(a_list, 10);
+    useful_functions::sort_list<signed long>(a_list, 10, (char*) "insertion", true);
+    print_list(a_list, 10);
 
 
 }
