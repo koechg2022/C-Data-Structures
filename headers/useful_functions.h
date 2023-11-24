@@ -283,7 +283,7 @@ namespace useful_functions {
                 right_index = right_index + 1;
                 list_index = list_index + 1;
             }
-            fprintf(stdout, "reached with lower_start : %lu, mid_point : %lu, upper_limit : %lu...\n", lower_start, mid_point, upper_limit);
+            // fprintf(stdout, "reached with lower_start : %lu, mid_point : %lu, upper_limit : %lu...\n", lower_start, mid_point, upper_limit);
             // fprintf(stdout, "Reached\n");
             // section sorted between lower_start and upper_limit
 
@@ -301,7 +301,7 @@ namespace useful_functions {
             rec_merge_sort(list, start, mid_index, ascending);
             // fprintf(stdout, "Reached\n");
             rec_merge_sort(list, mid_index + 1, length, ascending);
-            fprintf(stdout, "Reached with start of %lu, mid_index of %lu, and length of %lu.\n", start, mid_index, length);
+            // fprintf(stdout, "Reached with start of %lu, mid_index of %lu, and length of %lu.\n", start, mid_index, length);
             merge(list, start, mid_index, length, ascending);
 
         }
