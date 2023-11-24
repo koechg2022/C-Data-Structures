@@ -1,5 +1,8 @@
 #include <iostream>
 #include <vector>
+#include <random>
+#include "../headers/useful_functions.h"
+
 
 
 
@@ -20,6 +23,10 @@ std::vector<std::string> imagine_dragons = {
 };
 
 
+
+
+
+
 std::vector<std::string> the_beetles = {
     "Blackbird singing in the dead of night",
     "Take these broken wings and learn to fly",
@@ -33,7 +40,19 @@ std::vector<std::string> the_beetles = {
 
 
 
-void simple_test_linked_list();
+
+
+unsigned long const limit = 1000;
+unsigned long passed = 0, failed = 0;
+
+
+template <typename data_> data_ get_random();
+
+
+
+void useful_function_tests();
+
+
 
 
 int main(int len, char** args) {
@@ -41,15 +60,53 @@ int main(int len, char** args) {
     int index, increase = 1;
 
     for (index = 1; index < len; index = index + 1) {
-
+        
     }
-    simple_test_linked_list();
+    useful_function_tests();
+    fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
 
 
 
-void simple_test_linked_list() {
+
+template <typename data_> data_ get_random() {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<data_> distr( -1 * limit, limit);
+    return (data_) distr(gen);
+}
+
+
+
+
+void useful_function_tests() {
+
+    // for useful_functions::absolute
+    signed long val;
     unsigned long index;
-    
+    for (index = 0; index < limit; index = index + 1) {
+        val = get_random<signed long>();
+        if (val < 0) {
+            if ((useful_functions::absolute<signed long>(val) > 0) && ((useful_functions::absolute<signed long>(val) == (-1 * val)))) {
+                passed = passed + 1;
+            }
+            else {
+                failed = failed + 1;
+                fprintf(stdout, "va < 0 fail. Failing on %li : %li\n", val, useful_functions::absolute<signed long>(val));
+            }
+        }
+        else if (val == 0) {
+            (useful_functions::absolute<signed long>(val) == val) ? passed++ : failed++;
+        }
+        else {
+            if ((useful_functions::absolute<signed long>(val) > 0) && ((useful_functions::absolute<signed long>(val) == val))) {
+                passed = passed + 1;
+            }
+            else {
+                fprintf(stdout, "else branch fail. Failing on %li : %li\n", val, useful_functions::absolute<signed long>(val));
+                failed = failed + 1;
+            }
+        }
+    }
 }

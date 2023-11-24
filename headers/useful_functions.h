@@ -85,23 +85,69 @@ namespace useful_functions {
 
     }
 
-    /*=====================================useful functions generic=====================================*/
+    /*=====================================Useable useful functions=====================================*/
 
-    template <typename data_> data_ absolute(data_ val) {
+
+    /*=====================================Useful functions generic=====================================*/
+
+    /**
+     * @brief Get the absolute value of the data passed in.
+     * 
+     * @param val `(generic but defaulted to a signed long)` : The value whose
+     * absolute value is to be returned.
+     * 
+     * @note Whatever data type is passed in is also returned.
+     * @note Tested and works.
+     * 
+     * @returns `(generic data type)` the absolute value of the data that is passed in.
+    */
+    template <typename data_ = signed long> data_ absolute(data_ val) {
         return (val < 0) ? val * -1 : val;
     }
 
-    
+    /**
+     * @brief Get the maximum of the two pieces of data passed in.
+     * 
+     * @note Both arguments passed in must have the same data type.
+     * 
+     * @param first `(generic)` : One of the two `generics` to be compared.
+     * @param second `(generic)` : The other of the two `generics` to be compared.
+     * 
+     * @returns `(generic)` : The largest value of the two pieces of data passed in.
+    */
     template <typename data_> data_ max_data(data_ first, data_ second) {
         return (first >= second) ? first : second;
     }
 
 
+    /**
+     * @brief Get the minimum of the two pieces of data passed in.
+     * 
+     * @note Both the arguments passed in must have the same data type.
+     * 
+     * @param first `(generic)` : One of the two `generics` to be compared.
+     * @param second `(generic)` : The other of the two `generics` to be compared.
+     * 
+     * @returns `(generic)` : The smallest value of the two pieces of data passed in.
+    */
     template <typename data_> data_ min_data(data_ first, data_ second) {
         return (first <= second) ? first : second;
     }
 
 
+    /**
+     * @brief Get the largest value in an array of a generic type of data.
+     * 
+     * @note Any piece of data can be passed in, but it must be capable of
+     * the greater than or equal to & less than or equal to comparables.
+     * 
+     * @param list `(list)` : An array of length `length` whose largest piece of data is to be returned.
+     * 
+     * @param length `(length)` : The length of the array lassed in.
+     * 
+     * @returns `(unsigned long)` : The index of the largest piece of data in the list.
+     * 
+    */
     template <typename data_> unsigned long max_in_list(data_ list[], unsigned long length) {
         unsigned long the_answer = 0, index;
         for (index = 0; index < length; index = index + 1) {
