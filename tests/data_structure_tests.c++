@@ -83,7 +83,7 @@ template <typename data_> data_ get_random() {
 void useful_function_tests() {
 
     // for useful_functions::absolute
-    signed long val;
+    signed long val, other;
     unsigned long index;
     for (index = 0; index < limit; index = index + 1) {
         val = get_random<signed long>();
@@ -112,8 +112,26 @@ void useful_function_tests() {
 
 
 
-    //
+    // useful_functions::max_data(data_, data_)
+    for (index = 0; index < limit; index = index + 1) {
+        other = get_random<signed long>();
+        val = get_random<signed long>();
+        if (val >= other) {
+            (useful_functions::max_data<signed long>(val, other) == val) ? passed++ : failed++;
+            continue;
+        }
+        (useful_functions::max_data<signed long>(val, other) == other) ? passed++ : failed++;
+    }
 
-
+    // useful_functions::min_data(data_, data_)
+    for (index = 0; index < limit; index = index + 1) {
+        other = get_random<signed long>();
+        val = get_random<signed long>();
+        if (val <= other) {
+            (useful_functions::min_data<signed long>(val, other) == val) ? passed++ : failed++;
+            continue;
+        }
+        (useful_functions::min_data<signed long>(val, other) == other) ? passed++ : failed++;
+    }
 
 }
