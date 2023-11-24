@@ -48,9 +48,9 @@ unsigned long passed = 0, failed = 0;
 
 template <typename data_> data_ get_random();
 
+template <typename data_> void print_list(data_* list, unsigned long length);
 
-
-void useful_function_tests();
+void useful_function_num();
 
 
 
@@ -62,7 +62,7 @@ int main(int len, char** args) {
     for (index = 1; index < len; index = index + 1) {
         
     }
-    useful_function_tests();
+    useful_function_num();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -78,9 +78,15 @@ template <typename data_> data_ get_random() {
 }
 
 
+template <typename data_> void print_list(data_* list, unsigned long length) {
+    unsigned long index;
+    for (index = 0; index < length; index = index + 1) {
+        fprintf(stdout, "%lu%s", list[index], (index + 1 < length) ? ", " : "\n");
+    }
+}
 
 
-void useful_function_tests() {
+void useful_function_num() {
 
     // for useful_functions::absolute
     signed long val, other;
@@ -133,5 +139,22 @@ void useful_function_tests() {
         }
         (useful_functions::min_data<signed long>(val, other) == other) ? passed++ : failed++;
     }
+
+
+    // fprintf(stdout, "Reached\n");
+    // fprintf(stdout, "100^5 : %ld\n", useful_functions::power<signed long, signed long>(10, 5));
+
+    unsigned long u_list[limit];
+
+    for (index = 0; index < 20; index = index + 1) {
+        val = get_random<unsigned long>();
+        u_list[index] = val;
+    }
+
+    print_list(u_list, 20);
+    useful_functions::sort_list<unsigned long>(u_list, 20, (char *) "bubble", true);
+    fprintf(stdout, "------------------------------------------------------------------\n");
+    print_list(u_list, 20);
+
 
 }
