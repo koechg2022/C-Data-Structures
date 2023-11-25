@@ -2,6 +2,26 @@
  * @author Geoffrey Koech
  * @since Nov 23rd 2023
  * @version 0.8
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * <p>
+ * 
+ * Some functions that I find useful. I tried to implement
+ * then without the use of any imported functions.
+ * 
+ * </p>
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
 */
 
 
@@ -12,17 +32,14 @@
 
 
 
-#ifndef EOF
-#include <stdio.h>
-#endif
 
 
 
 
 
-#ifndef EXIT_SUCCESS
-#include <stdlib.h>
-#endif
+
+
+
 
 
 
@@ -704,6 +721,18 @@ namespace useful_functions {
     }
 
 
+
+
+
+
+    /*=====================================useful functions for sorting algorithms=====================================*/
+
+
+
+
+
+
+
     /**
      * @brief Use this method to sort a list in either ascending or descending order.
      * 
@@ -740,8 +769,6 @@ namespace useful_functions {
         }
 
         else if (same_string((char *) "merge", sort)) {
-            // fprintf(stdout, "Merge Sort algorithm in progess\n");
-            // exit(NOT_IMPLEMENTED_LOGIC);
             merge_sort(list, length, ascending);
         }
 
@@ -750,6 +777,11 @@ namespace useful_functions {
         }
 
     }
+
+
+
+
+
 
 
 }
