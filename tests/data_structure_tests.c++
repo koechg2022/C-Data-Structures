@@ -242,25 +242,44 @@ void useful_function_num() {
     }
 
 
-    //=======================merge sort========================//
-    // Being implemented
+    //=======================merge sort=========================//
 
-    // for (index = 0; index < limit / 100; index = index + 1) {
-    //     u_list[index] = get_random<unsigned long>();
-    // }
-    // fprintf(stdout, "\n\nUnsorted list:\n");
-    // print_list<unsigned long>(u_list, limit / 100);
-    // useful_functions::sort_list<unsigned long>(u_list, limit / 100, (char *) "merge", true);
-    // fprintf(stdout, "Sorted list:\n");
-    // print_list<unsigned long>(u_list, limit / 100);
-    // for (index = 0; index < limit / 100; index = index + 1) {
-    //     other_list[index] = u_list[limit / 100 - index - 1];
-    // }
-    // useful_functions::sort_list<unsigned long>(other_list, limit / 100, (char *) "merge", false);
+    //       -----------  Will go here  -----------            //
 
-    // for (index = 0; index < limit / 100; index = index + 1) {
-    //     (u_list[index] == other_list[limit / 100 - index - 1]) ? passed++ : failed++;
-    // }
+    //=====================merge sort end=======================//
+
+    unsigned char c;
+    for (c = 0; c < (unsigned char) - 1; c = c + 1) {
+
+        if ((c >= 'A') && (c <= 'Z')) {
+            (useful_functions::is_caps(c)) ? passed++ : failed++;
+            (!useful_functions::is_lower(c)) ? passed ++ : failed++;
+            (useful_functions::is_letter(c)) ? passed++ : failed++;
+            (!useful_functions::is_number(c)) ? passed++ : failed++;
+        }
+
+        else if ((c >= 'a') && (c <= 'z')) {
+            (!useful_functions::is_caps(c)) ? passed++ : failed++;
+            (useful_functions::is_lower(c)) ? passed ++ : failed++;
+            (useful_functions::is_letter(c)) ? passed++ : failed++;
+            (!useful_functions::is_number(c)) ? passed++ : failed++;
+        }
+
+        else if ((c >= '0') && (c <= '9')) {
+            (!useful_functions::is_caps(c)) ? passed++ : failed++;
+            (!useful_functions::is_lower(c)) ? passed ++ : failed++;
+            (!useful_functions::is_letter(c)) ? passed++ : failed++;
+            (useful_functions::is_number(c)) ? passed++ : failed++;
+        }
+
+        else {
+            // fprintf(stdout, "%c\n", c);
+            (!useful_functions::is_caps(c)) ? passed++ : failed++;
+            (!useful_functions::is_lower(c)) ? passed++ : failed++;
+            (!useful_functions::is_letter(c)) ? passed++ : failed++;
+            (!useful_functions::is_number(c)) ? passed++ : failed++;
+        }
+    }
 
 
 }
