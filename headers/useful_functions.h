@@ -302,6 +302,23 @@ namespace useful_functions {
         }
 
 
+        /**
+         * @brief Implementation of the merge sort algorithm.
+         * 
+         * @note The merge sort algorithm works by applying a divide and conquor approach. 
+         * The data to be sorted must be comparable with the greater than or equal to (>=) 
+         * operator, less than or equal to (<=), greater than (<), and less than (>) operators.
+         * 
+         * @param list `(Generic)`: A list of the data to be sorted. Must be comparable data.
+         * 
+         * @param length `(unsigned long)` : The length of the list to be sorted.
+         * 
+         * @param ascending `(bool)` : A flag to ensure that the list passed in is sorted in descending order
+         * or ascending order.
+         * 
+         * @returns void.
+         * 
+        */
         template <typename data_> void merge_sort(data_* list, unsigned long length, bool ascending = true) {
             rec_merge_sort(list, 0, length, ascending);
         }
@@ -317,18 +334,18 @@ namespace useful_functions {
     /*=====================================Useable useful functions=====================================*/
 
 
-    /*=====================================Useful functions generic=====================================*/
+    /*=====================================Useful functions Generic=====================================*/
 
     /**
      * @brief Get the absolute value of the data passed in.
      * 
-     * @param val `(generic but defaulted to a signed long)` : The value whose
+     * @param val `(Generic but defaulted to a signed long)` : The value whose
      * absolute value is to be returned.
      * 
      * @note Whatever data type is passed in is also returned.
      * @note Tested and works.
      * 
-     * @returns `(generic data type)` the absolute value of the data that is passed in.
+     * @returns `(Generic data type)` the absolute value of the data that is passed in.
     */
     template <typename data_ = signed long> data_ absolute(data_ val) {
         return (val < 0) ? val * -1 : val;
@@ -341,10 +358,10 @@ namespace useful_functions {
      * 
      * @note Both arguments passed in must have the same data type.
      * 
-     * @param first `(generic)` : One of the two `generics` to be compared.
-     * @param second `(generic)` : The other of the two `generics` to be compared.
+     * @param first `(Generic)` : One of the two `Generics` to be compared.
+     * @param second `(Generic)` : The other of the two `Generics` to be compared.
      * 
-     * @returns `(generic)` : The largest value of the two pieces of data passed in.
+     * @returns `(Generic)` : The largest value of the two pieces of data passed in.
     */
     template <typename data_> data_ max_data(data_ first, data_ second) {
         return (first >= second) ? first : second;
@@ -357,10 +374,10 @@ namespace useful_functions {
      * 
      * @note Both the arguments passed in must have the same data type.
      * 
-     * @param first `(generic)` : One of the two `generics` to be compared.
-     * @param second `(generic)` : The other of the two `generics` to be compared.
+     * @param first `(Generic)` : One of the two `Generics` to be compared.
+     * @param second `(Generic)` : The other of the two `Generics` to be compared.
      * 
-     * @returns `(generic)` : The smallest value of the two pieces of data passed in.
+     * @returns `(Generic)` : The smallest value of the two pieces of data passed in.
     */
     template <typename data_> data_ min_data(data_ first, data_ second) {
         return (first <= second) ? first : second;
@@ -369,7 +386,7 @@ namespace useful_functions {
 
 
     /**
-     * @brief Get the largest value in an array of a generic type of data.
+     * @brief Get the largest value in an array of a Generic type of data.
      * 
      * @note Any piece of data can be passed in, but it must be capable of
      * the greater than or equal to & less than or equal to comparables.
@@ -395,7 +412,7 @@ namespace useful_functions {
 
 
     /**
-     * @brief Get the smallest value in an array of a generic type of data.
+     * @brief Get the smallest value in an array of a Generic type of data.
      * 
      * @note Any piece of data can be passed in, but it must be capable of
      * the greater than or equal to and less than or equal to comparables.
@@ -687,6 +704,27 @@ namespace useful_functions {
     }
 
 
+    /**
+     * @brief Use this method to sort a list in either ascending or descending order.
+     * 
+     * @note If you pass in a list of pointers, the pointers will be reallanged within the list. 
+     * @note The data to be sorted must be comparable with the greater than or equal to (>=) operator, 
+     * the less than or equal to (<=) operator, the greater than operator (>), and the less 
+     * than operator (<).
+     * 
+     * @param list `(Generic)` : The list of the data to be sorted.
+     * 
+     * @param length `(unsigned long)` : The length of the list to be sorted.
+     * 
+     * @param sort `(char *)` : A string representing what type of sorting algorithm is to be used. 
+     * Supported sorting algorithms include:
+     * 
+     * @param ascending `(bool)` : A bool flag to indicate how the data is to be sorted. If true, data is 
+     * sorted in ascending order, if false, data is sorted in descending order.
+     * 
+     * @returns void.
+     * 
+    */
     template <typename data_> void sort_list(data_ list[], unsigned long length, char* sort = (char*) "bubble", bool ascending = true) {
         
         if (same_string((char*) "bubble", sort)) {
