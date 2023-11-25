@@ -10,16 +10,6 @@ namespace data_structures {
 
 	namespace {
 
-		template <typename data_> data_ absolute(data_ value) {
-			return ((value < 0) ? (data_) (value * -1) : (data_) value);
-		}
-
-		template<typename data_> data_* absolute(data_* value) {
-			if (*value < 0) {
-				*value = (data_) (*value * -1);
-			}
-			return value;
-		}
 
 		template <typename data_> class node_root {
 
@@ -47,6 +37,9 @@ namespace data_structures {
 
 		};
 
+
+
+
 		template <typename data_, typename indx_ = signed long> class numbered_node : public node_root<data_> {
 
 			protected:
@@ -71,6 +64,9 @@ namespace data_structures {
 				}
 
 		};
+
+
+
 
 		template <typename data_> class linear_node : public node_root<data_> {
 			
@@ -148,7 +144,6 @@ namespace data_structures {
 			linear_linked_list() {
 				this->front = this->rear = this->frame = nullptr;
 				this->size = 0;
-				// std::cout << "Just called default constructor" << std::endl;
 			}
 
 
@@ -194,92 +189,139 @@ namespace data_structures {
 			// Comparison operators
 
 			bool operator==(linear_linked_list<data_>& other) {
-				if (this == &other) {
-					return true;
-				}
-				if (this->size == other.length()) {
-					unsigned long index;
-					for (index = 0; index < this->size; index = index + 1) {
-						if (this->peek(index) != other.peek(index)) {
-							return false;
-						}
-					}
-					return true;
-				}
-				return false;
+				fprintf(stderr, "== operator not yet implemented\n");
+				exit(EXIT_FAILURE);
 			}
+
+
 
 
 			bool operator!=(linear_linked_list<data_>& other) {
-				if (this == &other) {
-					return false;
-				}
-				if (this->size != other.length()) {
-					return true;
-				}
-				// the sizes are the same.
-				unsigned long index;
-				for (index = 0; index < this->size; index = index + 1) {
-					if (this->peek(index) != other.peek(index)) {
-						return true;
-					}
-				}
-				return false;
+				fprintf(stderr, "!= operator not yet implemented\n");
+				exit(EXIT_FAILURE);
 			}
+
+
+
+
+			bool operator<=(linear_linked_list<data_>& other) {
+				fprintf(stderr, "<= operator not yet implemented\n");
+				exit(EXIT_FAILURE);
+			}
+
+
 
 
 			data_& operator [](signed long index) {
-				try {
-					this->peek(index);
-					// frame is now at index.
-					return this->frame->get_data_ref();
-				}
-				catch (std::range_error except) {
-					// std::cout << "Illegal index reference " << index << std::endl;
-					// exit(EXIT_FAILURE);
-					throw except;
-				}
-
+				fprintf(stderr, "[] operator not yet implemented\n");
+				exit(EXIT_FAILURE);
 			}
 
 
+
+
+
+			/**
+			 * @brief Check if the current linked list is empty or not.
+			 * 
+			 * @returns `(bool)` : true if the linked list is empty, false otherwise.
+			*/
 			bool empty() const {
 				return (this->size == 0);
 			}
 
+
+
+
+			/**
+			 * @brief Get the size of the linked list.
+			 * 
+			 * @returns `(unsigned long)` : The length of the linked list.
+			*/
 			unsigned long length() const {
 				return this->size;
 			}
 
 
-			void push(data_ new_data, signed long index = -1) {
-				unsigned long add_to;
-				
-				this->size = this->size + 1;
-			}
 
 
-			data_ peek(signed long index = -1) {
-				// std::cout << "Raw peeking index " << index << std::endl;
-				if (this->size == 0) {
-					throw std::range_error(std::string("Cannot peek empty linked list"));
-				}
-				return this->frame->get_data();
-			}
 
-
+			/**
+			 * @brief Empties out the linked list and frees up memory.
+			 * 
+			 * @returns void.
+			*/
 			void reset() {
 				// std::cout << "Inside reset method" << std::endl;
 				this->frame = this->front;
 				while (this->frame != nullptr) {
 					this->front = this->frame->get_next();
-					// std::cout << "Deleting " << this->frame << std::endl << "\t->\"" << this->frame->get_data() << std::endl;
 					delete this->frame;
 					this->frame = this->front;
 				}
 				this->size = 0;
-				// std::cout << "Finished reset call" << std::endl;
 			}
+
+
+
+
+			void push(data_ new_data, signed long index = -1) {
+				unsigned long add_index = (index < 0) ? ((unsigned long) useful_functions::absolute<signed long>(index)) + 1 - this->size : (unsigned long) useful_functions::absolute<signed long>(index);
+				if (add_index > this->size) {
+					throw std::range_error("Cannot push data to negative index whose absolute value converts to a larger value than the size of the list");
+				}
+				
+				linear_node<data_>* new_node = new linear_node<data_>(new_data);
+				
+				if (this->size == 0) {
+					this->front = this->rear = this->frame = new_node;
+				}
+
+				else {
+					
+					if (this->size == 1) {
+
+						if (add_index == 0) {
+							this->front->set_previous(new_node);
+							this->front->get_previous()->set_next(this->front);
+							this->front = this->front->get_previous();
+							this->frame = this->front;
+						}
+
+						else {
+							// index is 1
+							this->rear->set_next(new_node);
+							this->rear->get_next()->set_previous(this->rear);
+							this->rear = this->rear->get_next();
+							this->frame = this->rear;
+						}
+
+					}
+
+					else {
+						if (add_index == 0) {
+							this->front->set_previous(new_node);
+							this->front->get_previous()->set_next(this->front);
+							this->front = this->front->get_previous();
+							this->frame = this->front;
+						}
+						else if (add_index == this->size) {
+							this->rear->set_next(new_node);
+							this->rear->get_next()->set_previous(this->rear);
+							this->rear = this->rear->get_next();
+							this->frame = this->rear;
+						}
+						else {
+							// this is where some extra work comes into play.
+							
+						}
+					}
+
+				}
+				this->size = this->size + 1;
+			}
+
+
 
 
 	};
