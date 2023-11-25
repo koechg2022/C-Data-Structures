@@ -57,7 +57,12 @@ template <typename data_> void print_list(data_* list, unsigned long length);
 
 
 
-void useful_function();
+void useful_functions_tests();
+
+
+
+
+void useful_functions_tests_2();
 
 
 
@@ -74,7 +79,7 @@ int main(int len, char** args) {
     for (index = 1; index < len; index = index + 1) {
         
     }
-    useful_function();
+    useful_functions_tests();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -102,12 +107,7 @@ template <typename data_> void print_list(data_* list, unsigned long length) {
 
 
 
-
-
-
-
-
-void useful_function() {
+void useful_functions_tests() {
 
     // for useful_functions::absolute
     signed long val, other;
@@ -169,6 +169,9 @@ void useful_function() {
     unsigned long u_list[limit], other_list[limit];
     signed long s_list[limit], so_list[limit];
 
+    unsigned long* u_list_ptr[limit], *other_list_ptr[limit];
+    signed long* s_list_ptr[limit], *so_list_ptr[limit];
+
 
     //=========================bubble sort==========================//
     // Works
@@ -199,6 +202,7 @@ void useful_function() {
     for (index = 0; index < limit; index = index + 1) {
         (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
     }
+
 
 
     //======================selection sort=======================//
@@ -333,15 +337,17 @@ void useful_function() {
 
 
 
+void useful_functions_tests_2() {
+    unsigned long* unsigned_pointers[limit / 100], *other_unsigned[limit / 100];
+    
+
+}
 
 
 
 
 void linear_linked_list_tests() {
-
-    data_structures::linear_linked_list<std::string> dragons_list;
-    (dragons_list.empty()) ? passed++ : failed++;
-    (dragons_list.length() == 0) ? passed++ : failed++;
+    exit(NOT_IMPLEMENTED_LOGIC);
 
 }
 

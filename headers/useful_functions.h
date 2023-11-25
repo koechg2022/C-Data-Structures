@@ -182,6 +182,27 @@ namespace useful_functions {
         }
 
 
+
+        // Untested
+        template <typename data_> void bubble_sort_pointers(data_** list, unsigned long length, bool ascending = true) {
+
+            unsigned long from_left, from_right;
+            for (from_right = length - 1; from_right >= 0; from_right = from_right - 1) {
+
+                for (from_left = 0; from_left < from_right; from_left = from_left + 1) {
+
+                    if (((ascending) && (*list[from_left] > *list[from_right])) || ((!ascending) && (*list[from_left] < *list[from_right]))) {
+                        swap<data_*>(list[from_left], list[from_right]);
+                    }
+
+                }
+                
+            }
+
+        }
+
+
+
         /**
          * @brief Implementation of selection_sort.
          * 
@@ -774,6 +795,20 @@ namespace useful_functions {
 
         else {
             fprintf(stdout, "Not yet implemented %s\n for sorting algorithms", sort);
+        }
+
+    }
+
+
+
+    template <typename data_> void sort_list(data_** list, unsigned long length, char* sort = (char *) "bubble", bool ascending = true) {
+
+        if (same_string((char *) "bubble", sort)) {
+            bubble_sort_pointers<data_>(list, length, ascending);
+        }
+
+        else {
+            fprintf(stdout, "Not yet implemented %s\n for sorting pointers algorithms", sort);
         }
 
     }
