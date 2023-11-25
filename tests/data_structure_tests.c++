@@ -244,7 +244,33 @@ void useful_function_num() {
 
     //=======================merge sort=========================//
 
-    //       -----------  Will go here  -----------            //
+    for (index = 0; index < limit; index = index + 1) {
+        u_list[index] = get_random<unsigned long>();
+    }
+
+    useful_functions::sort_list<unsigned long>(u_list, limit, (char *) "merge", true);
+    for (index = 0; index < limit; index = index + 1) {
+        other_list[index] = u_list[limit - index - 1];
+    }
+    useful_functions::sort_list<unsigned long>(other_list, limit, (char *) "merge", false);
+
+    for (index = 0; index < limit; index = index + 1) {
+        (u_list[index] == other_list[limit - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit; index = index + 1) {
+        s_list[index] = get_random<signed long>();
+    }
+    useful_functions::sort_list(s_list, limit, (char *) "merge", true);
+    for (index = 0; index < limit; index = index + 1) {
+        so_list[index] = s_list[limit - index - 1];
+    }
+    useful_functions::sort_list<signed long>(so_list, limit, (char *) "merge", false);
+
+    for (index = 0; index < limit; index = index + 1) {
+        (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
+    }
+
 
     //=====================merge sort end=======================//
 

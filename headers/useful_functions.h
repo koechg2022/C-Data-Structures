@@ -234,26 +234,70 @@ namespace useful_functions {
 
 
 
-        template <typename data_> void merge(data_* list, unsigned long lower_start, unsigned long mid_point, unsigned long upper_limit, bool ascending = true) {
-            
-            // create the two sublists and fill them.
+
+        /*=====================================For Merge Sort=====================================*/
+
+        template <typename data_> void merge(data_* the_list, unsigned long start, unsigned long middle, unsigned long end, bool ascending = true) {
+
+            data_ left_list[middle - start + 1];
+            data_ right_list[end - middle];
             unsigned long left_index, right_index, list_index;
-            data_ left_list[mid_point - lower_start];
-            data_ right_list[upper_limit - mid_point];
+
+            for (left_index = 0; left_index < middle - start + 1; left_index = left_index + 1) {
+                left_list[left_index] = the_list[start + left_index];
+            }
+
+            for (right_index = 0; right_index < end - middle; right_index = right_index + 1) {
+                right_list[right_index] = the_list[right_index + middle + 1];
+            }
+
+            list_index = start;
+
+            while ((left_index < middle - start + 1) && (right_index < end - middle)) {
+
+                if (((ascending) && (left_list[left_index] <= right_list[right_index])) || (!(ascending) && (left_list[left_index] >= right_list[right_index]))) {
+                    the_list[list_index] = left_list[left_index];
+                    left_index = left_index + 1;
+                }
+
+                else {
+                    the_list[list_index] = right_list[right_index];
+                    right_index = right_index + 1;
+                }
+                
+                list_index = list_index + 1;
+            }
+
+
+            while (left_index < middle - start + 1) {
+                the_list[list_index] = left_list[left_index];
+                left_index = left_index + 1;
+                list_index = list_index + 1;
+            }
+
+
+            while (right_index < end - middle) {
+                the_list[list_index] = right_list[right_index];
+                right_index = right_index + 1;
+                list_index = list_index + 1;
+            }
+
+
 
         }
 
 
-        template <typename data_> void rec_merge_sort(data_* list, unsigned long start, unsigned long length, bool ascending = true) {
+        template <typename data_> void rec_merge_sort(data_* the_list, unsigned long start, unsigned long end, bool ascending = true) {
 
-            if (start >= length) {
-                return;
+            if (start < end) {
+                unsigned long mid_index = start + (end - start) / 2;
+                rec_merge_sort(the_list, start, mid_index, ascending);
+                rec_merge_sort(the_list, mid_index + 1, end, ascending);
+
+                // merge the sorted subarrays
+                merge(the_list, start, mid_index, end);
+
             }
-            // edge case for length is when length is the last index of list
-            unsigned long mid_index = start + (length - start) / 2;
-            rec_merge_sort(list, start, mid_index, ascending);
-            rec_merge_sort(list, mid_index + 1, length, ascending);
-            merge(list, start, mid_index, length, ascending);
 
         }
 
@@ -261,6 +305,10 @@ namespace useful_functions {
         template <typename data_> void merge_sort(data_* list, unsigned long length, bool ascending = true) {
             rec_merge_sort(list, 0, length, ascending);
         }
+
+
+
+        /*=====================================Merge Sort end=====================================*/
 
 
 
@@ -654,8 +702,9 @@ namespace useful_functions {
         }
 
         else if (same_string((char *) "merge", sort)) {
-            fprintf(stdout, "Merge Sort algorithm in progess\n");
-            // merge_sort<data_>(list, length - 1, ascending);
+            // fprintf(stdout, "Merge Sort algorithm in progess\n");
+            // exit(NOT_IMPLEMENTED_LOGIC);
+            merge_sort(list, length, ascending);
         }
 
         else {
