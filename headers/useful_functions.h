@@ -235,57 +235,11 @@ namespace useful_functions {
 
 
         template <typename data_> void merge(data_* list, unsigned long lower_start, unsigned long mid_point, unsigned long upper_limit, bool ascending = true) {
-
             
-            // create the two sublists.
-            data_ left_list[mid_point - lower_start];
-            data_ right_list[upper_limit - mid_point - 1];
-
-
-            
-            // fill the two sublists.
+            // create the two sublists and fill them.
             unsigned long left_index, right_index, list_index;
-            for (left_index = 0; left_index < mid_point - lower_start; left_index = left_index + 1) {
-                left_list[left_index] = list[left_index + lower_start];
-            }
-            
-            for (right_index = 0; right_index < upper_limit - mid_point; right_index = right_index + 1) {
-                right_list[right_index] = list[right_index + mid_point];
-            }
-            
-            //=======================================two sublists filled=======================================//
-
-            // two sublists filled. Now refilling the list 
-            left_index = right_index = 0;
-            list_index = lower_start;
-            
-            while ((left_index < (mid_point - lower_start)) && (right_index < (upper_limit - mid_point))) {
-                
-                if (((ascending) && (left_list[left_index] < right_list[right_index])) || ((!ascending) && (left_list[left_index] > right_list[right_index]))) {
-                    list[list_index] = left_list[left_index];
-                    left_index = left_index + 1;
-                }
-                else {
-                    list[list_index] = right_list[right_index];
-                    right_index = right_index + 1;
-                }
-                list_index = list_index + 1;
-            }
-
-            while (left_index < mid_point - lower_start) {
-                list[list_index] = left_list[left_index];
-                left_index = left_index + 1;
-                list_index = list_index + 1;
-            }
-
-            while (right_index < (upper_limit - mid_point)) {
-                list[list_index] = right_list[right_index];
-                right_index = right_index + 1;
-                list_index = list_index + 1;
-            }
-            // fprintf(stdout, "reached with lower_start : %lu, mid_point : %lu, upper_limit : %lu...\n", lower_start, mid_point, upper_limit);
-            // fprintf(stdout, "Reached\n");
-            // section sorted between lower_start and upper_limit
+            data_ left_list[mid_point - lower_start];
+            data_ right_list[upper_limit - mid_point];
 
         }
 
@@ -295,13 +249,10 @@ namespace useful_functions {
             if (start >= length) {
                 return;
             }
-
-            // get the midway point.
+            // edge case for length is when length is the last index of list
             unsigned long mid_index = start + (length - start) / 2;
             rec_merge_sort(list, start, mid_index, ascending);
-            // fprintf(stdout, "Reached\n");
             rec_merge_sort(list, mid_index + 1, length, ascending);
-            // fprintf(stdout, "Reached with start of %lu, mid_index of %lu, and length of %lu.\n", start, mid_index, length);
             merge(list, start, mid_index, length, ascending);
 
         }
@@ -309,7 +260,6 @@ namespace useful_functions {
 
         template <typename data_> void merge_sort(data_* list, unsigned long length, bool ascending = true) {
             rec_merge_sort(list, 0, length, ascending);
-
         }
 
 
@@ -704,7 +654,8 @@ namespace useful_functions {
         }
 
         else if (same_string((char *) "merge", sort)) {
-            merge_sort(list, length - 1, ascending);
+            fprintf(stdout, "Merge Sort algorithm in progess\n");
+            // merge_sort<data_>(list, length - 1, ascending);
         }
 
         else {

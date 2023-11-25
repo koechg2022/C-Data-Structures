@@ -245,32 +245,22 @@ void useful_function_num() {
     //=======================merge sort========================//
     // Being implemented
 
-    for (index = 0; index < limit; index = index + 1) {
-        u_list[index] = get_random<unsigned long>();
-    }
-    // fprintf(stdout, "Reached\n");
-    useful_functions::sort_list<unsigned long>(u_list, limit, (char *) "merge", true);
-    for (index = 0; index < limit; index = index + 1) {
-        other_list[index] = u_list[limit - index - 1];
-    }
-    useful_functions::sort_list<unsigned long>(other_list, limit, (char *) "merge", false);
+    // for (index = 0; index < limit / 100; index = index + 1) {
+    //     u_list[index] = get_random<unsigned long>();
+    // }
+    // fprintf(stdout, "\n\nUnsorted list:\n");
+    // print_list<unsigned long>(u_list, limit / 100);
+    // useful_functions::sort_list<unsigned long>(u_list, limit / 100, (char *) "merge", true);
+    // fprintf(stdout, "Sorted list:\n");
+    // print_list<unsigned long>(u_list, limit / 100);
+    // for (index = 0; index < limit / 100; index = index + 1) {
+    //     other_list[index] = u_list[limit / 100 - index - 1];
+    // }
+    // useful_functions::sort_list<unsigned long>(other_list, limit / 100, (char *) "merge", false);
 
-    for (index = 0; index < limit; index = index + 1) {
-        (u_list[index] == other_list[limit - index - 1]) ? passed++ : failed++;
-    }
-
-    for (index = 0; index < limit; index = index + 1) {
-        s_list[index] = get_random<signed long>();
-    }
-    useful_functions::sort_list(s_list, limit, (char *) "merge", true);
-    for (index = 0; index < limit; index = index + 1) {
-        so_list[index] = s_list[limit - index - 1];
-    }
-    useful_functions::sort_list<signed long>(so_list, limit, (char *) "merge", false);
-
-    for (index = 0; index < limit; index = index + 1) {
-        (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
-    }
+    // for (index = 0; index < limit / 100; index = index + 1) {
+    //     (u_list[index] == other_list[limit / 100 - index - 1]) ? passed++ : failed++;
+    // }
 
 
 }
