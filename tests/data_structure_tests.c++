@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <stdlib.h>
 #include "../headers/useful_functions.h"
-
-
+#include "../headers/structures.h"
 
 
 
@@ -46,11 +46,23 @@ unsigned long const limit = 1000;
 unsigned long passed = 0, failed = 0;
 
 
+
 template <typename data_> data_ get_random();
+
+
+
 
 template <typename data_> void print_list(data_* list, unsigned long length);
 
-void useful_function_num();
+
+
+
+void useful_function();
+
+
+
+
+void linear_linked_list_tests();
 
 
 
@@ -62,7 +74,7 @@ int main(int len, char** args) {
     for (index = 1; index < len; index = index + 1) {
         
     }
-    useful_function_num();
+    useful_function();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -78,6 +90,8 @@ template <typename data_> data_ get_random() {
 }
 
 
+
+
 template <typename data_> void print_list(data_* list, unsigned long length) {
     unsigned long index;
     for (index = 0; index < length; index = index + 1) {
@@ -86,7 +100,14 @@ template <typename data_> void print_list(data_* list, unsigned long length) {
 }
 
 
-void useful_function_num() {
+
+
+
+
+
+
+
+void useful_function() {
 
     // for useful_functions::absolute
     signed long val, other;
@@ -309,3 +330,22 @@ void useful_function_num() {
 
 
 }
+
+
+
+
+
+
+
+void linear_linked_list_tests() {
+
+    data_structures::linear_linked_list<std::string> dragons_list;
+    (dragons_list.empty()) ? passed++ : failed++;
+    (dragons_list.length() == 0) ? passed++ : failed++;
+
+}
+
+
+
+
+

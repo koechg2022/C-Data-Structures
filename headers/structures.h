@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "useful_functions.h"
 
 
 
@@ -114,7 +113,7 @@ namespace data_structures {
 			unsigned long size, frame_index;
 
 			void node_shifter(linear_node<data_>* this_node, unsigned long node_index, signed long by) {
-				std::cout << "\t\tCall to node_shifter(" << "\"" << this_node->get_data() << "\", " << node_index << ", " << by << ")" << std::endl;
+				// std::cout << "\t\tCall to node_shifter(" << "\"" << this_node->get_data() << "\", " << node_index << ", " << by << ")" << // std::endl;
 				signed long start_index = (signed long) node_index;
 				while ((by != 0) && (this_node != nullptr) && (node_index != by)) {
 					if (by > 0) {
@@ -126,8 +125,8 @@ namespace data_structures {
 						node_index = node_index - 1;
 					}
 				}
-				std::cout << "\t\t\tAt end of node_shifter, node_index is " << node_index << std::endl;
-				std::cout << "\t\this_node->get_data() : \"" << this_node->get_data() << "\"" << std::endl;
+				// std::cout << "\t\t\tAt end of node_shifter, node_index is " << node_index << // std::endl;
+				// std::cout << "\t\this_node->get_data() : \"" << this_node->get_data() << "\"" << // std::endl;
 			}
 
 			void frame_shifter(signed long by) {
@@ -162,22 +161,22 @@ namespace data_structures {
 				// this->reset();
 				// this->front = this->frame = this->rear = nullptr;
 				this->size = 0;
-				// std::cout << "Copy constructor called. Original length is " << this->size << std::endl;
+				// // std::cout << "Copy constructor called. Original length is " << this->size << // std::endl;
 				// ~linear_linked_list();
 				unsigned long index;
 				for (index = 0; index < other_list.length(); index = index + 1) {
 					this->push(other_list.peek(index));
 				}
-				// std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << std::endl;
-				// std::cout << "At end of copy constructor call, data in this object is :" << std::endl;
+				// // std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << // std::endl;
+				// // std::cout << "At end of copy constructor call, data in this object is :" << // std::endl;
 				for (index = 0; index < this->size; index = index + 1) {
-					std::cout << "\t" << this->peek(index) << std::endl;
+					// std::cout << "\t" << this->peek(index) << // std::endl;
 				}
 			}
 
 
 			~linear_linked_list() {
-				// std::cout << "Inside destructor" << std::endl;
+				// // std::cout << "Inside destructor" << // std::endl;
 				this->reset();
 			}
 
@@ -252,7 +251,7 @@ namespace data_structures {
 			 * @returns void.
 			*/
 			void reset() {
-				// std::cout << "Inside reset method" << std::endl;
+				// // std::cout << "Inside reset method" << // std::endl;
 				this->frame = this->front;
 				while (this->frame != nullptr) {
 					this->front = this->frame->get_next();
