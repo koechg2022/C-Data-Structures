@@ -277,46 +277,41 @@ namespace data_structures {
 					this->front = this->rear = this->frame = new_node;
 				}
 
-				else {
-					
-					if (this->size == 1) {
+				else if (this->size == 1) {
 
-						if (add_index == 0) {
-							this->front->set_previous(new_node);
-							this->front->get_previous()->set_next(this->front);
-							this->front = this->front->get_previous();
-							this->frame = this->front;
-						}
-
-						else {
-							// index is 1
-							this->rear->set_next(new_node);
-							this->rear->get_next()->set_previous(this->rear);
-							this->rear = this->rear->get_next();
-							this->frame = this->rear;
-						}
-
+					if (add_index == 0) {
+						this->front->set_previous(new_node);
+						this->front->get_previous()->set_next(this->front);
+						this->front = this->front->get_previous();
+						this->frame = this->front;
 					}
 
 					else {
-						if (add_index == 0) {
-							this->front->set_previous(new_node);
-							this->front->get_previous()->set_next(this->front);
-							this->front = this->front->get_previous();
-							this->frame = this->front;
-						}
-						else if (add_index == this->size) {
-							this->rear->set_next(new_node);
-							this->rear->get_next()->set_previous(this->rear);
-							this->rear = this->rear->get_next();
-							this->frame = this->rear;
-						}
-						else {
-							// this is where some extra work comes into play.
-							
-						}
+						// index is 1
+						this->rear->set_next(new_node);
+						this->rear->get_next()->set_previous(this->rear);
+						this->rear = this->rear->get_next();
+						this->frame = this->rear;
 					}
+				}
 
+				else {
+					if (add_index == 0) {
+						this->front->set_previous(new_node);
+						this->front->get_previous()->set_next(this->front);
+						this->front = this->front->get_previous();
+						this->frame = this->front;
+					}
+					else if (add_index == this->size) {
+						this->rear->set_next(new_node);
+						this->rear->get_next()->set_previous(this->rear);
+						this->rear = this->rear->get_next();
+						this->frame = this->rear;
+					}
+					else {
+						// this is where some extra work comes into play.
+						
+					}
 				}
 				this->size = this->size + 1;
 			}
