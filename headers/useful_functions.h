@@ -145,6 +145,7 @@ namespace useful_functions {
         }
 
 
+
         /**
          * @brief Implementation of Bubble sort.
          * 
@@ -170,12 +171,11 @@ namespace useful_functions {
         */
         template <typename data_> void bubble_sort(data_* list, unsigned long length, bool ascending = true) {
             unsigned long from_left, from_right;
-            data_ temp;
             for (from_right = length - 1; from_right > 0; from_right = from_right - 1) {
                 for (from_left = 0; from_left < from_right; from_left = from_left + 1) {
 
                     if ((!(ascending) && (list[from_left] < list[from_right])) || ((ascending) && (list[from_left] > list[from_right]))) {
-                        swap(list[from_left], list[from_right]);
+                        swap<data_>(list[from_left], list[from_right]);
                     }
                 }
             }
@@ -183,20 +183,16 @@ namespace useful_functions {
 
 
 
-        // Untested
-        template <typename data_> void bubble_sort_pointers(data_** list, unsigned long length, bool ascending = true) {
+        // For bubble sort with list of pointers. Works
+        template <typename data_> void bubble_sort(data_** list, unsigned long length, bool ascending = true) {
 
             unsigned long from_left, from_right;
-            for (from_right = length - 1; from_right >= 0; from_right = from_right - 1) {
-
+            for (from_right = length - 1; from_right > 0; from_right = from_right - 1) {
                 for (from_left = 0; from_left < from_right; from_left = from_left + 1) {
-
-                    if (((ascending) && (*list[from_left] > *list[from_right])) || ((!ascending) && (*list[from_left] < *list[from_right]))) {
+                    if (((ascending) && (*list[from_right] < *list[from_left])) || ((!ascending) && (*list[from_right] > *list[from_left]))) {
                         swap<data_*>(list[from_left], list[from_right]);
                     }
-
                 }
-                
             }
 
         }
@@ -236,6 +232,21 @@ namespace useful_functions {
         }
 
 
+        // For selection sort with list of pointers. Works
+        template <typename data_> void selection_sort(data_** list, unsigned long length, bool ascending = true) {
+            unsigned long adding_index, checking_index;
+            for (adding_index = 0; adding_index < length - 1; adding_index = adding_index + 1) {
+                // fprintf(stdout, "adding_index : %lu", adding_index);
+                for (checking_index = adding_index + 1; checking_index < length; checking_index = checking_index + 1) {
+                    if (((ascending) && (*list[adding_index] > *list[checking_index])) || (!(ascending) && (*list[adding_index] < *list[checking_index]))) {
+                        swap<data_*>(list[adding_index], list[checking_index]);
+                    }
+                }
+            }
+        }
+
+
+
         /**
          * @brief Implementation of insertion sort algorithm.
          * 
@@ -271,6 +282,20 @@ namespace useful_functions {
         }
 
 
+        template <typename data_> void insertion_sort(data_** list, unsigned long length, bool ascending = true) {
+            unsigned long limit, checking;
+            data_* temp;
+            for (limit =  1; limit < length; limit = limit + 1) {
+                checking = limit;
+                temp = list[limit];
+                while ((checking > 0) && (((ascending) && (*temp <= *list[checking])) || (!(ascending) && (*temp >= *list[checking])))) {
+                    list[checking] = list[checking - 1];
+                    checking = checking - 1;
+                }
+                list[checking] = temp;
+            }
+        }
+
 
 
         /*=====================================For Merge Sort=====================================*/
@@ -290,17 +315,18 @@ namespace useful_functions {
             }
 
             list_index = start;
+            left_index = right_index = 0; // This is very confusing. When removed, algorithm never enters major while loop, but succeeds
 
             while ((left_index < middle - start + 1) && (right_index < end - middle)) {
-
+                // fprintf(stdout, "inside while loop, filling as necessary\n");
                 if (((ascending) && (left_list[left_index] <= right_list[right_index])) || (!(ascending) && (left_list[left_index] >= right_list[right_index]))) {
-                    the_list[list_index] = left_list[left_index];
-                    left_index = left_index + 1;
+                    the_list[list_index] = left_list[left_index++];
+                    // left_index = left_index + 1;
                 }
 
                 else {
-                    the_list[list_index] = right_list[right_index];
-                    right_index = right_index + 1;
+                    the_list[list_index] = right_list[right_index++];
+                    // right_index = right_index + 1;
                 }
                 
                 list_index = list_index + 1;
@@ -308,19 +334,54 @@ namespace useful_functions {
 
 
             while (left_index < middle - start + 1) {
-                the_list[list_index] = left_list[left_index];
-                left_index = left_index + 1;
-                list_index = list_index + 1;
+                the_list[list_index++] = left_list[left_index++];
+                // left_index = left_index + 1;
+                // list_index = list_index + 1;
             }
 
 
             while (right_index < end - middle) {
-                the_list[list_index] = right_list[right_index];
-                right_index = right_index + 1;
-                list_index = list_index + 1;
+                the_list[list_index++] = right_list[right_index++];
+                // right_index = right_index + 1;
+                // list_index = list_index + 1;
             }
 
 
+
+        }
+
+
+        // For list pointers.
+        template <typename data_> void merge(data_** list, unsigned long start, unsigned long middle, unsigned long end, bool ascending = true) {
+            data_* left_list[middle - start + 1];
+            data_* right_list[end - middle];
+            unsigned long left_index, right_index, list_index;
+            for (left_index = 0; left_index < middle - start + 1; left_index = left_index + 1) {
+                left_list[left_index] = list[left_index + start];
+            }
+            for (right_index = 0; right_index < end - middle; right_index = right_index + 1) {
+                right_list[right_index] = list[right_index + middle + 1];
+            }
+
+            // left_list and right_list are now filled with appropriate data.
+            // now iterate over them and fill in the list with their data accordingly.
+            left_index = right_index = 0;
+            list_index = start;
+            while ((left_index < middle - start + 1) && (right_index < end - middle)) {
+                if (((ascending) && (*left_list[left_index] < *right_list[right_index])) || (!(ascending) && (*left_list[left_index] > *right_list[right_index]))) {
+                    list[list_index++] = left_list[left_index++];
+                    continue;
+                }
+                list[list_index++] = right_list[right_index++];
+            }
+
+            while (left_index < middle - start + 1) {
+                list[list_index++] = left_list[left_index++];
+            }
+
+            while (right_index < end - middle) {
+                list[list_index++] = right_list[right_index++];
+            }
 
         }
 
@@ -329,14 +390,27 @@ namespace useful_functions {
 
             if (start < end) {
                 unsigned long mid_index = start + (end - start) / 2;
-                rec_merge_sort(the_list, start, mid_index, ascending);
-                rec_merge_sort(the_list, mid_index + 1, end, ascending);
+                rec_merge_sort<data_>(the_list, start, mid_index, ascending);
+                rec_merge_sort<data_>(the_list, mid_index + 1, end, ascending);
 
                 // merge the sorted subarrays
-                merge(the_list, start, mid_index, end);
+                merge<data_>(the_list, start, mid_index, end);
 
             }
 
+        }
+
+
+        // For list of pointers
+        template <typename data_> void rec_merge_sort(data_** list, unsigned long start, unsigned long end, bool ascending = true) {
+            if (end > start) {
+
+                unsigned long mid_index = start + (end - start) / 2;
+                rec_merge_sort<data_>(list, start, mid_index, ascending);
+                rec_merge_sort<data_>(list, mid_index + 1, end, ascending);
+                merge<data_>(list, start, mid_index, end);
+
+            }
         }
 
 
@@ -358,9 +432,14 @@ namespace useful_functions {
          * 
         */
         template <typename data_> void merge_sort(data_* list, unsigned long length, bool ascending = true) {
-            rec_merge_sort(list, 0, length, ascending);
+            rec_merge_sort<data_>(list, 0, length, ascending);
         }
 
+
+        // For list of pointers
+        template <typename data_> void merge_sort(data_** list, unsigned long length, bool ascending = true) {
+            rec_merge_sort<data_>(list, length, ascending);
+        }
 
 
         /*=====================================Merge Sort end=====================================*/
@@ -802,9 +881,23 @@ namespace useful_functions {
 
 
     template <typename data_> void sort_list(data_** list, unsigned long length, char* sort = (char *) "bubble", bool ascending = true) {
-
+        // fprintf(stdout, "Inside proper one\n");
         if (same_string((char *) "bubble", sort)) {
-            bubble_sort_pointers<data_>(list, length, ascending);
+            // fprintf(stdout, "Inside bubble sort for list of pointers\n");
+            bubble_sort<data_>(list, length, ascending);
+        }
+
+        else if (same_string((char *) "selection", sort)) {
+            // fprintf(stdout, "Inside selection sort for list of pointers\n");
+            selection_sort<data_>(list, length, ascending);
+        }
+
+        else if (same_string((char *) "insertion", sort)) {
+            insertion_sort<data_>(list, length, sort);
+        }
+
+        else if (same_string((char *) "merge", sort)) {
+            merge_sort(list, length, ascending);
         }
 
         else {

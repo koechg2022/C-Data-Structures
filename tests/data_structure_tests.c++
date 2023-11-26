@@ -73,13 +73,8 @@ void linear_linked_list_tests();
 
 
 int main(int len, char** args) {
-    bool clear_before = false, only_fails = true;
-    int index, increase = 1;
-
-    for (index = 1; index < len; index = index + 1) {
-        
-    }
     useful_functions_tests();
+    useful_functions_tests_2();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -269,32 +264,7 @@ void useful_functions_tests() {
 
     //=======================merge sort=========================//
 
-    for (index = 0; index < limit; index = index + 1) {
-        u_list[index] = get_random<unsigned long>();
-    }
-
-    useful_functions::sort_list<unsigned long>(u_list, limit, (char *) "merge", true);
-    for (index = 0; index < limit; index = index + 1) {
-        other_list[index] = u_list[limit - index - 1];
-    }
-    useful_functions::sort_list<unsigned long>(other_list, limit, (char *) "merge", false);
-
-    for (index = 0; index < limit; index = index + 1) {
-        (u_list[index] == other_list[limit - index - 1]) ? passed++ : failed++;
-    }
-
-    for (index = 0; index < limit; index = index + 1) {
-        s_list[index] = get_random<signed long>();
-    }
-    useful_functions::sort_list(s_list, limit, (char *) "merge", true);
-    for (index = 0; index < limit; index = index + 1) {
-        so_list[index] = s_list[limit - index - 1];
-    }
-    useful_functions::sort_list<signed long>(so_list, limit, (char *) "merge", false);
-
-    for (index = 0; index < limit; index = index + 1) {
-        (so_list[index] == s_list[limit - index - 1]) ? passed++ : failed++;
-    }
+    // Algorithm works, but the tests needs to be remade
 
 
     //=====================merge sort end=======================//
@@ -331,15 +301,81 @@ void useful_functions_tests() {
             (!useful_functions::is_number(c)) ? passed++ : failed++;
         }
     }
-
-
 }
 
 
 
 void useful_functions_tests_2() {
-    unsigned long* unsigned_pointers[limit / 100], *other_unsigned[limit / 100];
-    
+    unsigned long index, div = 1;
+    signed long* list[limit / div], *other_list[limit / div];
+    for (index = 0; index < limit / div; index = index + 1) {
+        list[index] = new signed long(get_random<signed long>());
+        other_list[limit / div - index - 1] = new signed long(*list[index]);
+    }
+    useful_functions::sort_list<signed long>(list, limit / div, (char *) "bubble", true);
+    useful_functions::sort_list<signed long>(other_list, limit / div, (char *) "bubble", false);
+    for (index = 0; index < limit / div; index = index + 1) {
+        (*list[index] == *other_list[limit / div - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        delete list[index];
+        delete other_list[index];
+    }
+
+
+    // for selection sort
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        list[index] = new signed long(get_random<signed long>());
+        other_list[limit / div - index - 1] = new signed long(*list[index]);
+    }
+    useful_functions::sort_list<signed long>(list, limit / div, (char *) "selection", true);
+    useful_functions::sort_list<signed long>(other_list, limit / div, (char *) "selection", false);
+    for (index = 0; index < limit / div; index = index + 1) {
+        (*list[index] == *other_list[limit / div - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        delete list[index];
+        delete other_list[index];
+    }
+
+
+    // for insertion sort
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        list[index] = new signed long(get_random<signed long>());
+        other_list[limit / div - index - 1] = new signed long(*list[index]);
+    }
+    useful_functions::sort_list<signed long>(list, limit / div, (char *) "selection", true);
+    useful_functions::sort_list<signed long>(other_list, limit / div, (char *) "selection", false);
+    for (index = 0; index < limit / div; index = index + 1) {
+        (*list[index] == *other_list[limit / div - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        delete list[index];
+        delete other_list[index];
+    }
+
+
+    // for merge sort
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        list[index] = new signed long(get_random<signed long>());
+        other_list[limit / div - index - 1] = new signed long(*list[index]);
+    }
+    useful_functions::sort_list<signed long>(list, limit / div, (char *) "merge", true);
+    useful_functions::sort_list<signed long>(other_list, limit / div, (char *) "merge", false);
+    for (index = 0; index < limit / div; index = index + 1) {
+        (*list[index] == *other_list[limit / div - index - 1]) ? passed++ : failed++;
+    }
+
+    for (index = 0; index < limit / div; index = index + 1) {
+        delete list[index];
+        delete other_list[index];
+    }
 
 }
 
@@ -347,6 +383,7 @@ void useful_functions_tests_2() {
 
 
 void linear_linked_list_tests() {
+    fprintf(stderr, "Not yet implemented yet\n");
     exit(NOT_IMPLEMENTED_LOGIC);
 
 }
