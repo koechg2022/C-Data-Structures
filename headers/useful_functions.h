@@ -445,6 +445,20 @@ namespace useful_functions {
         /*=====================================Merge Sort end=====================================*/
 
 
+        /*=====================================For Quick Sort=====================================*/
+
+
+
+        template <typename data_> void quick_sort(data_* list, unsigned long length, bool ascending) {
+
+        }
+
+
+
+        /*=====================================Quick Sort end=====================================*/
+
+
+
 
     }
 
@@ -821,7 +835,9 @@ namespace useful_functions {
     }
 
 
-
+    unsigned long substring_index(char* to_find, char* find_in, bool ignore_case = true) {
+        unsigned long to_find_len = string_length(to_find), find_in_length = string_length(find_in);
+    }
 
 
 
@@ -882,6 +898,12 @@ namespace useful_functions {
 
     template <typename data_> void sort_list(data_** list, unsigned long length, char* sort = (char *) "bubble", bool ascending = true) {
         // fprintf(stdout, "Inside proper one\n");
+
+        // Realizing now that there are potential 
+        // time saving efficiencies for more options with a switch,
+        // and would like to use switch instead.
+
+
         if (same_string((char *) "bubble", sort)) {
             // fprintf(stdout, "Inside bubble sort for list of pointers\n");
             bubble_sort<data_>(list, length, ascending);
@@ -899,6 +921,10 @@ namespace useful_functions {
         else if (same_string((char *) "merge", sort)) {
             merge_sort(list, length, ascending);
         }
+
+        // else if (same_string((char *) "quick", sort)) {
+            
+        // }
 
         else {
             fprintf(stdout, "Not yet implemented %s\n for sorting pointers algorithms", sort);

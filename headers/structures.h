@@ -309,7 +309,33 @@ namespace data_structures {
 					}
 					else {
 						// this is where some extra work comes into play.
+						signed long from_first = (signed long) add_index, from_rear = (signed long) (this->size - add_index), from_frame = (signed long) add_index - (signed long) add_index;
+						unsigned long frame_abs = (from_frame < 0) ? ((unsigned long) (-1 * from_frame)) : (unsigned long) from_frame;
+						signed long* signed_lists[] = {&from_first, &from_rear, &from_frame};
+						useful_functions::selection_sort<signed long>(signed_lists, 3, true);
 						
+						switch (signed_lists[0]) {
+
+							case &from_first : {
+								// shortest distance is from the front
+								this->frame = this->front;
+								this->frame_index = 0;
+							}
+
+							case &from_rear : {
+								// shortest distance is from the rear
+								this->frame = this->rear;
+								this->frame_index = this->size - 1;
+							}
+
+							default : {
+								// shortest distance is from the frame
+
+							}
+
+						}
+
+
 					}
 				}
 				this->size = this->size + 1;
