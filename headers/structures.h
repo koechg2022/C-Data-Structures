@@ -545,6 +545,9 @@ namespace data_structures {
 				this->root = new bst_node<data_>(new_data);
 			}
 
+			bool is_empty() const {
+				return this->size == 0;
+			}
 
 			unsigned long get_size() const {
 				return this->size;
