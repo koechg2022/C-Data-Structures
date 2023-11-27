@@ -549,6 +549,16 @@ namespace data_structures {
 			signed long height;
 
 
+			void destruct_children(bst_node<data_>* current) {
+				if (!current) {
+					return;
+				}
+				destruct_children(current->get_left_child());
+				destruct_children(current->get_right_child());
+				delete current;
+			}
+
+
 
 		public:
 
@@ -558,13 +568,8 @@ namespace data_structures {
 				this->height = (new_data) ? 0 : -1;
 			}
 
-			~binary_search_tree(bst_node<data_>* current_node) {
-				if (current_node == nullptr) {
-					return;
-				}
-				~binary_search_tree(current_node->get_left_child());
-				~binary_search_tree(current_node->get_right_child());
-				delete current_node;
+			~binary_search_tree() {
+				this->destruct_children();
 			}
 
 			bool is_empty() const {
