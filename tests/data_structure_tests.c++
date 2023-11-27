@@ -75,6 +75,7 @@ void linear_linked_list_tests();
 int main(int len, char** args) {
     useful_functions_tests();
     useful_functions_tests_2();
+    linear_linked_list_tests();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -383,8 +384,24 @@ void useful_functions_tests_2() {
 
 
 void linear_linked_list_tests() {
-    fprintf(stderr, "Not yet implemented yet\n");
-    exit(NOT_IMPLEMENTED_LOGIC);
+    data_structures::linear_linked_list<unsigned long> list;
+    unsigned long data[] = {get_random<unsigned long>(), get_random<unsigned long>(), get_random<unsigned long>()};
+    (list.empty()) ? passed++ : failed++;
+    (list.length() == 0) ? passed++ : failed++;
+    list.push(data[0]);
+    (list.length() == 1) ? passed++ : failed++;
+    list.push(data[1]);
+    (list.length() == 2) ? passed++ : failed++;
+    list.push(data[2]);
+    (list.length() == 3) ? passed++ : failed++;
+    (!list.empty()) ? passed++ : failed++;
+    (list.length() == 3) ? passed++ : failed++;
+    (list.peek(0) == data[0]) ? passed++ : failed++;
+    (list.peek(1) == data[1]) ? passed++ : failed++;
+    (list.peek(2) == data[2]) ? passed++ : failed++;
+    (list[0] == data[0]) ? passed++ : failed++;
+    (list[1] == data[1]) ? passed++ : failed++;
+    (list[2] == data[2]) ? passed++ : failed++;
 
 }
 

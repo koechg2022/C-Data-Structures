@@ -232,6 +232,7 @@ namespace useful_functions {
         }
 
 
+
         // For selection sort with list of pointers. Works
         template <typename data_> void selection_sort(data_** list, unsigned long length, bool ascending = true) {
             unsigned long adding_index, checking_index;
@@ -280,6 +281,7 @@ namespace useful_functions {
                 list[sort_index] = temp;
             }
         }
+
 
 
         template <typename data_> void insertion_sort(data_** list, unsigned long length, bool ascending = true) {
@@ -837,6 +839,7 @@ namespace useful_functions {
 
     unsigned long substring_index(char* to_find, char* find_in, bool ignore_case = true) {
         unsigned long to_find_len = string_length(to_find), find_in_length = string_length(find_in);
+        return 1;
     }
 
 
@@ -888,6 +891,10 @@ namespace useful_functions {
             merge_sort(list, length, ascending);
         }
 
+        else if (same_string((char *) "quick", sort)) {
+            fprintf(stdout, "Quicksort is under construction\n");
+        }
+
         else {
             fprintf(stdout, "Not yet implemented %s\n for sorting algorithms", sort);
         }
@@ -922,9 +929,9 @@ namespace useful_functions {
             merge_sort(list, length, ascending);
         }
 
-        // else if (same_string((char *) "quick", sort)) {
-            
-        // }
+        else if (same_string((char *) "quick", sort)) {
+            fprintf(stdout, "Quicksort is under construction\n");
+        }
 
         else {
             fprintf(stdout, "Not yet implemented %s\n for sorting pointers algorithms", sort);

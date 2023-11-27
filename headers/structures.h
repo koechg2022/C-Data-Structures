@@ -113,7 +113,7 @@ namespace data_structures {
 			unsigned long size, frame_index;
 
 			void node_shifter(linear_node<data_>* this_node, unsigned long node_index, signed long by) {
-				// std::cout << "\t\tCall to node_shifter(" << "\"" << this_node->get_data() << "\", " << node_index << ", " << by << ")" << // std::endl;
+
 				signed long start_index = (signed long) node_index;
 				while ((by != 0) && (this_node != nullptr) && (node_index != by)) {
 					if (by > 0) {
@@ -125,8 +125,6 @@ namespace data_structures {
 						node_index = node_index - 1;
 					}
 				}
-				// std::cout << "\t\t\tAt end of node_shifter, node_index is " << node_index << // std::endl;
-				// std::cout << "\t\this_node->get_data() : \"" << this_node->get_data() << "\"" << // std::endl;
 			}
 
 			void frame_shifter(signed long by) {
@@ -158,25 +156,15 @@ namespace data_structures {
 				if (this == &other_list) {
 					return;
 				}
-				// this->reset();
-				// this->front = this->frame = this->rear = nullptr;
 				this->size = 0;
-				// // std::cout << "Copy constructor called. Original length is " << this->size << // std::endl;
-				// ~linear_linked_list();
 				unsigned long index;
 				for (index = 0; index < other_list.length(); index = index + 1) {
 					this->push(other_list.peek(index));
-				}
-				// // std::cout << "At end of copy constructor call. linear_linked_list has a length of " << this->size << // std::endl;
-				// // std::cout << "At end of copy constructor call, data in this object is :" << // std::endl;
-				for (index = 0; index < this->size; index = index + 1) {
-					// std::cout << "\t" << this->peek(index) << // std::endl;
 				}
 			}
 
 
 			~linear_linked_list() {
-				// // std::cout << "Inside destructor" << // std::endl;
 				this->reset();
 			}
 
@@ -190,6 +178,17 @@ namespace data_structures {
 			bool operator==(linear_linked_list<data_>& other) {
 				fprintf(stderr, "== operator not yet implemented\n");
 				exit(EXIT_FAILURE);
+				if (this == *other) {
+					return true;
+				}
+				unsigned long other_index = 0;
+
+				for (this->frame = this->front, this->frame_index = 0; this->frame != nullptr; this->frame = this->frame->get_next(), this->frame_index = this->frame_index + 1) {
+					if (this->frame->get_data() != other[this->frame_index]) {
+						return false;
+					}
+				}
+				return true;
 			}
 
 
@@ -212,8 +211,13 @@ namespace data_structures {
 
 
 			data_& operator [](signed long index) {
-				fprintf(stderr, "[] operator not yet implemented\n");
-				exit(EXIT_FAILURE);
+				try {
+					this->peek(index);
+					return this->frame->get_data_ref();
+				}
+				catch (std::range_error except) {
+					throw except;
+				}
 			}
 
 
@@ -265,7 +269,7 @@ namespace data_structures {
 
 
 			void push(data_ new_data, signed long index = -1) {
-				unsigned long add_index = (index < 0) ? ((unsigned long) useful_functions::absolute<signed long>(index)) + 1 - this->size : (unsigned long) useful_functions::absolute<signed long>(index);
+				unsigned long add_index = (index < 0) ? (this->size - (unsigned long) useful_functions::absolute<signed long>(index)) + 1 : (unsigned long) useful_functions::absolute<signed long>(index);
 				if (add_index > this->size) {
 					throw std::range_error("Cannot push data to negative index whose absolute value converts to a larger value than the size of the list");
 				}
@@ -314,27 +318,29 @@ namespace data_structures {
 						signed long* signed_lists[] = {&from_first, &from_rear, &from_frame};
 						useful_functions::selection_sort<signed long>(signed_lists, 3, true);
 						
-						switch (signed_lists[0]) {
-
-							case &from_first : {
-								// shortest distance is from the front
-								this->frame = this->front;
-								this->frame_index = 0;
-							}
-
-							case &from_rear : {
-								// shortest distance is from the rear
-								this->frame = this->rear;
-								this->frame_index = this->size - 1;
-							}
-
-							default : {
-								// shortest distance is from the frame
-
-							}
-
+						if (signed_lists[0] == &from_first) {
+							// shortest distance is from the front
+							this->frame = this->front;
+							this->frame_index = 0;
+							this->frame_shifter(from_first);
+						}
+						else if (signed_lists[0] == &from_rear) {
+							// shoftest distance is from the rear
+							this->frame = this->rear;
+							this->frame_index = this->size - 1;
+							this->frame_shifter((signed long) ( -1 * from_rear));
+						}
+						else {
+							// shortest distance is from the frame
+							this->frame_shifter(from_frame);
 						}
 
+						// Now frame should be at the proper index.
+						new_node->set_previous(this->frame->get_previous());
+						this->frame->get_previous()->set_next(new_node);
+						this->frame->set_previous(new_node);
+						new_node->set_next(this->frame);
+						this->frame = this->frame->get_previous();
 
 					}
 				}
@@ -342,6 +348,44 @@ namespace data_structures {
 			}
 
 
+			data_ peek(signed long index = -1) {
+				unsigned long peek_index = (index < 0) ? (this->size - ((unsigned long) index) - 1) : (unsigned long) index;
+				if (this->size == 0) {
+					throw std::length_error("linear linked list is empty.");
+				}
+				if (peek_index == 0) {
+					this->frame = this->front;
+					this->frame_index = 0;
+				}
+				else if (peek_index == this->size - 1) {
+					this->frame = this->rear;
+					this->frame_index = this->size - 1;
+				}
+				else {
+					// This is where some extra work comes into play.
+					// this is constly on a smaller linked list,
+					// but the payoff is big for a larger linked list.
+					unsigned long from_first = peek_index, from_rear = this->size - 1 - peek_index, from_frame = ((signed long) peek_index - (signed long) this->frame_index);
+					unsigned long* distances[] = {&from_first, &from_rear, &from_frame};
+					useful_functions::insertion_sort<unsigned long>(distances, 3, true);
+					if (distances[0] == &from_first) {
+						this->frame = this->front;
+						this->frame_index = 0;
+						this->frame_shifter((signed long) from_first);
+					}
+					else if (distances[0] == &from_rear) {
+						this->frame = this->rear;
+						this->frame_index = this->size - 1;
+						this->frame_shifter((signed long) from_rear);
+					}
+					else {
+						// frame is the shortest distance to traverse
+						this->frame_shifter((index < 0) ? ((signed long) from_frame * -1) : ((signed long) from_frame));
+					}
+				}
+				// fprintf(stdout, "\tAbout to return %lu at index %lu\n", this->frame->get_data(), this->frame_index);
+				return this->frame->get_data();
+			}
 
 
 	};
