@@ -197,6 +197,17 @@ namespace data_structures {
 			bool operator!=(linear_linked_list<data_>& other) {
 				fprintf(stderr, "!= operator not yet implemented\n");
 				exit(EXIT_FAILURE);
+				if (this != *other) {
+					return true;
+				}
+				unsigned long other_index = 0;
+
+				for (this->frame = this->front, this->frame_index = 0; this->frame != nullptr; this->frame = this->frame->get_next(), this->frame_index = this->frame_index + 1) {
+					if (this->frame->get_data() == other[this->frame_index]) {
+						return false;
+					}
+				}
+				return true;
 			}
 
 
@@ -204,6 +215,13 @@ namespace data_structures {
 
 			bool operator<=(linear_linked_list<data_>& other) {
 				fprintf(stderr, "<= operator not yet implemented\n");
+				exit(EXIT_FAILURE);
+			}
+
+
+
+			bool operator>=(linear_linked_list<data_>& other) {
+				fprintf(stderr, "=> operator not yet implemented\n");
 				exit(EXIT_FAILURE);
 			}
 
@@ -232,6 +250,7 @@ namespace data_structures {
 			bool empty() const {
 				return (this->size == 0);
 			}
+
 
 
 
@@ -268,6 +287,21 @@ namespace data_structures {
 
 
 
+
+			/**
+			 * @brief Push new data onto the linked list.
+			 * 
+			 * @note Can push to negative indexes. Negative indexes will push from the back of the list.
+			 * 
+			 * @param new_data `(Generic)` : The new data to be pushed onto the linked list.
+			 * 
+			 * @param index `(signed long)` : The index where the data should be pushed to. Defaults to -1.
+			 * 
+			 * @returns void.
+			 * 
+			 * @throws Throws a `std::range_error` if the index passed in references an index greater than the current size.
+			 * 
+			*/
 			void push(data_ new_data, signed long index = -1) {
 				unsigned long add_index = (index < 0) ? (this->size - (unsigned long) useful_functions::absolute<signed long>(index)) + 1 : (unsigned long) useful_functions::absolute<signed long>(index);
 				if (add_index > this->size) {
@@ -348,6 +382,19 @@ namespace data_structures {
 			}
 
 
+
+
+
+			/**
+			 * @brief Peek at the data inside the linked list at a specific index.
+			 * 
+			 * @param index `(Generic)` : Defaults to -1. The index whose data is to be looked up.
+			 * 
+			 * @note This method can accept negative indexes. If the index references data 
+			 * outside the range of the linked list, a length error is thrown.
+			 * 
+			 * @returns `(Generic)` : The data at the index specified.
+			*/
 			data_ peek(signed long index = -1) {
 				unsigned long peek_index = (index < 0) ? (this->size - ((unsigned long) index) - 1) : (unsigned long) index;
 				if (this->size == 0) {
@@ -386,6 +433,11 @@ namespace data_structures {
 				// fprintf(stdout, "\tAbout to return %lu at index %lu\n", this->frame->get_data(), this->frame_index);
 				return this->frame->get_data();
 			}
+
+
+
+
+
 
 
 	};
