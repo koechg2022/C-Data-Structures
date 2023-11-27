@@ -103,7 +103,96 @@ namespace data_structures {
 
 		};
 
+
+
+		template <typename data_> class bst_node : public numbered_node<data_> {
+
+			protected:
+				bst_node<data_>* left_child;
+				bst_node<data_>* right_child;
+
+			public:
+
+				bst_node(data_ new_data) : numbered_node<data_, signed long>(new_data){
+					this->left_child = nullptr;
+					this->right_child = nullptr;
+				}
+
+
+				/**
+				 * @brief Set the height of the current `bst_node` object.
+				 * 
+				 * @param new_index : `(signed long)` : The height to set the current `bst_node` to.
+				 * 
+				 * @returns void.
+				*/
+				void set_height(signed long new_index) {
+					this->index = new_index;
+				}
+
+
+				/**
+				 * @brief Get the height of the current `bst_node` object.
+				 * 
+				 * 
+				 * @returns (`unsigned long`) : The hight of the current `bst_node` object.
+				*/
+				unsigned long get_height() const {
+					return this->index;
+				}
+
+
+				/**
+				 * @brief Set the left child of the current `bst_node` object.
+				 * 
+				 * @param left `(bst_ndoe)` : The new left node that this current `bst_node` object will have.
+				 * 
+				 * @returns void.
+				*/
+				void set_left_child(bst_node<data_>* left) {
+					this->left_child = left;
+				}
+
+
+				/**
+				 * @brief Get the left child of the current `bst_node` object.
+				 * 
+				 * @returns `(bst_node)` : The current `bst_node` object's left child.
+				 * 
+				*/
+				bst_node<data_> get_left_child() const {
+					return this->left_child;
+				}
+
+				/**
+				 * @brief Set the right child of the current `bst_node` object.
+				 * 
+				 * @param right `(bst_node)` : The new right child to the current `bst_node` object.
+				 * 
+				 * @returns void.
+				*/
+				void set_right_child(bst_node<data_>* right) {
+					this->right_child = right;
+				}
+
+				/**
+				 * @brief Get the right child of the current `bst_node` object.
+				 * 
+				 * @returns `(bst_node)` : The current `bst_node` object's right child.
+				*/
+				bst_node<data_> get_right_child() const {
+					return this->right_child();
+				}
+
+
+
+		};
+
+
 	}
+
+
+
 
 	template <typename data_> class linear_linked_list {
 
@@ -435,11 +524,22 @@ namespace data_structures {
 			}
 
 
+	};
+
+
+
+
+	template <typename data_ > class binary_search_tree {
+
+		private:
+
+
 
 
 
 
 
 	};
+
 
 }
