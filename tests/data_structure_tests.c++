@@ -368,31 +368,6 @@ void linear_linked_list_tests() {
     (list[0] == data[0]) ? passed++ : failed++;
     (list[1] == data[1]) ? passed++ : failed++;
     (list[2] == data[2]) ? passed++ : failed++;
-    unsigned long extra[] = {get_random<unsigned long>(), get_random<unsigned long>(), get_random<unsigned long>()};
-    (list[0] == data[0]) ? passed++ : failed++;
-    (list[1] == data[1]) ? passed++ : failed++;
-    (list[2] == data[2]) ? passed++ : failed++;
-    unsigned long index;
-    fprintf(stdout, "data:\n\t");
-    for (index = 0; index < 3; index = index + 1) {
-        fprintf(stdout, "%lu%s", data[index], (index + 1 < 3) ? ", " : "\n");
-    }
-    fprintf(stdout, "linear_linked list:\n\t");
-    for (index = 0; index < list.length(); index = index + 1) {
-        fprintf(stdout, "%lu%s", list[index], (index + 1 < list.length()) ? ", " : "\n");
-    }
-    fprintf(stdout, "extra:\n\t");
-    for (index = 0; index < 3; index = index + 1) {
-        fprintf(stdout, "%lu%s", extra[index], (index + 1 < 3) ? ", " : "\n");
-    }
-    list.push(extra[0]);
-    list.push(extra[1], -2);
-    list.push(extra[2], -3);
-
-    fprintf(stdout, "Updated linear_linked list:\n\t");
-    for (index = 0; index < list.length(); index = index + 1) {
-        fprintf(stdout, "%lu%s", list[index], (index + 1 < list.length()) ? ", " : "\n");
-    }
 
 }
 
