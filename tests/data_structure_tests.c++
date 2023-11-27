@@ -387,7 +387,7 @@ void linear_linked_list_tests() {
     }
     list.push(extra[0]);
     list.push(extra[1], -2);
-    list.push(extra[1], -3);
+    list.push(extra[2], -3);
 
     fprintf(stdout, "Updated linear_linked list:\n\t");
     for (index = 0; index < list.length(); index = index + 1) {

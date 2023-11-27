@@ -466,6 +466,7 @@ namespace data_structures {
 						}
 						else {
 							// shortest distance is from the frame
+							// fprintf(stdout, "Inside else branch of the push method. Pushing data towards the center of the list\n");
 							this->frame_shifter(from_frame);
 						}
 
