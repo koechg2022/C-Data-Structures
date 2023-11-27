@@ -402,6 +402,10 @@ void linear_linked_list_tests() {
     (list[0] == data[0]) ? passed++ : failed++;
     (list[1] == data[1]) ? passed++ : failed++;
     (list[2] == data[2]) ? passed++ : failed++;
+    unsigned long extra[] = {get_random<unsigned long>(), get_random<unsigned long>(), get_random<unsigned long>()};
+    list.push(extra[0]);
+    list.push(extra[1]);
+    list.push(extra[2], -3);
 
 }
 

@@ -41,17 +41,13 @@ namespace data_structures {
 
 		template <typename data_, typename indx_ = signed long> class numbered_node : public node_root<data_> {
 
-			protected:
+
+			private:
 				indx_ index;
 
-			public:
 
-				numbered_node() {
-				}
 
-				numbered_node(data_ new_data, indx_ index = -1) : node_root<data_>(new_data) {
-					this->index = index;
-				}
+			protected:
 
 				void set_index(indx_ index) {
 					this->index = index;
@@ -60,6 +56,15 @@ namespace data_structures {
 
 				indx_ get_index() const {
 					return this->index;
+				}
+
+			public:
+
+				numbered_node() {
+				}
+
+				numbered_node(data_ new_data, indx_ index = -1) : node_root<data_>(new_data) {
+					this->index = index;
 				}
 
 		};
@@ -116,6 +121,12 @@ namespace data_structures {
 				bst_node(data_ new_data) : numbered_node<data_, signed long>(new_data){
 					this->left_child = nullptr;
 					this->right_child = nullptr;
+				}
+
+
+				~bst_node() {
+					delete left_child;
+					delete right_child;
 				}
 
 
@@ -542,7 +553,18 @@ namespace data_structures {
 		public:
 
 			binary_search_tree(data_ new_data = NULL) {
-				this->root = new bst_node<data_>(new_data);
+				this->root = (new_data == NULL) ? new bst_node<data_>(new_data) : nullptr;
+				this->size = (new_data) ? 1 : 0;
+				this->height = (new_data) ? 0 : -1;
+			}
+
+			~binary_search_tree(bst_node<data_>* current_node) {
+				if (current_node == nullptr) {
+					return;
+				}
+				~binary_search_tree(current_node->get_left_child());
+				~binary_search_tree(current_node->get_right_child());
+				delete current_node;
 			}
 
 			bool is_empty() const {
