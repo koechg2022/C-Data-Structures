@@ -533,10 +533,27 @@ namespace data_structures {
 
 		private:
 
+			bst_node<data_>* root;
+			unsigned long size;
+			signed long height;
 
 
 
+		public:
 
+			binary_search_tree(data_ new_data = NULL) {
+				this->root = new bst_node<data_>(new_data);
+			}
+
+
+			unsigned long get_size() const {
+				return this->size;
+			}
+
+
+			signed long get_height() const {
+				return this->height;
+			}
 
 
 	};
