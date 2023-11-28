@@ -38,10 +38,16 @@ void linear_linked_list_tests();
 
 
 
+void binary_search_tree_tests();
+
+
+
+
 int main(int len, char** args) {
     useful_functions_tests();
     useful_functions_tests_2();
     linear_linked_list_tests();
+    binary_search_tree_tests();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -373,5 +379,15 @@ void linear_linked_list_tests() {
 
 
 
+void binary_search_tree_tests() {
 
+    data_structures::binary_search_tree<signed long> binary_tree;
+    data_structures::linear_linked_list<signed long> list;
+    signed long index;
+
+    (binary_tree.get_height() == -1) ? passed++ : failed++;
+    (binary_tree.get_size() == 0) ? passed++ : failed++;
+    (binary_tree.is_empty()) ? passed++ : failed++;
+
+}
 
