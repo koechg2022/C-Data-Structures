@@ -109,127 +109,51 @@ namespace data_structures {
 		};
 
 
+		template <typename data_> class bst_node : public numbered_node <data_, signed long> {
 
-
-		template <typename data_> class bst_node : public numbered_node<data_, signed long> {
-
-			protected:
-				bst_node<data_>* parent;
-				bst_node<data_>* left_child;
-				bst_node<data_>* right_child;
+			private:
+				bst_node<data_>* left_child, *right_child;
 
 			public:
 
-				bst_node(data_ new_data) {
-					this->parent = nullptr;
+				bst_node() {
+					this->left_child = this->right_child = nullptr;
+					this->index = -1;
+				}
+
+				bst_node(data_ new_data, signed long height = -1) {
 					this->this_data = new_data;
-					this->left_child = nullptr;
-					this->right_child = nullptr;
-					this->set_index(-1);
+					this->set_index(height);
+					this->left_child = this->right_child = nullptr;
 				}
 
-
-				~bst_node() {
-					// fprintf(stdout, "Deleting node...\t");
-					if (this->left_child) {
-						delete this->left_child;
-					}
-					if (this->right_child) {
-						delete this->right_child;
-					}
-					if (this->parent) {
-						delete this->parent;
-					}
-
-				}
-
-
-				/**
-				 * @brief Set the height of the current `bst_node` object.
-				 * 
-				 * @param new_index : `(signed long)` : The height to set the current `bst_node` to.
-				 * 
-				 * @returns void.
-				*/
-				void set_height(signed long new_index) {
-					this->set_index(new_index);
-				}
-
-
-				/**
-				 * @brief Get the height of the current `bst_node` object.
-				 * 
-				 * 
-				 * @returns (`unsigned long`) : The hight of the current `bst_node` object.
-				*/
-				unsigned long get_height() const {
-					return this->get_index();
-				}
-
-
-				/**
-				 * @brief Set the left child of the current `bst_node` object.
-				 * 
-				 * @param left `(bst_ndoe)` : The new left node that this current `bst_node` object will have.
-				 * 
-				 * @returns void.
-				*/
 				void set_left_child(bst_node<data_>* left) {
 					this->left_child = left;
 				}
 
-
-				/**
-				 * @brief Get the left child of the current `bst_node` object.
-				 * 
-				 * @returns `(bst_node)` : The current `bst_node` object's left child.
-				 * 
-				*/
-				bst_node<data_>* get_left_child() const {
-					return this->left_child;
-				}
-
-				/**
-				 * @brief Set the right child of the current `bst_node` object.
-				 * 
-				 * @param right `(bst_node)` : The new right child to the current `bst_node` object.
-				 * 
-				 * @returns void.
-				*/
 				void set_right_child(bst_node<data_>* right) {
 					this->right_child = right;
 				}
 
-				/**
-				 * @brief Get the right child of the current `bst_node` object.
-				 * 
-				 * @returns `(bst_node)` : The current `bst_node` object's right child.
-				*/
-				bst_node<data_>* get_right_child() const {
+				bst_node<data_>* get_left_child() {
+					return this->left_child;
+				}
+
+				bst_node<data_>* get_right_child() {
 					return this->right_child;
 				}
 
-
-
-		};
-
-
-
-		template <typename key, typename data_> class aux_node : public numbered_node<data_, signed long> {
-
-			public:
-
-				aux_node(key k, data_ v) : numbered_node<data_, signed long>(){
-
+				void set_height(signed long height) {
+					this->set_index(height);
 				}
 
+				signed long get_height() const {
+					return this->get_index();
+				}
 
 		};
 
-
 	}
-
-
 
 
 	template <typename data_> class linear_linked_list {
@@ -566,115 +490,118 @@ namespace data_structures {
 	};
 
 
-
-
-	template <typename data_ > class binary_search_tree {
+	template <typename data_> class binary_search_tree {
 
 		private:
-
+			
 			bst_node<data_>* root;
 			unsigned long size;
 			signed long height;
 
-
-			void destruct_children(bst_node<data_>* current) {
-				if (!current) {
+			void push_data(bst_node<data_>* current, data_ new_data, signed long cur_height) {
+				// fprintf(stdout, "Inside push_data...\n\n\n");
+				if (current == nullptr) {
+					// fprintf(stdout, "Inside current is nullptr branch\n");
+					this->height = (cur_height > height) ? cur_height : this->height;
 					return;
 				}
-				destruct_children(current->get_left_child());
-				destruct_children(current->get_right_child());
-				delete current;
+
+				else {
+					// fprintf(stdout, "\tInside else branch...\n");
+					if (new_data >= current->get_data()) {
+						this->push_data(current->get_right_child(), new_data, cur_height + 1);
+						current->set_right_child(new bst_node<data_>(new_data));
+						current->set_height(cur_height);
+						this->height = (cur_height > height) ? cur_height : this->height;
+						this->size = this->size + 1;
+						fprintf(stdout, "height is set to %li\n", this->height);
+						return;
+					}
+					else {
+						this->push_data(current->get_left_child(), new_data, cur_height + 1);
+						current->set_left_child(new bst_node<data_>(new_data));
+						current->set_height(cur_height);
+						this->height = (cur_height > height) ? cur_height : this->height;
+						this->size = this->size + 1;
+						fprintf(stdout, "height is set to %li\n", this->height);
+						return;
+					}
+
+
+				}
+
 			}
 
-
-			signed long retrieve_by_height(bst_node<data_>* current, data_ to_find) {
+			signed long get_index_of(data_ to_find, bst_node<data_>* current, signed long cur_height) {
 				if (current == nullptr) {
 					return -1;
 				}
-				if (current->get_data() == to_find) {
-					return (signed long) current->get_height();
-				}
-				if (current->get_data() < to_find) {
-					return this->retrieve_by_height(current->get_left_child(), to_find);
-				}
-				return this->retrieve_by_height(current->get_right_child(), to_find);
-			}
-
-
-			void push_data(bst_node<data_>* current, data_ new_data) {
-				if (current == nullptr) {
-					return;
-				}
-				if (current->get_data() < new_data) {
-					if (current->get_right_child() == nullptr) {
-						current->set_right_child(new bst_node<data_>(new_data));
-						return;
+				else {
+					if (to_find == current->get_data() == to_find) {
+						return current->get_height();
 					}
-					return this->push_data(current->get_right_child(), new_data);
+					else if (to_find >= current->get_data()) {
+						return this->get_index_of(to_find, current->get_right_child(), cur_height + 1);
+					}
+					else {
+						return this->get_index_of(to_find, current->get_left_child(), cur_height + 1);
+					}
 				}
-				if (current->get_left_child() == nullptr) {
-					current->set_left_child(new bst_node<data_>(new_data));
-				}
-				return this->push_data(current->get_left_child(), new_data);
 			}
-
-			void fill_linked_list(char order, bst_node<data_>* current, linear_linked_list<data_>* to_fill) {
-				if (!current) {
-					return;
-				}
-				
-				if (useful_functions::same_char(order, 'p')) {
-					// pre-order
-					fill_linked_list(order, current->get_left_child(), to_fill);
-					fill_linked_list(order, current->get_right_child(), to_fill);
-					data_ to_add = current->get_data();
-					to_fill->push(to_add);
-					return;
-				}
-
-				if (useful_functions::same_char(order, 'i')) {
-					// in-order
-					fill_linked_list(order, current->get_left_child(), to_fill);
-					data_ to_add = current->get_data();
-					to_fill->push(to_add);
-					fill_linked_list(order, current->get_right_child(), to_fill);
-					return;
-				}
-				// post-order
-				fill_linked_list(order, current->get_left_child(), to_fill);
-				fill_linked_list(order, current->get_right_child(), to_fill);
-				data_ to_add = current->get_data();
-				to_fill->push(to_add);
-			}
-
 
 
 		public:
 
 			binary_search_tree(data_ new_data = NULL) {
-				this->root = (new_data == (data_) NULL) ? new bst_node<data_>(new_data) : nullptr;
-				this->size = (new_data) ? 1 : 0;
-				this->height = (new_data) ? 0 : -1;
+				if (new_data) {
+					this->root = new bst_node<data_>(new_data);
+					this->root->set_height(0);
+					this->size = 1;
+					this->height = 0;
+				}
+				else {
+					this->root = nullptr;
+					this->size = 0;
+					this->height = -1;
+				}
 			}
 
-
-			~binary_search_tree() {
-				this->destruct_children(this->root);
-			}
-
-
-			bool is_empty() const {
+			bool empty() const {
 				return this->size == 0;
 			}
 
-
-			unsigned long get_size() const {
-				return this->size;
-			}
-
-
 			signed long get_height() const {
 				return this->height;
+			}
+
+			unsigned long get_size() const {
+				return size;
+			}
+
+			void add(data_ new_data) {
+				if (this->size == 0) {
+					this->root = new bst_node<data_>(new_data);
+					this->root->set_height(0);
+					this->size = 1;
+					this->height = 0;
+				}
+				else {
+					this->push_data(this->root, new_data, 0);
+				}
+			}
+
+			bool contains(data_ to_find) {
+				if (this->height == -1) {
+					return false;
+				}
+				return this->get_index_of(to_find, this->root, 0) != -1;
+			}
+
+			signed long index_of(data_ to_find) {
+				if (this->height == -1) {
+					return -1;
+				}
+				return this->get_index_of(to_find, this->root, 0);
 			}
 
 

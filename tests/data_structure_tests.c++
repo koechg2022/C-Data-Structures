@@ -381,13 +381,26 @@ void linear_linked_list_tests() {
 
 void binary_search_tree_tests() {
 
-    data_structures::binary_search_tree<signed long> binary_tree;
-    data_structures::linear_linked_list<signed long> list;
-    signed long index;
-
-    (binary_tree.get_height() == -1) ? passed++ : failed++;
-    (binary_tree.get_size() == 0) ? passed++ : failed++;
-    (binary_tree.is_empty()) ? passed++ : failed++;
+    data_structures::binary_search_tree<signed long> tree;
+    signed long list[] = {get_random<signed long>(), get_random<signed long>()};
+    (tree.empty()) ? passed++ : failed++;
+    (tree.get_size() == 0) ? passed++ : failed++;
+    (tree.get_height() == -1) ? passed++ : failed++;
+    // fprintf(stdout, "tree size before adding anything %li\n", tree.get_size());
+    // fprintf(stdout, "tree height before adding anything %li\n", tree.get_height());
+    tree.add(list[0]);
+    // fprintf(stdout, "\ntree size after adding one thing %li\n", tree.get_size());
+    // fprintf(stdout, "tree height after adding one thing %li\n", tree.get_height());
+    tree.add(list[1]);
+    // fprintf(stdout, "\ntree size after adding two thing %li\n", tree.get_size());
+    // fprintf(stdout, "tree height after adding two thing %li\n", tree.get_height());
+    tree.empty() == false ? passed++ : failed++;
+    tree.get_size() == 2 ? passed++ : failed++;
+    fprintf(stdout, "height of of %li is %li\n", list[0], tree.index_of(list[0]));
+    fprintf(stdout, "height of of %li is %li\n", list[1], tree.index_of(list[1]));
+    // tree.contains(list[0]) ? passed++ : failed++;
+    // tree.contains(list[1]) ? passed++ : failed++;
+    fprintf(stdout, "Reached\n");
 
 }
 
