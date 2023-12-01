@@ -507,24 +507,26 @@ namespace data_structures {
 				}
 
 				else {
-					// fprintf(stdout, "\tInside else branch...\n");
+					
 					if (new_data >= current->get_data()) {
+						fprintf(stdout, "Adding to right child...\n");
 						this->push_data(current->get_right_child(), new_data, cur_height + 1);
 						current->set_right_child(new bst_node<data_>(new_data));
 						current->set_height(cur_height);
-						this->height = (cur_height > height) ? cur_height : this->height;
+						fprintf(stdout, "\tcur_height : %li\n", cur_height);
+						fprintf(stdout, "\tcurrent->get_height() : %li\n", current->get_height());
+						this->height = (cur_height >= height) ? cur_height : this->height;
 						this->size = this->size + 1;
-						fprintf(stdout, "height is set to %li\n", this->height);
-						return;
 					}
 					else {
+						fprintf(stdout, "Adding to left child...\n");
 						this->push_data(current->get_left_child(), new_data, cur_height + 1);
 						current->set_left_child(new bst_node<data_>(new_data));
 						current->set_height(cur_height);
-						this->height = (cur_height > height) ? cur_height : this->height;
+						fprintf(stdout, "\tcur_height : %li\n", cur_height);
+						fprintf(stdout, "\tcurrent->get_height() : %li\n", current->get_height());
+						this->height = (cur_height >= height) ? cur_height : this->height;
 						this->size = this->size + 1;
-						fprintf(stdout, "height is set to %li\n", this->height);
-						return;
 					}
 
 
@@ -580,10 +582,12 @@ namespace data_structures {
 
 			void add(data_ new_data) {
 				if (this->size == 0) {
+					fprintf(stdout, "Adding to root.\n");
 					this->root = new bst_node<data_>(new_data);
 					this->root->set_height(0);
 					this->size = 1;
 					this->height = 0;
+					fprintf(stdout, "\tsize : %lu, height : %li, root_height : %li\n", this->size, this->height, this->root->get_height());
 				}
 				else {
 					this->push_data(this->root, new_data, 0);
