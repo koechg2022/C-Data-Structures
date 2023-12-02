@@ -112,19 +112,19 @@ namespace data_structures {
 		template <typename data_> class bst_node : public numbered_node <data_, signed long> {
 
 			private:
-				bst_node<data_>* left_child, *right_child;
+				bst_node<data_>* left_child, *right_child, *parent;
 
 			public:
 
 				bst_node() {
-					this->left_child = this->right_child = nullptr;
-					this->index = -1;
+					this->left_child = this->right_child = parent = nullptr;
+					this->set_index(-1);
 				}
 
 				bst_node(data_ new_data, signed long height = -1) {
 					this->this_data = new_data;
 					this->set_index(height);
-					this->left_child = this->right_child = nullptr;
+					this->left_child = this->right_child = parent = nullptr;
 				}
 
 				void set_left_child(bst_node<data_>* left) {
@@ -135,6 +135,10 @@ namespace data_structures {
 					this->right_child = right;
 				}
 
+				void set_parent(bst_node<data_>* mother) {
+					this->parent = mother;
+				}
+
 				bst_node<data_>* get_left_child() {
 					return this->left_child;
 				}
@@ -143,12 +147,24 @@ namespace data_structures {
 					return this->right_child;
 				}
 
+				bst_node<data_>* get_parent() {
+					return this->parent;
+				}
+
 				void set_height(signed long height) {
 					this->set_index(height);
 				}
 
+				void set_h(signed long height) {
+					this->index = height;
+				}
+
 				signed long get_height() const {
 					return this->get_index();
+				}
+
+				signed long get_h() const {
+					return this->index;
 				}
 
 		};
@@ -493,119 +509,178 @@ namespace data_structures {
 	template <typename data_> class binary_search_tree {
 
 		private:
-			
-			bst_node<data_>* root;
 			unsigned long size;
 			signed long height;
+			bst_node<data_>* root;
+		
 
-			void push_data(bst_node<data_>* current, data_ new_data, signed long cur_height) {
-				// fprintf(stdout, "Inside push_data...\n\n\n");
+			void push_new_data(bst_node<data_>* current, data_ new_data) {
 				if (current == nullptr) {
-					// fprintf(stdout, "Inside current is nullptr branch\n");
-					this->height = (cur_height > height) ? cur_height : this->height;
+					return;
+				}
+				if (new_data >= current->get_data()) {
+					// go to the right of the current node.
+					if (current->get_right_child() == nullptr) {
+						// set the child here.
+						current->set_right_child(new bst_node<data_>(new_data, current->get_height() + 1));
+						current->get_right_child()->set_parent(current);
+						this->size = this->size + 1;
+						if (current->get_height() + 1 > this->height) {
+							this->height = this->height + 1;
+						}
+						return;
+					}
+					this->push_new_data(current->get_right_child(), new_data);
+				}
+				else {
+					// go to the left of the current node.
+					if (current->get_left_child() == nullptr) {
+						// set the child here
+						current->set_left_child(new bst_node<data_>(new_data, current->get_height() + 1));
+						current->get_left_child()->set_parent(current);
+						if (current->get_height() + 1 > this->height) {
+							this->height = this->height + 1;
+						}
+						return;
+					}
+					this->push_new_data(current->get_left_child(), new_data);
+				}
+			}
+
+
+			void update_heights(bst_node<data_>* current, signed long this_height) {
+				if (current == nullptr) {
+					return;
+				}
+				current->set_height(this_height);
+				update_heights(current->get_left_child(), this_height + 1);
+				update_heights(current->get_right_child(), this_height + 1);
+				return;
+			}
+
+
+			void free_tree(bst_node<data_>* current) {
+				if (current == nullptr) {
 					return;
 				}
 
-				else {
-					
-					if (new_data >= current->get_data()) {
-						fprintf(stdout, "Adding to right child...\n");
-						this->push_data(current->get_right_child(), new_data, cur_height + 1);
-						current->set_right_child(new bst_node<data_>(new_data));
-						current->set_height(cur_height);
-						fprintf(stdout, "\tcur_height : %li\n", cur_height);
-						fprintf(stdout, "\tcurrent->get_height() : %li\n", current->get_height());
-						this->height = (cur_height >= height) ? cur_height : this->height;
-						this->size = this->size + 1;
-					}
-					else {
-						fprintf(stdout, "Adding to left child...\n");
-						this->push_data(current->get_left_child(), new_data, cur_height + 1);
-						current->set_left_child(new bst_node<data_>(new_data));
-						current->set_height(cur_height);
-						fprintf(stdout, "\tcur_height : %li\n", cur_height);
-						fprintf(stdout, "\tcurrent->get_height() : %li\n", current->get_height());
-						this->height = (cur_height >= height) ? cur_height : this->height;
-						this->size = this->size + 1;
-					}
-
-
-				}
-
+				free_tree(current->get_left_child());
+				free_tree(current->get_right_child());
+				delete current;
 			}
 
-			signed long get_index_of(data_ to_find, bst_node<data_>* current, signed long cur_height) {
+
+			signed long height_of(bst_node<data_>* current, data_ data) {
 				if (current == nullptr) {
 					return -1;
 				}
-				else {
-					if (to_find == current->get_data() == to_find) {
-						return current->get_height();
+				if (current->get_data() == data) {
+					return this->get_height();
+				}
+				if (data > current->get_data()) {
+					return this->height_of(current->get_right_child(), data);
+				}
+				return this->height_of(current->get_left_child(), data);
+			}
+
+			bst_node<data_>* get_most_child(bst_node<data_>* current, bool left = true) {
+				if (current == nullptr) {
+					return nullptr;
+				}
+				if (left) {
+					if (current->get_left_child() == nullptr) {
+						return current;
 					}
-					else if (to_find >= current->get_data()) {
-						return this->get_index_of(to_find, current->get_right_child(), cur_height + 1);
+					return this->get_most_child(current->get_left_child(), true);
+				}
+				else {
+					if (current->get_right_chidl() == nullptr) {
+						return current;
+					}
+					return this->get_most_child(current->get_right_child(), false);
+				}
+			}
+
+			void remove_this(bst_node<data_>* current, data_ data) {
+				if (current == nullptr) {
+					return;
+				}
+				if (current->get_data() == data) {
+					// the data to remove is in the current node.
+					if (current->get_left_child() == current->get_right_child() == nullptr) {
+						// leaf node
+						delete current;
+					}
+					else if (current->get_left_child() != nullptr && current->get_right_child() == nullptr) {
+						// no right child, but there is a left child.
+						bst_node<data_>* most_right = this->get_most_child(current->get_left_child(), false);
+						most_right->set_parent(current->get_parent());
 					}
 					else {
-						return this->get_index_of(to_find, current->get_left_child(), cur_height + 1);
+						// right child, but no left child.
 					}
+					return;
 				}
+				// keep iterating down the tree.
+				this->remove_this((data >= current->get_data()) ? current->get_right_child() : current->get_left_child(), data);
 			}
 
 
 		public:
 
-			binary_search_tree(data_ new_data = NULL) {
-				if (new_data) {
-					this->root = new bst_node<data_>(new_data);
-					this->root->set_height(0);
-					this->size = 1;
-					this->height = 0;
-				}
-				else {
-					this->root = nullptr;
-					this->size = 0;
-					this->height = -1;
-				}
+			binary_search_tree() {
+				this->size = 0;
+				this->height = -1;
+				this->root = nullptr;
+			}
+
+
+			binary_search_tree(data_ new_data) {
+				this->root = new bst_node<data_>(new_data);
+				this->root->set_height(0);
+				this->size = 1;
+				this->height = 0;
+			}
+
+
+			~binary_search_tree() {
+				this->free_tree(this->root);
+			}
+
+
+			unsigned long get_height() const {
+				return this->height;
+			}
+
+			signed long get_size() const {
+				return this->size;
 			}
 
 			bool empty() const {
 				return this->size == 0;
 			}
 
-			signed long get_height() const {
-				return this->height;
-			}
-
-			unsigned long get_size() const {
-				return size;
-			}
-
 			void add(data_ new_data) {
 				if (this->size == 0) {
-					fprintf(stdout, "Adding to root.\n");
-					this->root = new bst_node<data_>(new_data);
-					this->root->set_height(0);
+					this->root = new bst_node<data_>(new_data, 0);
 					this->size = 1;
 					this->height = 0;
-					fprintf(stdout, "\tsize : %lu, height : %li, root_height : %li\n", this->size, this->height, this->root->get_height());
 				}
 				else {
-					this->push_data(this->root, new_data, 0);
+					this->push_new_data(this->root, new_data);
 				}
 			}
 
 			bool contains(data_ to_find) {
-				if (this->height == -1) {
-					return false;
-				}
-				return this->get_index_of(to_find, this->root, 0) != -1;
+				return this->height_of(this->root, to_find) != -1;
 			}
 
-			signed long index_of(data_ to_find) {
-				if (this->height == -1) {
-					return -1;
-				}
-				return this->get_index_of(to_find, this->root, 0);
+			signed long data_height(data_ to_find) {
+				return this->height_of(this->root, to_find);
+			}
+
+			void remove(data_ to_remove) {
+				this->remove_this(this->root, to_remove);
 			}
 
 
