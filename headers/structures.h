@@ -612,6 +612,9 @@ namespace data_structures {
 				if (current == nullptr) {
 					return;
 				}
+				if (!current->get_left_child() && !current->get_right_child()) {
+					this->height = new_val;
+				}
 				current->set_height(new_val);
 				this->update_height(current->get_left_child(), new_val + 1);
 				this->update_height(current->get_right_child(), new_val + 1);
