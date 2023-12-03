@@ -12,39 +12,28 @@ unsigned long const limit = 1000;
 unsigned long passed = 0, failed = 0;
 
 
-
 template <typename data_> data_ get_random();
-
-
 
 
 template <typename data_> void print_list(data_* list, unsigned long length);
 
 
-
-
 void useful_functions_tests();
-
-
 
 
 void useful_functions_tests_2();
 
 
-
-
 void linear_linked_list_tests();
-
-
 
 
 void linear_linked_lists_tests_2();
 
 
-
-
 void binary_search_tree_tests();
 
+
+void binary_search_tree_tests_2();
 
 
 
@@ -54,6 +43,7 @@ int main(int len, char** args) {
     linear_linked_list_tests();
     linear_linked_lists_tests_2();
     binary_search_tree_tests();
+    binary_search_tree_tests_2();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -472,3 +462,12 @@ void binary_search_tree_tests() {
     }
 }
 
+void binary_search_tree_tests_2() {
+    data_structures::linear_linked_list<unsigned long> list;
+    data_structures::binary_search_tree<unsigned long> tree;
+    unsigned long index;
+    signed long height;
+    fill_random_not<unsigned long>(&list, 1);
+    
+    
+}

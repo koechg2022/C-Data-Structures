@@ -545,7 +545,6 @@ namespace data_structures {
 				}
 			}
 
-
 			void update_heights(bst_node<data_>* current, signed long this_height) {
 				if (current == nullptr) {
 					return;
@@ -556,7 +555,6 @@ namespace data_structures {
 				return;
 			}
 
-
 			void free_tree(bst_node<data_>* current) {
 				if (current == nullptr) {
 					return;
@@ -566,7 +564,6 @@ namespace data_structures {
 				free_tree(current->get_right_child());
 				delete current;
 			}
-
 
 			signed long height_of(bst_node<data_>* current, data_ data) {
 				if (current == nullptr) {
@@ -592,7 +589,7 @@ namespace data_structures {
 					return this->get_most_child(current->get_left_child(), true);
 				}
 				else {
-					if (current->get_right_chidl() == nullptr) {
+					if (current->get_right_child() == nullptr) {
 						return current;
 					}
 					return this->get_most_child(current->get_right_child(), false);
