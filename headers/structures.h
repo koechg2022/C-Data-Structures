@@ -37,8 +37,6 @@ namespace data_structures {
 		};
 
 
-
-
 		template <typename data_, typename indx_ = signed long> class numbered_node : public node_root<data_> {
 
 
@@ -68,8 +66,6 @@ namespace data_structures {
 				}
 
 		};
-
-
 
 
 		template <typename data_> class linear_node : public node_root<data_> {
@@ -515,10 +511,11 @@ namespace data_structures {
 		
 
 			void push_new_data(bst_node<data_>* current, data_ new_data) {
+				// fprintf(stdout, "Inside the push_new_data\n");
 				if (current == nullptr) {
 					return;
 				}
-				if (new_data >= current->get_data()) {
+				else if (new_data >= current->get_data()) {
 					// go to the right of the current node.
 					if (current->get_right_child() == nullptr) {
 						// set the child here.
@@ -538,6 +535,7 @@ namespace data_structures {
 						// set the child here
 						current->set_left_child(new bst_node<data_>(new_data, current->get_height() + 1));
 						current->get_left_child()->set_parent(current);
+						this->size = this->size + 1;
 						if (current->get_height() + 1 > this->height) {
 							this->height = this->height + 1;
 						}
@@ -601,30 +599,6 @@ namespace data_structures {
 				}
 			}
 
-			void remove_this(bst_node<data_>* current, data_ data) {
-				if (current == nullptr) {
-					return;
-				}
-				if (current->get_data() == data) {
-					// the data to remove is in the current node.
-					if (current->get_left_child() == current->get_right_child() == nullptr) {
-						// leaf node
-						delete current;
-					}
-					else if (current->get_left_child() != nullptr && current->get_right_child() == nullptr) {
-						// no right child, but there is a left child.
-						bst_node<data_>* most_right = this->get_most_child(current->get_left_child(), false);
-						most_right->set_parent(current->get_parent());
-					}
-					else {
-						// right child, but no left child.
-					}
-					return;
-				}
-				// keep iterating down the tree.
-				this->remove_this((data >= current->get_data()) ? current->get_right_child() : current->get_left_child(), data);
-			}
-
 
 		public:
 
@@ -679,8 +653,9 @@ namespace data_structures {
 				return this->height_of(this->root, to_find);
 			}
 
+
 			void remove(data_ to_remove) {
-				this->remove_this(this->root, to_remove);
+				throw std::runtime_error("remove method not yet implemented");
 			}
 
 
