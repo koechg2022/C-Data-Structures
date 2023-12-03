@@ -443,8 +443,32 @@ void binary_search_tree_tests() {
         tree.contains(list[index]) ? passed++ : failed++;
     }
     for (index = 0; index < limit; index = index + 1) {
+        tree.contains(list[index]);
         height = tree.data_height(list[index]);
         height >= 0 && height <= tree.get_height() ? passed++ : failed++;
+    }
+    for (index = 0; index < limit; index = index + 1) {
+        tree.empty() ? failed++ : passed++;
+        tree.contains(list[index]);
+        height = tree.data_height(list[index]);
+        height >= 0 && height <= tree.get_height() ? passed++ : failed++;
+        tree.get_size() == limit ? passed++ : failed++;
+    }
+    try {
+        for (index = 0; index < limit; index = index + 1) {
+            tree.remove(list[index]);
+            tree.get_size() == limit - index - 1 ? passed++ : failed++;
+        }
+        tree.get_size() ? failed++ : passed++;
+        tree.get_height() == -1 ? passed++ : failed++;
+        tree.empty() ? passed++ : failed++;
+        for (index = 0; index < limit; index = index + 1) {
+            tree.contains(list[index]) ? failed++ : passed++;
+        }
+    }
+    catch (std::runtime_error except) {
+        passed++;
+        fprintf(stderr, "%s\n", except.what());
     }
 }
 

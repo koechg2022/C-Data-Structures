@@ -599,6 +599,62 @@ namespace data_structures {
 				}
 			}
 
+			void update_node_heights(bst_node<data_>* current, signed long current_height) {
+				if (current == nullptr) {
+					return;
+				}
+				this->update_heights(current->get_left_child(), current_height + 1);
+				this->update_heights(current->get_right_child(), current_height + 1);
+				current->set_height(current_height);
+			}
+
+			void update_height(bst_node<data_>* current, signed long new_val) {
+				if (current == nullptr) {
+					return;
+				}
+				current->set_height(new_val);
+				this->update_height(current->get_left_child(), new_val + 1);
+				this->update_height(current->get_right_child(), new_val + 1);
+			}
+
+			void remove_node(bst_node<data_>* current, data_ remove_me) {
+				
+				// base case 1 : The data doesn't exist.
+				if (current == nullptr) {
+					return;
+				}
+				
+				// base case 2: The data has been found
+				if (current->get_data() == remove_me) {
+					// There is a left child and a right child.
+					if (current->get_left_child() && current->get_right_child()) {
+						// get the left child's rightmost leaf.
+						bst_node<data_>* right_most = this->get_most_child(current->get_left_child(), false);
+						right_most->get_parent()->set_right_child(nullptr);
+						current->set_data(right_most->get_data());
+					}
+
+					// There is only a left child and no right child.
+					else if (current->get_left_child() && !current->get_right_child()) {
+						bst_node<data_>* right_most = this->get_most_child(current->get_left_child(), false);
+						right_most->get_parent()->set_right_child(nullptr);
+						current->set_data(right_most->get_data());
+					}
+
+					// There is only a right child and no left child.
+					else {
+						bst_node<data_>* left_most = this->get_most_child(current->get_left_child(), true);
+						left_most->get_parent()->set_right_child(nullptr);
+						current->set_data(left_most->get_data());
+					}
+					this->size = this->size - 1;
+					return;
+				}
+
+				// The data could be in the left or right child
+				this->remove_node((remove_me >= current->get_data()) ? current->get_right_child() : current->get_left_child(), remove_me);
+			}
+
 
 		public:
 
@@ -656,6 +712,7 @@ namespace data_structures {
 
 			void remove(data_ to_remove) {
 				throw std::runtime_error("remove method not yet implemented");
+				this->remove_node(this->root, to_remove);
 			}
 
 
