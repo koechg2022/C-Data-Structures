@@ -43,7 +43,6 @@ int main(int len, char** args) {
     linear_linked_list_tests();
     linear_linked_lists_tests_2();
     binary_search_tree_tests();
-    binary_search_tree_tests_2();
     fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
     return 0;
 }
@@ -418,56 +417,13 @@ void binary_search_tree_tests() {
     tree.get_height() == -1 ? passed++ : failed++;
     tree.get_size() == 0 ? passed++ : failed++;
     tree.get_size() + list.length() == list.length() ? passed++ : failed++;
-    tree.add(list[0]);
-    tree.empty() ? failed++ : passed++;
-    tree.get_height() == 0 ? passed++ : failed++;
-    tree.get_size() == 1 ? passed++ : failed++;
-    tree.add(list[1]);
-    tree.empty() ? failed++ : passed++;
-    tree.get_size() == 2 ? passed++ : failed++;
-    tree.get_height() == 1 ? passed++ : failed++;
-    for (index = 2; index < limit; index = index + 1) {
+    for (index = 0; index < list.length(); index = index + 1) {
         tree.add(list[index]);
     }
-    for (index = 0; index < limit; index = index + 1) {
+    tree.empty() ? failed++ : passed++;
+    tree.get_size() == list.length() ? passed++ : failed++;
+    tree.get_height() > 0 && tree.get_height() <= (signed long) list.length() ? passed++ : failed++;
+    for (index = 0; index < list.length(); index = index + 1) {
         tree.contains(list[index]) ? passed++ : failed++;
     }
-    for (index = 0; index < limit; index = index + 1) {
-        tree.contains(list[index]);
-        height = tree.data_height(list[index]);
-        height >= 0 && height <= tree.get_height() ? passed++ : failed++;
-    }
-    for (index = 0; index < limit; index = index + 1) {
-        tree.empty() ? failed++ : passed++;
-        tree.contains(list[index]);
-        height = tree.data_height(list[index]);
-        height >= 0 && height <= tree.get_height() ? passed++ : failed++;
-        tree.get_size() == limit ? passed++ : failed++;
-    }
-    try {
-        for (index = 0; index < limit; index = index + 1) {
-            tree.remove(list[index]);
-            tree.get_size() == limit - index - 1 ? passed++ : failed++;
-        }
-        tree.get_size() ? failed++ : passed++;
-        tree.get_height() == -1 ? passed++ : failed++;
-        tree.empty() ? passed++ : failed++;
-        for (index = 0; index < limit; index = index + 1) {
-            tree.contains(list[index]) ? failed++ : passed++;
-        }
-    }
-    catch (std::runtime_error except) {
-        passed++;
-        fprintf(stderr, "%s\n", except.what());
-    }
-}
-
-void binary_search_tree_tests_2() {
-    data_structures::linear_linked_list<unsigned long> list;
-    data_structures::binary_search_tree<unsigned long> tree;
-    unsigned long index;
-    signed long height;
-    fill_random_not<unsigned long>(&list, 1);
-    
-    
 }

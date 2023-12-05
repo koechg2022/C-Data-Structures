@@ -105,22 +105,21 @@ namespace data_structures {
 		};
 
 
-		template <typename data_> class bst_node : public numbered_node <data_, signed long> {
+		template <typename data_> class bst_node : public node_root<data_> {
 
 			private:
-				bst_node<data_>* left_child, *right_child, *parent;
+				bst_node<data_> *left_child, *right_child;
 
 			public:
 
 				bst_node() {
-					this->left_child = this->right_child = parent = nullptr;
+					this->left_child = this->right_child = nullptr;
 					this->set_index(-1);
 				}
 
-				bst_node(data_ new_data, signed long height = -1) {
+				bst_node(data_ new_data) {
 					this->this_data = new_data;
-					this->set_index(height);
-					this->left_child = this->right_child = parent = nullptr;
+					this->left_child = this->right_child = nullptr;
 				}
 
 				void set_left_child(bst_node<data_>* left) {
@@ -131,36 +130,12 @@ namespace data_structures {
 					this->right_child = right;
 				}
 
-				void set_parent(bst_node<data_>* mother) {
-					this->parent = mother;
-				}
-
 				bst_node<data_>* get_left_child() {
 					return this->left_child;
 				}
 
 				bst_node<data_>* get_right_child() {
 					return this->right_child;
-				}
-
-				bst_node<data_>* get_parent() {
-					return this->parent;
-				}
-
-				void set_height(signed long height) {
-					this->set_index(height);
-				}
-
-				void set_h(signed long height) {
-					this->index = height;
-				}
-
-				signed long get_height() const {
-					return this->get_index();
-				}
-
-				signed long get_h() const {
-					return this->index;
 				}
 
 		};
@@ -510,7 +485,7 @@ namespace data_structures {
 			bst_node<data_>* root;
 		
 
-			void push_new_data(bst_node<data_>* current, data_ new_data) {
+			void push_new_data(bst_node<data_>* current, data_ new_data, signed long current_height) {
 				// fprintf(stdout, "Inside the push_new_data\n");
 				if (current == nullptr) {
 					return;
@@ -519,29 +494,27 @@ namespace data_structures {
 					// go to the right of the current node.
 					if (current->get_right_child() == nullptr) {
 						// set the child here.
-						current->set_right_child(new bst_node<data_>(new_data, current->get_height() + 1));
-						current->get_right_child()->set_parent(current);
+						current->set_right_child(new bst_node<data_>(new_data));
 						this->size = this->size + 1;
-						if (current->get_height() + 1 > this->height) {
+						if (current_height + 1 > this->height) {
 							this->height = this->height + 1;
 						}
 						return;
 					}
-					this->push_new_data(current->get_right_child(), new_data);
+					this->push_new_data(current->get_right_child(), new_data, current_height + 1);
 				}
 				else {
 					// go to the left of the current node.
 					if (current->get_left_child() == nullptr) {
 						// set the child here
-						current->set_left_child(new bst_node<data_>(new_data, current->get_height() + 1));
-						current->get_left_child()->set_parent(current);
+						current->set_left_child(new bst_node<data_>(new_data));
 						this->size = this->size + 1;
-						if (current->get_height() + 1 > this->height) {
+						if (current_height + 1 > this->height) {
 							this->height = this->height + 1;
 						}
 						return;
 					}
-					this->push_new_data(current->get_left_child(), new_data);
+					this->push_new_data(current->get_left_child(), new_data, current_height + 1);
 				}
 			}
 
@@ -555,6 +528,16 @@ namespace data_structures {
 				return;
 			}
 
+			signed long height_of(bst_node<data_>* current, data_ data, signed long current_height = -1) {
+				if (current == nullptr) {
+					return -1;
+				}
+				if (current->get_data() == data) {
+					return current_height;
+				}
+				return this->height_of((data > current->get_data()) ? current->get_right_child() : current->get_left_child(), data, current_height + 1);
+			}
+
 			void free_tree(bst_node<data_>* current) {
 				if (current == nullptr) {
 					return;
@@ -565,17 +548,17 @@ namespace data_structures {
 				delete current;
 			}
 
-			signed long height_of(bst_node<data_>* current, data_ data) {
-				if (current == nullptr) {
+			signed long get_subtree_height(bst_node<data_>* current) {
+				if (!current) {
 					return -1;
 				}
-				if (current->get_data() == data) {
-					return this->get_height();
-				}
-				if (data > current->get_data()) {
-					return this->height_of(current->get_right_child(), data);
-				}
-				return this->height_of(current->get_left_child(), data);
+				signed long left_child = this->get_subtree_height(current->get_left_child());
+				signed long right_child = this->get_subtree_height(current->get_right_child());
+				return 1 + useful_functions::max_data<signed long>(left_child, right_child);
+			}
+
+			void update_tree_height() {
+				this->height = useful_functions::max_data<signed long>(this->get_subtree_height(this->root->get_left_child()), this->get_subtree_height(this->root->get_right_child()));
 			}
 
 			bst_node<data_>* get_most_child(bst_node<data_>* current, bool left = true) {
@@ -596,63 +579,52 @@ namespace data_structures {
 				}
 			}
 
-			void update_node_heights(bst_node<data_>* current, signed long current_height) {
+			void find_and_remove(bst_node<data_>* current, data_ remove_me) {
 				if (current == nullptr) {
 					return;
 				}
-				this->update_heights(current->get_left_child(), current_height + 1);
-				this->update_heights(current->get_right_child(), current_height + 1);
-				current->set_height(current_height);
-			}
-
-			void update_height(bst_node<data_>* current, signed long new_val) {
-				if (current == nullptr) {
-					return;
-				}
-				if (!current->get_left_child() && !current->get_right_child()) {
-					this->height = new_val;
-				}
-				current->set_height(new_val);
-				this->update_height(current->get_left_child(), new_val + 1);
-				this->update_height(current->get_right_child(), new_val + 1);
-			}
-
-			void remove_node(bst_node<data_>* current, data_ remove_me) {
-				
-				// base case 1 : The data doesn't exist.
-				if (current == nullptr) {
-					return;
-				}
-				
-				// base case 2: The data has been found
 				if (current->get_data() == remove_me) {
-					// There is a left child and a right child.
+					/* 
+						The current node is the node that is being deleted 
+					*/
+
+
+					// holds the leftmost or rightmost leaf child.
+					bst_node<data_>* leaf_child;
+
+					// the current node has a left and right child
 					if (current->get_left_child() && current->get_right_child()) {
-						// get the left child's rightmost leaf.
-						bst_node<data_>* right_most = this->get_most_child(current->get_left_child(), false);
-						right_most->get_parent()->set_right_child(nullptr);
-						current->set_data(right_most->get_data());
+						
+						// leaf_child is the left most child of the current node's right child.
+						leaf_child = this->get_most_child(current->get_right_child());
+						fprintf(stdout, "For current leaf_child with both children, %s child has data\n", leaf_child->get_left_child() ? "Left" : (leaf_child->get_right_child()) ? "Right" : "No");
+						current->set_data(leaf_child->get_data());
+						delete leaf_child;
 					}
 
-					// There is only a left child and no right child.
+					// there is a left child, but no right child.
 					else if (current->get_left_child() && !current->get_right_child()) {
-						bst_node<data_>* right_most = this->get_most_child(current->get_left_child(), false);
-						right_most->get_parent()->set_right_child(nullptr);
-						current->set_data(right_most->get_data());
+						
+						// leaf_child is the right most child of the current node's left child.
+						leaf_child = this->get_most_child(current->get_left_child(), false);
+						fprintf(stdout, "For current leaf_child with left child only, %s child has data\n", leaf_child->get_left_child() ? "Left" : (leaf_child->get_right_child()) ? "Right" : "No");
+						current->set_data(leaf_child->get_data());
+						delete leaf_child;
 					}
 
-					// There is only a right child and no left child.
+					// there is a right child, but no left child.
 					else {
-						bst_node<data_>* left_most = this->get_most_child(current->get_left_child(), true);
-						left_most->get_parent()->set_right_child(nullptr);
-						current->set_data(left_most->get_data());
-					}
-					this->size = this->size - 1;
-					return;
-				}
 
-				// The data could be in the left or right child
-				this->remove_node((remove_me >= current->get_data()) ? current->get_right_child() : current->get_left_child(), remove_me);
+						// leaf_child is the left most child of the current node's right child
+						leaf_child = this->get_most_child(current->get_right_child());
+						fprintf(stdout, "For current leaf_child with right child only, %s child has data\n", leaf_child->get_left_child() ? "Left" : (leaf_child->get_right_child()) ? "Right" : "No");
+						current->set_data(leaf_child->get_data());
+						delete leaf_child;
+					}
+					this->update_tree_height();
+					this->size = this->size - 1;
+				}
+				this->find_and_remove((remove_me > current->get_data()) ? current->get_right_child() : current->get_left_child(), remove_me);
 			}
 
 
@@ -664,7 +636,6 @@ namespace data_structures {
 				this->root = nullptr;
 			}
 
-
 			binary_search_tree(data_ new_data) {
 				this->root = new bst_node<data_>(new_data);
 				this->root->set_height(0);
@@ -672,11 +643,9 @@ namespace data_structures {
 				this->height = 0;
 			}
 
-
 			~binary_search_tree() {
 				this->free_tree(this->root);
 			}
-
 
 			unsigned long get_height() const {
 				return this->height;
@@ -692,27 +661,45 @@ namespace data_structures {
 
 			void add(data_ new_data) {
 				if (this->size == 0) {
-					this->root = new bst_node<data_>(new_data, 0);
+					this->root = new bst_node<data_>(new_data);
 					this->size = 1;
 					this->height = 0;
 				}
 				else {
-					this->push_new_data(this->root, new_data);
+					this->push_new_data(this->root, new_data, 0);
 				}
 			}
 
 			bool contains(data_ to_find) {
-				return this->height_of(this->root, to_find) != -1;
+				if (this->size == 0) {
+					return false;
+				}
+				return this->height_of(this->root, to_find, 0) != -1;
 			}
 
 			signed long data_height(data_ to_find) {
-				return this->height_of(this->root, to_find);
+				if (this->size == 0) {
+					return -1;
+				}
+				return this->height_of(this->root, to_find, 0);
 			}
 
+			void reset() {
+				this->free_tree(this->root);
+			}
 
 			void remove(data_ to_remove) {
-				throw std::runtime_error("remove method not yet implemented");
-				this->remove_node(this->root, to_remove);
+				if (this->size > 0) {
+					if (this->size == 1) {
+						this->free_tree(this->root);
+						this->size = 0;
+						this->height = -1;
+					}
+					else {
+						fprintf(stdout, "Removing %lu\n", to_remove);
+						this->find_and_remove(this->root, to_remove);
+					}
+				}
 			}
 
 

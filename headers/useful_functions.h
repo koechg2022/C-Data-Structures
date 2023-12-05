@@ -452,7 +452,7 @@ namespace useful_functions {
 
 
         template <typename data_> void quick_sort(data_* list, unsigned long length, bool ascending) {
-
+            
         }
 
 
