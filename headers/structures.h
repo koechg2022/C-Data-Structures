@@ -229,9 +229,6 @@ namespace data_structures {
 				return true;
 			}
 
-
-
-
 			bool operator!=(linear_linked_list<data_>& other) {
 				fprintf(stderr, "!= operator not yet implemented\n");
 				exit(EXIT_FAILURE);
@@ -248,23 +245,15 @@ namespace data_structures {
 				return true;
 			}
 
-
-
-
 			bool operator<=(linear_linked_list<data_>& other) {
 				fprintf(stderr, "<= operator not yet implemented\n");
 				exit(EXIT_FAILURE);
 			}
 
-
-
 			bool operator>=(linear_linked_list<data_>& other) {
 				fprintf(stderr, "=> operator not yet implemented\n");
 				exit(EXIT_FAILURE);
 			}
-
-
-
 
 			data_& operator [](signed long index) {
 				try {
@@ -276,10 +265,6 @@ namespace data_structures {
 				}
 			}
 
-
-
-
-
 			/**
 			 * @brief Check if the current linked list is empty or not.
 			 * 
@@ -289,10 +274,6 @@ namespace data_structures {
 				return (this->size == 0);
 			}
 
-
-
-
-
 			/**
 			 * @brief Get the size of the linked list.
 			 * 
@@ -301,10 +282,6 @@ namespace data_structures {
 			unsigned long length() const {
 				return this->size;
 			}
-
-
-
-
 
 			/**
 			 * @brief Empties out the linked list and frees up memory.
@@ -318,13 +295,10 @@ namespace data_structures {
 					this->front = this->frame->get_next();
 					delete this->frame;
 					this->frame = this->front;
+					this->size = this->size - 1;
 				}
-				this->size = 0;
+				this->frame_index = 0;
 			}
-
-
-
-
 
 			/**
 			 * @brief Push new data onto the linked list.
@@ -420,10 +394,6 @@ namespace data_structures {
 				this->size = this->size + 1;
 			}
 
-
-
-
-
 			/**
 			 * @brief Peek at the data inside the linked list at a specific index.
 			 * 
@@ -435,15 +405,18 @@ namespace data_structures {
 			 * @returns `(Generic)` : The data at the index specified.
 			*/
 			data_ peek(signed long index = -1) {
-				unsigned long peek_index = (index < 0) ? (this->size - ((unsigned long) index) - 1) : (unsigned long) index;
+				unsigned long peek_index = (index < 0) ? (this->size - ((unsigned long) useful_functions::absolute<signed long>(index))) : (unsigned long) index;
+				// fprintf(stdout, "peek_index : %lu\n", peek_index);
 				if (this->size == 0) {
 					throw std::length_error("linear linked list is empty.");
 				}
+				// fprintf(stdout, "peek_index is %lu\n", peek_index);
 				if (peek_index == 0) {
 					this->frame = this->front;
 					this->frame_index = 0;
 				}
 				else if (peek_index == this->size - 1) {
+					// fprintf(stdout, "peeking rear... peek_index is %lu\n", peek_index);
 					this->frame = this->rear;
 					this->frame_index = this->size - 1;
 				}
@@ -451,28 +424,63 @@ namespace data_structures {
 					// This is where some extra work comes into play.
 					// this is constly on a smaller linked list,
 					// but the payoff is big for a larger linked list.
-					unsigned long from_first = peek_index, from_rear = this->size - 1 - peek_index, from_frame = ((signed long) peek_index - (signed long) this->frame_index);
+					unsigned long from_first = peek_index, from_rear = this->size - 1 - peek_index;
+					unsigned long from_frame = useful_functions::max_data<unsigned long>(peek_index, frame_index) - useful_functions::min_data<unsigned long>(peek_index, frame_index);
 					unsigned long* distances[] = {&from_first, &from_rear, &from_frame};
 					useful_functions::insertion_sort<unsigned long>(distances, 3, true);
-					if (distances[0] == &from_first) {
+					if (distances[0] == &from_first || (distances[0] == &from_frame && from_first == from_frame)) {
 						this->frame = this->front;
 						this->frame_index = 0;
 						this->frame_shifter((signed long) from_first);
 					}
-					else if (distances[0] == &from_rear) {
+					else if (distances[0] == &from_rear || (distances[0] == &from_frame && from_rear == from_frame)) {
 						this->frame = this->rear;
 						this->frame_index = this->size - 1;
-						this->frame_shifter((signed long) from_rear);
+						this->frame_shifter(((signed long) from_rear) * -1);
 					}
 					else {
-						// frame is the shortest distance to traverse
-						this->frame_shifter((index < 0) ? ((signed long) from_frame * -1) : ((signed long) from_frame));
+						this->frame_shifter((peek_index >= this->frame_index) ? (signed long) from_frame : ((signed long) from_frame) * -1);
 					}
 				}
-				// fprintf(stdout, "\tAbout to return %lu at index %lu\n", this->frame->get_data(), this->frame_index);
 				return this->frame->get_data();
 			}
 
+			
+			data_ pop(signed long index = -1) {
+				this->peek(index);
+				// this->frame should now have all the necessary data.
+				data_ the_answer = this->frame->get_data();
+				if (this->size == 1) {
+					this->reset();
+					this->size = 1;
+				}
+
+				else if (this->frame_index == 0) {
+					this->front = this->front->get_next();
+					delete this->frame;
+					this->frame = this->front;
+				}
+
+				else if (this->frame_index == this->size - 1) {
+					this->rear = this->rear->get_previous();
+					this->rear->set_next(nullptr);
+					delete this->frame;
+					this->frame = this->rear;
+					this->frame_index = this->frame_index - 1;
+				}
+				
+				else {
+					linear_node<data_>* temp = this->frame;
+					this->frame->get_previous()->set_next(this->frame->get_next());
+					this->frame->get_previous()->get_next()->set_previous(this->frame->get_previous());
+					this->frame = this->frame->get_next();
+					temp->set_previous(nullptr);
+					temp->set_next(nullptr);
+					delete temp;
+				}
+				this->size = this->size - 1;
+				return the_answer;
+			}
 
 	};
 
