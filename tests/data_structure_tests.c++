@@ -401,6 +401,45 @@ void linear_linked_lists_tests_2() {
         data[index] == list[index] ? passed++ : failed++;
         list[index] == data[index] ? passed++ : failed++;
     }
+    list.reset();
+    for (index = 0; index < limit; index++) {
+        data[index] = get_random<unsigned long>();
+        list.push(data[index]);
+    }
+    signed long neg_index;
+    for (neg_index = -1, index = list.length() - 1; index >= 0 && neg_index > ((signed long) limit) * -1; neg_index = neg_index - 1, index = index - 1) {
+        list[neg_index] == data[index] ? passed++ : failed++;
+    }
+    for (index = list.length() -1 ; index > 0; index = index - 1) {
+        list.pop() == data[index] ? passed++ : failed++;
+    }
+    list.pop() == data[0] ? passed++ : failed++;
+    list.empty() ? passed++ : failed++;
+    list.length() == 0 ? passed++ : failed++;
+
+    // for popping from the front.
+    for (index = 0; index < limit; index++) {
+        data[index] = get_random<unsigned long>();
+        list.push(data[index]);
+    }
+
+    for (index = 0; index < limit; index++) {
+        list.pop(0) == data[index] ? passed++ : failed++;
+    }
+    list.empty() ? passed++ : failed++;
+    list.length() == 0 ? passed++ : failed++;
+
+    // for popping from the center
+    for (index = 0; index < limit; index++) {
+        data[index] = get_random<unsigned long>();
+        list.push(data[index]);
+    }
+
+    index = limit / 2;
+    list[index] == data[index] ? passed++ : failed++;
+    list.pop(index) == data[index] ? passed++ : failed++;
+    list.empty() ? failed++ : passed++;
+    list.length() == limit - 1 ? passed++ : failed++;
 
 }
 
