@@ -553,6 +553,7 @@ namespace data_structures {
 				}
 			}
 
+
 			void update_heights(bst_node<data_>* current, signed long this_height) {
 				if (current == nullptr) {
 					return;
