@@ -441,6 +441,24 @@ void linear_linked_lists_tests_2() {
     list.empty() ? failed++ : passed++;
     list.length() == limit - 1 ? passed++ : failed++;
 
+    list.reset();
+    fill_random_not<unsigned long>(&list, limit);
+    unsigned long this_check;
+    while (!list.empty()) {
+        this_check = list[0];
+        list.contains(this_check) != -1 ? passed++ : failed++;
+        list.pop(0);
+        list.contains(this_check) == -1 ? passed++ : failed++;
+    }
+    list.empty() ? passed++ : failed++;
+    list.length() == 0 ? passed++ : failed++;
+    fill_random_not<unsigned long>(&list, limit);
+    while (!list.empty()) {
+        this_check = list[-1];
+        list.contains(this_check) != -1 ? passed++ : failed++;
+        list.pop();
+        list.contains(this_check) == -1 ? passed++ : failed++;
+    }
 }
 
 
@@ -464,5 +482,9 @@ void binary_search_tree_tests() {
     tree.get_height() > 0 && tree.get_height() <= (signed long) list.length() ? passed++ : failed++;
     for (index = 0; index < list.length(); index = index + 1) {
         tree.contains(list[index]) ? passed++ : failed++;
+        // fprintf(stdout, "removing : %lu\n", list[index]);
+        tree.remove(list[index]);
     }
+    // fprintf(stdout, "tree's size is %lu\n", tree.get_size());
+    // tree.empty() ? passed++ : failed++;
 }

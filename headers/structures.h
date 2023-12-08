@@ -191,25 +191,20 @@ namespace data_structures {
 			// Copy Constructor
 
 			linear_linked_list(linear_linked_list<data_>& other_list) {
-				if (this == &other_list) {
-					return;
-				}
-				this->size = 0;
-				unsigned long index;
-				for (index = 0; index < other_list.length(); index = index + 1) {
-					this->push(other_list.peek(index));
+				if (this != &other_list) {
+					this->reset();
+					unsigned long index;
+					for (index = 0; index < other_list.length(); index = index + 1) {
+						this->push(other_list.peek(index));
+					}
 				}
 			}
-
 
 			~linear_linked_list() {
 				this->reset();
 			}
 
 			// Operator Overloading.
-
-			// Assignment Operators
-			// TODO CREATE ASSIGNMENT OPERATORS
 
 			// Comparison operators
 
@@ -263,6 +258,23 @@ namespace data_structures {
 				catch (std::range_error except) {
 					throw except;
 				}
+			}
+
+			// arithmetic operators
+
+			linear_linked_list<data_>& operator+(linear_linked_list<data_>& other) {
+				linear_linked_list<data_> the_answer;
+				return the_answer;
+			}
+
+			linear_linked_list<data_>& operator*(linear_linked_list<data_>& other) {
+				linear_linked_list<data_> the_answer;
+				return the_answer;
+			}
+
+			linear_linked_list<data_>& operator-(linear_linked_list<data_>& other) {
+				linear_linked_list<data_> the_answer;
+				return the_answer;
 			}
 
 			/**
@@ -444,7 +456,6 @@ namespace data_structures {
 				}
 				return this->frame->get_data();
 			}
-
 			
 			data_ pop(signed long index = -1) {
 				this->peek(index);
@@ -480,6 +491,22 @@ namespace data_structures {
 				}
 				this->size = this->size - 1;
 				return the_answer;
+			}
+
+			signed long contains(data_ to_find) {
+				signed long index;
+				this->frame = this->front;
+				this->frame_index = 0;
+				while (this->frame != nullptr) {
+					if (this->frame->get_data() == to_find) {
+						return (signed long) this->frame_index;
+					}
+					this->frame = this->frame->get_next();
+					this->frame_index = this->frame_index + 1;
+				}
+				this->frame = this->rear;
+				this->frame_index = this->size - 1;
+				return -1;
 			}
 
 	};
@@ -587,52 +614,16 @@ namespace data_structures {
 				}
 			}
 
-			void find_and_remove(bst_node<data_>* current, data_ remove_me) {
-				if (current == nullptr) {
+			void remove_from_subtree(bst_node<data_>* current, data_ find) {
+				if (current == NULL || current == nullptr) {
 					return;
 				}
-				if (current->get_data() == remove_me) {
-					/* 
-						The current node is the node that is being deleted 
-					*/
 
+				if (current->get_data() == find) {
 
-					// holds the leftmost or rightmost leaf child.
-					bst_node<data_>* leaf_child;
-
-					// the current node has a left and right child
-					if (current->get_left_child() && current->get_right_child()) {
-						
-						// leaf_child is the left most child of the current node's right child.
-						leaf_child = this->get_most_child(current->get_right_child());
-						fprintf(stdout, "For current leaf_child with both children, %s child has data\n", leaf_child->get_left_child() ? "Left" : (leaf_child->get_right_child()) ? "Right" : "No");
-						current->set_data(leaf_child->get_data());
-						delete leaf_child;
-					}
-
-					// there is a left child, but no right child.
-					else if (current->get_left_child() && !current->get_right_child()) {
-						
-						// leaf_child is the right most child of the current node's left child.
-						leaf_child = this->get_most_child(current->get_left_child(), false);
-						fprintf(stdout, "For current leaf_child with left child only, %s child has data\n", leaf_child->get_left_child() ? "Left" : (leaf_child->get_right_child()) ? "Right" : "No");
-						current->set_data(leaf_child->get_data());
-						delete leaf_child;
-					}
-
-					// there is a right child, but no left child.
-					else {
-
-						// leaf_child is the left most child of the current node's right child
-						leaf_child = this->get_most_child(current->get_right_child());
-						fprintf(stdout, "For current leaf_child with right child only, %s child has data\n", leaf_child->get_left_child() ? "Left" : (leaf_child->get_right_child()) ? "Right" : "No");
-						current->set_data(leaf_child->get_data());
-						delete leaf_child;
-					}
-					this->update_tree_height();
-					this->size = this->size - 1;
 				}
-				this->find_and_remove((remove_me > current->get_data()) ? current->get_right_child() : current->get_left_child(), remove_me);
+
+
 			}
 
 
@@ -697,17 +688,7 @@ namespace data_structures {
 			}
 
 			void remove(data_ to_remove) {
-				if (this->size > 0) {
-					if (this->size == 1) {
-						this->free_tree(this->root);
-						this->size = 0;
-						this->height = -1;
-					}
-					else {
-						fprintf(stdout, "Removing %lu\n", to_remove);
-						this->find_and_remove(this->root, to_remove);
-					}
-				}
+				this->remove_from_subtree(this->root, to_remove);
 			}
 
 
