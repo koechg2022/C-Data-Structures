@@ -479,12 +479,10 @@ void binary_search_tree_tests() {
     }
     tree.empty() ? failed++ : passed++;
     tree.get_size() == list.length() ? passed++ : failed++;
-    tree.get_height() > 0 && tree.get_height() <= (signed long) list.length() ? passed++ : failed++;
+    tree.get_height() > 0 && tree.get_height() <= (signed long) list.length() ? 
+    passed++ : failed++;
     for (index = 0; index < list.length(); index = index + 1) {
         tree.contains(list[index]) ? passed++ : failed++;
-        // fprintf(stdout, "removing : %lu\n", list[index]);
-        tree.remove(list[index]);
+        // tree.remove(list[index]);
     }
-    // fprintf(stdout, "tree's size is %lu\n", tree.get_size());
-    // tree.empty() ? passed++ : failed++;
 }

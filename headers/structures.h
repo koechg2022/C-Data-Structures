@@ -583,19 +583,6 @@ namespace data_structures {
 				delete current;
 			}
 
-			signed long get_subtree_height(bst_node<data_>* current) {
-				if (!current) {
-					return -1;
-				}
-				signed long left_child = this->get_subtree_height(current->get_left_child());
-				signed long right_child = this->get_subtree_height(current->get_right_child());
-				return 1 + useful_functions::max_data<signed long>(left_child, right_child);
-			}
-
-			void update_tree_height() {
-				this->height = useful_functions::max_data<signed long>(this->get_subtree_height(this->root->get_left_child()), this->get_subtree_height(this->root->get_right_child()));
-			}
-
 			bst_node<data_>* get_most_child(bst_node<data_>* current, bool left = true) {
 				if (current == nullptr) {
 					return nullptr;
@@ -618,12 +605,29 @@ namespace data_structures {
 				if (current == NULL || current == nullptr) {
 					return;
 				}
-
 				if (current->get_data() == find) {
+					if (current->get_left_child() || current->get_right_child()) {
+						bst_node<data_>* most_child;
+						
+						if (current->get_left_child() && current->get_right_child()) {
+							most_child = this->get_most_child(current->get_right_child());
+						}
 
+						else if (current->get_left_child() && !current->get_right_child()) {
+							most_child = this->get_most_child(current->get_left_child(), false);
+						}
+						
+						else {
+							// there is a right child, but no left child.
+							most_child = this->get_most_child(current->get_right_child());
+						}
+					}
+					else {
+						// leaf node.
+						delete current;
+					}
 				}
-
-
+				this->remove_from_subtree((find > current->get_data()) ? current->get_right_child() : current->get_left_child(), find);
 			}
 
 
