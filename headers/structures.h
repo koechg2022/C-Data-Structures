@@ -611,21 +611,48 @@ namespace data_structures {
 						
 						if (current->get_left_child() && current->get_right_child()) {
 							most_child = this->get_most_child(current->get_right_child());
+							current->set_data(most_child->get_data());
+
+							if (most_child->get_right_child()) {
+								// there is a right child to account for before deleting most_child.
+
+							}
+							else {
+								// there is no right child to account for.
+								delete most_child;
+							}
 						}
 
 						else if (current->get_left_child() && !current->get_right_child()) {
 							most_child = this->get_most_child(current->get_left_child(), false);
+							current->set_data(most_child->get_data());
+
+							if (most_child->get_left_child()) {
+								// there is a left child of most_child to account for before deleting.
+							}
+							else {
+								delete most_child;
+							}
 						}
-						
+
 						else {
 							// there is a right child, but no left child.
 							most_child = this->get_most_child(current->get_right_child());
+							current->set_data(most_child->get_data());
+
+							if (most_child->get_left_child()) {
+								// there is a left child to consider before deleting.
+							}
+							else {
+								delete most_child;
+							}
 						}
 					}
 					else {
 						// leaf node.
 						delete current;
 					}
+					this->size = this->size - 1;
 				}
 				this->remove_from_subtree((find > current->get_data()) ? current->get_right_child() : current->get_left_child(), find);
 			}
