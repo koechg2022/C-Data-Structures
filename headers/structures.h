@@ -202,6 +202,7 @@ namespace data_structures {
 				}
 			}
 
+
 			~linear_linked_list() {
 				this->reset();
 			}
@@ -264,11 +265,26 @@ namespace data_structures {
 
 			// assignment operator
 
-			linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
-				if (this == &other) {
-					return *this;
-				}
-				this->reset();
+			// linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
+			// 	if (this == &other) {
+			// 		return *this;
+			// 	}
+			// 	this->reset();
+			// 	signed long index;
+			// 	for (index = 0; index < other.length(); index = index + 1) {
+			// 		this->push(other[index]);
+			// 	}
+			// 	return *this;
+			// }
+
+
+			linear_linked_list<data_> operator=(linear_linked_list<data_> other) {
+				// linear_linked_list<data_> the_answer;
+				// signed long index = 0;
+				// for (index = 0; index < other.length(); index = index + 1) {
+				// 	the_answer.push(other[index]);
+				// }
+				// return the_answer;
 				signed long index;
 				for (index = 0; index < other.length(); index = index + 1) {
 					this->push(other[index]);
