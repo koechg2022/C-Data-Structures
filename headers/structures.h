@@ -700,6 +700,31 @@ namespace data_structures {
 				this->remove_from_subtree((find > current->get_data()) ? current->get_right_child() : current->get_left_child(), find);
 			}
 
+			void order_iterator(bst_node<data_>* current, linear_linked_list<data_>* to_fill, char* type = (char*) "pre-order") {
+				if (current == nullptr) {
+					return;
+				}
+				if (useful_functions::same_string(type, (char *) "pre-order")) {
+					to_fill->push(current->get_data());
+					this->order_iterator(current->get_left_child(), type);
+					this->order_iterator(current->get_right_child(), type);
+				}
+				else if (useful_functions::same_string(type, (char *) "in-order")) {
+					this->order_iterator(current->get_left_child(), type);
+					to_fill->push(current->get_data());
+					this->order_iterator(current->get_right_child(), type);
+				}
+
+				else if (useful_functions::same_string(type, (char *) "post-order")) {
+					this->order_iterator(current->get_left_child(), type);
+					this->order_iterator(current->get_right_child(), type);
+					to_fill->push(current->get_data());
+				}
+				else {
+					fprintf(stderr, "Not a recognized iterator \"%s\"\n", type);
+					return;
+				}
+			}
 
 		public:
 
@@ -714,6 +739,20 @@ namespace data_structures {
 				this->root->set_height(0);
 				this->size = 1;
 				this->height = 0;
+			}
+
+			binary_search_tree(binary_search_tree<data_>& other_tree) {
+				if (this == &other) {
+					return;
+				}
+				this->root = nullptr;
+				this->size = 0;
+				this->height = -1;
+				signed long index;
+				linear_linked_list<data_> tree_list = other_tree.pre_order_iterator();
+				for (index = 0; index < tree_list.length(); index = index + 1) {
+					this->add(tree_list[index]);
+				}
 			}
 
 			~binary_search_tree() {
@@ -759,6 +798,24 @@ namespace data_structures {
 
 			void reset() {
 				this->free_tree(this->root);
+			}
+
+			linear_linked_list<data_> pre_order_iterator() {
+				linear_linked_list<data_> the_answer;
+				this->order_iterator(this->root, &the_answer);
+				return the_answer;
+			}
+
+			linear_linked_list<data_> in_order_itereator() {
+				linear_linked_list<data_> the_answer;
+				this->order_iterator(this->root, &the_answer, (char *) "in-order");
+				return the_answer;
+			}
+
+			linear_linked_list<data_> post_order_iterator() {
+				linear_linked_list<data_> the_answer;
+				this->order_iterator(this->root, &the_answer, (char *) "post-order");
+				return the_answer;
 			}
 
 			void remove(data_ to_remove) {
