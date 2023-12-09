@@ -459,6 +459,18 @@ void linear_linked_lists_tests_2() {
         list.pop();
         list.contains(this_check) == -1 ? passed++ : failed++;
     }
+    list.empty() ? passed++ : failed++;
+    list.length() == 0 ? passed++ : failed++;
+    fill_random_not<unsigned long>(&list, limit);
+    data_structures::linear_linked_list<unsigned long> other_list(list);
+    list == other_list ? passed++ : failed++;
+    other_list.reset();
+    fill_random_not<unsigned long>(&other_list, limit);
+    data_structures::linear_linked_list<unsigned long> combined_list = list + other_list;
+    combined_list.length() == list.length() + other_list.length() ? passed++ : failed++;
+    for (index = 0; index < combined_list.length(); index = index + 1) {
+        list.contains(combined_list[index]) || other_list.contains(combined_list[index]) ? passed++ : failed++;
+    }
 }
 
 

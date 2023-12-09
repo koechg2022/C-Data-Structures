@@ -178,25 +178,27 @@ namespace data_structures {
 
 			linear_linked_list() {
 				this->front = this->rear = this->frame = nullptr;
-				this->size = 0;
+				this->size = this->frame_index = 0;
 			}
 
 
 			linear_linked_list(data_ new_data) {
 				this->front = this->rear = this->frame = new linear_node<data_>(new_data);
 				this->size = 1;
+				this->frame_index = 0;
 			}
-
 
 			// Copy Constructor
 
 			linear_linked_list(linear_linked_list<data_>& other_list) {
-				if (this != &other_list) {
-					this->reset();
-					unsigned long index;
-					for (index = 0; index < other_list.length(); index = index + 1) {
-						this->push(other_list.peek(index));
-					}
+				if (this == &other_list) {
+					return;
+				}
+				this->front = this->rear = this->frame = nullptr;
+				this->size = 0;
+				unsigned long index;
+				for (index = 0; index < other_list.length(); index = index + 1) {
+					this->push(other_list.peek(index));
 				}
 			}
 
@@ -209,9 +211,9 @@ namespace data_structures {
 			// Comparison operators
 
 			bool operator==(linear_linked_list<data_>& other) {
-				fprintf(stderr, "== operator not yet implemented\n");
-				exit(EXIT_FAILURE);
-				if (this == *other) {
+				// fprintf(stderr, "== operator not yet implemented\n");
+				// exit(EXIT_FAILURE);
+				if (this == &other) {
 					return true;
 				}
 				unsigned long other_index = 0;
@@ -260,19 +262,33 @@ namespace data_structures {
 				}
 			}
 
+			// assignment operator
+
+			linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
+				if (this == &other) {
+					return *this;
+				}
+				this->reset();
+				signed long index;
+				for (index = 0; index < other.length(); index = index + 1) {
+					this->push(other[index]);
+				}
+				return *this;
+			}
+
 			// arithmetic operators
 
-			linear_linked_list<data_>& operator+(linear_linked_list<data_>& other) {
-				linear_linked_list<data_> the_answer;
+			linear_linked_list<data_> operator+(linear_linked_list<data_>& other) {
+				linear_linked_list<data_> the_answer(*this);
+				signed long index;
+				for (index = 0; index < other.length(); index = index + 1) {
+					the_answer.push(other[index]);
+				}
 				return the_answer;
 			}
 
-			linear_linked_list<data_>& operator*(linear_linked_list<data_>& other) {
-				linear_linked_list<data_> the_answer;
-				return the_answer;
-			}
-
-			linear_linked_list<data_>& operator-(linear_linked_list<data_>& other) {
+			linear_linked_list<data_> operator*(linear_linked_list<data_>& other) {
+				throw std::logic_error("* operator not yet implemented");
 				linear_linked_list<data_> the_answer;
 				return the_answer;
 			}
@@ -301,7 +317,7 @@ namespace data_structures {
 			 * @returns void.
 			*/
 			void reset() {
-				// // std::cout << "Inside reset method" << // std::endl;
+				// fprintf(stdout, "Inside reset()\n");
 				this->frame = this->front;
 				while (this->frame != nullptr) {
 					this->front = this->frame->get_next();
@@ -309,7 +325,9 @@ namespace data_structures {
 					this->frame = this->front;
 					this->size = this->size - 1;
 				}
+				this->front = this->rear = this->frame = nullptr;
 				this->frame_index = 0;
+				// fprintf(stdout, "Done resetting.\n");
 			}
 
 			/**
@@ -357,17 +375,20 @@ namespace data_structures {
 				}
 
 				else {
+					
 					if (add_index == 0) {
 						this->front->set_previous(new_node);
 						this->front->get_previous()->set_next(this->front);
 						this->front = this->front->get_previous();
 						this->frame = this->front;
+						this->frame_index = 0;
 					}
 					else if (add_index == this->size) {
 						this->rear->set_next(new_node);
 						this->rear->get_next()->set_previous(this->rear);
 						this->rear = this->rear->get_next();
 						this->frame = this->rear;
+						this->frame_index = this->size;
 					}
 					else {
 						// this is where some extra work comes into play.
@@ -457,6 +478,17 @@ namespace data_structures {
 				return this->frame->get_data();
 			}
 			
+			/**
+			 * @brief This method pops data off the linked list.
+			 * 
+			 * @param index `(signed long)` : The index of the data to be 
+			 * removed. This value defaults to -1.
+			 * 
+			 * @returns The data at the index passed in.
+			 * 
+			 * @throws length_error exception if the index passed in is not 
+			 * within the appropriate range for the `linear_linked_list`.
+			*/
 			data_ pop(signed long index = -1) {
 				this->peek(index);
 				// this->frame should now have all the necessary data.
@@ -493,6 +525,16 @@ namespace data_structures {
 				return the_answer;
 			}
 
+			/**
+			 * @brief Check if a piece of data is contained within the 
+			 * `linear_linked_list`.
+			 * 
+			 * @param to_find `(Generic)` : The data to be found within the 
+			 * linear_linked_list.
+			 * 
+			 * @returns -1 if the `to_find` piece of data is not within the linked_list. 
+			 * Otherwise, the index of the data `to_find` is returned.
+			*/
 			signed long contains(data_ to_find) {
 				signed long index;
 				this->frame = this->front;
@@ -505,7 +547,7 @@ namespace data_structures {
 					this->frame_index = this->frame_index + 1;
 				}
 				this->frame = this->rear;
-				this->frame_index = this->size - 1;
+				this->frame_index = (this->frame_index == this->size) ? this->size - 1 : this->frame_index;
 				return -1;
 			}
 
@@ -552,7 +594,6 @@ namespace data_structures {
 					this->push_new_data(current->get_left_child(), new_data, current_height + 1);
 				}
 			}
-
 
 			void update_heights(bst_node<data_>* current, signed long this_height) {
 				if (current == nullptr) {
