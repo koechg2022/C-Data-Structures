@@ -706,18 +706,18 @@ namespace data_structures {
 				}
 				if (useful_functions::same_string(type, (char *) "pre-order")) {
 					to_fill->push(current->get_data());
-					this->order_iterator(current->get_left_child(), type);
-					this->order_iterator(current->get_right_child(), type);
+					this->order_iterator(current->get_left_child(), to_fill, type);
+					this->order_iterator(current->get_right_child(), to_fill, type);
 				}
 				else if (useful_functions::same_string(type, (char *) "in-order")) {
-					this->order_iterator(current->get_left_child(), type);
+					this->order_iterator(current->get_left_child(), to_fill, type);
 					to_fill->push(current->get_data());
-					this->order_iterator(current->get_right_child(), type);
+					this->order_iterator(current->get_right_child(), to_fill, type);
 				}
 
 				else if (useful_functions::same_string(type, (char *) "post-order")) {
-					this->order_iterator(current->get_left_child(), type);
-					this->order_iterator(current->get_right_child(), type);
+					this->order_iterator(current->get_left_child(), to_fill, type);
+					this->order_iterator(current->get_right_child(), to_fill, type);
 					to_fill->push(current->get_data());
 				}
 				else {
@@ -742,7 +742,7 @@ namespace data_structures {
 			}
 
 			binary_search_tree(binary_search_tree<data_>& other_tree) {
-				if (this == &other) {
+				if (this == &other_tree) {
 					return;
 				}
 				this->root = nullptr;

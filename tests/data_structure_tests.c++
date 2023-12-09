@@ -499,8 +499,9 @@ void binary_search_tree_tests() {
     tree.get_size() == list.length() ? passed++ : failed++;
     tree.get_height() > 0 && tree.get_height() <= (signed long) list.length() ? 
     passed++ : failed++;
+    data_structures::binary_search_tree<unsigned long> other_tree(tree);
     for (index = 0; index < list.length(); index = index + 1) {
         tree.contains(list[index]) ? passed++ : failed++;
-        // tree.remove(list[index]);
+        other_tree.contains(list[index]) ? passed++ : failed++;
     }
 }
