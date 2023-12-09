@@ -382,7 +382,6 @@ void linear_linked_list_tests() {
     list[2] != data[2] ? passed++ : failed++;
 }
 
-
 void linear_linked_lists_tests_2() {
     data_structures::linear_linked_list<unsigned long> list;
     unsigned long data[limit];

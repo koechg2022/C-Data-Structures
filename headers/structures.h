@@ -278,7 +278,7 @@ namespace data_structures {
 
 			// arithmetic operators
 
-			linear_linked_list<data_> operator+(linear_linked_list<data_>& other) {
+			linear_linked_list<data_> operator+(linear_linked_list<data_> other) {
 				linear_linked_list<data_> the_answer(*this);
 				signed long index;
 				for (index = 0; index < other.length(); index = index + 1) {
