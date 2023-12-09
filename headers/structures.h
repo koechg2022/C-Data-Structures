@@ -265,26 +265,9 @@ namespace data_structures {
 
 			// assignment operator
 
-			// linear_linked_list<data_>& operator=(linear_linked_list<data_>& other) {
-			// 	if (this == &other) {
-			// 		return *this;
-			// 	}
-			// 	this->reset();
-			// 	signed long index;
-			// 	for (index = 0; index < other.length(); index = index + 1) {
-			// 		this->push(other[index]);
-			// 	}
-			// 	return *this;
-			// }
-
 
 			linear_linked_list<data_> operator=(linear_linked_list<data_> other) {
-				// linear_linked_list<data_> the_answer;
-				// signed long index = 0;
-				// for (index = 0; index < other.length(); index = index + 1) {
-				// 	the_answer.push(other[index]);
-				// }
-				// return the_answer;
+				// this->reset();
 				signed long index;
 				for (index = 0; index < other.length(); index = index + 1) {
 					this->push(other[index]);
@@ -303,11 +286,17 @@ namespace data_structures {
 				return the_answer;
 			}
 
-			linear_linked_list<data_> operator*(linear_linked_list<data_>& other) {
-				throw std::logic_error("* operator not yet implemented");
-				linear_linked_list<data_> the_answer;
-				return the_answer;
-			}
+			
+			// linear_linked_list<data_> operator-(linear_linked_list<data_> other) {
+			// 	linear_linked_list<data_> the_answer;
+			// 	signed long index;
+			// 	for (index = 0; index < other.length(); index = index + 1) {
+			// 		if (other.contains(this->peek(index)) == -1) {
+			// 			the_answer.push(this->peek(index));
+			// 		}
+			// 	}
+			// 	return the_answer;
+			// }
 
 			/**
 			 * @brief Check if the current linked list is empty or not.
@@ -318,6 +307,7 @@ namespace data_structures {
 				return (this->size == 0);
 			}
 
+
 			/**
 			 * @brief Get the size of the linked list.
 			 * 
@@ -326,6 +316,7 @@ namespace data_structures {
 			unsigned long length() const {
 				return this->size;
 			}
+
 
 			/**
 			 * @brief Empties out the linked list and frees up memory.
@@ -345,6 +336,7 @@ namespace data_structures {
 				this->frame_index = 0;
 				// fprintf(stdout, "Done resetting.\n");
 			}
+
 
 			/**
 			 * @brief Push new data onto the linked list.
@@ -443,6 +435,7 @@ namespace data_structures {
 				this->size = this->size + 1;
 			}
 
+
 			/**
 			 * @brief Peek at the data inside the linked list at a specific index.
 			 * 
@@ -494,6 +487,7 @@ namespace data_structures {
 				return this->frame->get_data();
 			}
 			
+
 			/**
 			 * @brief This method pops data off the linked list.
 			 * 
@@ -540,6 +534,7 @@ namespace data_structures {
 				this->size = this->size - 1;
 				return the_answer;
 			}
+
 
 			/**
 			 * @brief Check if a piece of data is contained within the 

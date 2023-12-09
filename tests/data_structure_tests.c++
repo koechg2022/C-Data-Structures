@@ -473,6 +473,10 @@ void linear_linked_lists_tests_2() {
     for (index = 0; index < combined_list.length(); index = index + 1) {
         list.contains(combined_list[index]) != -1 || other_list.contains(combined_list[index]) != -1 ? passed++ : failed++;
     }
+    // combined_list = combined_list - list;
+    // combined_list = combined_list - other_list;
+    // combined_list.empty() ? passed++ : failed++;
+    // combined_list.length() == 0 ? passed++ : failed++;
 }
 
 
