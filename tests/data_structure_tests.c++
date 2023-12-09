@@ -466,6 +466,15 @@ void linear_linked_lists_tests_2() {
     for (index = 0; index < list.length(); index = index + 1) {
         list[index] == other_list[index] ? passed++ : failed++;
     }
+    list == other_list ? passed++ : failed++;
+    list >= other_list ? passed++ : failed++;
+    list <= other_list ? passed++ : failed++;
+    other_list.pop();
+    other_list.pop();
+    other_list.pop();
+    list == other_list ? failed++ : passed++;
+    list >= other_list ? passed++ : failed++;
+    other_list <= list ? passed++ : failed++;
     other_list.reset();
     fill_random_not<unsigned long>(&other_list, limit);
     combined_list = list + other_list;
@@ -473,17 +482,18 @@ void linear_linked_lists_tests_2() {
     for (index = 0; index < combined_list.length(); index = index + 1) {
         list.contains(combined_list[index]) != -1 || other_list.contains(combined_list[index]) != -1 ? passed++ : failed++;
     }
-    // combined_list = combined_list - list;
-    // combined_list = combined_list - other_list;
-    // combined_list.empty() ? passed++ : failed++;
-    // combined_list.length() == 0 ? passed++ : failed++;
+    other_list.reset();
+    list >= other_list ? passed++ : failed++;
+    other_list <= list ? passed++ : failed++;
+    list.length() > other_list.length() ? passed++ : failed++;
+    
 }
 
 
 void binary_search_tree_tests() {
     data_structures::linear_linked_list<unsigned long> list;
     data_structures::binary_search_tree<unsigned long> tree;
-    unsigned long index;
+    unsigned long index, other_index;
     signed long height;
     fill_random_not<unsigned long>(&list, limit);
     !list.empty() ? passed++ : failed++;
@@ -503,5 +513,14 @@ void binary_search_tree_tests() {
     for (index = 0; index < list.length(); index = index + 1) {
         tree.contains(list[index]) ? passed++ : failed++;
         other_tree.contains(list[index]) ? passed++ : failed++;
+    }
+    tree == other_tree ? passed++ : failed++;
+    tree >= other_tree ? passed++ : failed++;
+    tree <= other_tree ? passed++ : failed++;
+    data_structures::linear_linked_list<unsigned long> tree_iterator = tree.in_order_itereator();
+    for (index = 0; index < tree_iterator.length() - 1; index = index + 1) {
+        tree_iterator[index] <= tree_iterator[index + 1] ? passed++ : failed++;
+        tree_iterator[index + 1] >= tree_iterator[index] ? passed++ : failed++;
+
     }
 }

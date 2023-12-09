@@ -217,19 +217,21 @@ namespace data_structures {
 				if (this == &other) {
 					return true;
 				}
-				unsigned long other_index = 0;
 
-				for (this->frame = this->front, this->frame_index = 0; this->frame != nullptr; this->frame = this->frame->get_next(), this->frame_index = this->frame_index + 1) {
-					if (this->frame->get_data() != other[this->frame_index]) {
-						return false;
+				if (this->size == other.size) {
+					signed long index;
+					for (index = 0; index < this->size; index = index + 1) {
+						if (this->peek(index) != other.peek(index)) {
+							return false;
+						}
 					}
+					return true;
 				}
-				return true;
+				return false;
 			}
 
 			bool operator!=(linear_linked_list<data_>& other) {
-				fprintf(stderr, "!= operator not yet implemented\n");
-				exit(EXIT_FAILURE);
+				// return (*this == other) ? false : true;
 				if (this != *other) {
 					return true;
 				}
@@ -244,13 +246,33 @@ namespace data_structures {
 			}
 
 			bool operator<=(linear_linked_list<data_>& other) {
-				fprintf(stderr, "<= operator not yet implemented\n");
-				exit(EXIT_FAILURE);
+				// fprintf(stderr, "<= operator not yet implemented\n");
+				// exit(EXIT_FAILURE);
+				if (this->size <= other.size) {
+					unsigned long index;
+					for (index = 0; index < this->size; index = index + 1) {
+						if (other.contains(this->peek(index)) == -1) {
+							return false;
+						}
+					}
+					return true;
+				}
+				return false;
 			}
 
 			bool operator>=(linear_linked_list<data_>& other) {
-				fprintf(stderr, "=> operator not yet implemented\n");
-				exit(EXIT_FAILURE);
+				// fprintf(stderr, "=> operator not yet implemented\n");
+				// exit(EXIT_FAILURE);
+				if (this->size >= other.size) {
+					unsigned long index;
+					for (index = 0; index < other.size; index = index + 1) {
+						if (this->contains(other[index]) == -1) {
+							return false;
+						}
+					}
+					return true;
+				}
+				return false;
 			}
 
 			data_& operator [](signed long index) {
@@ -757,6 +779,48 @@ namespace data_structures {
 
 			~binary_search_tree() {
 				this->free_tree(this->root);
+			}
+
+			//  Operator Overloading
+
+			// Comparison Operators
+			bool operator==(binary_search_tree<data_>& other_tree) {
+				if (this == &other_tree) {
+					return true;
+				}
+				if (this->size != other_tree.get_size()) {
+					return false;
+				}
+				if (this->get_height() != other_tree.get_height()) {
+					return false;
+				}
+				linear_linked_list<data_> this_list = this->in_order_itereator();
+				linear_linked_list<data_> other_list = this->in_order_itereator();
+				signed long index;
+				for (index = 0; index < this_list.length(); index = index + 1) {
+					if (this_list[index] != other_list[index]) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			bool operator>=(binary_search_tree<data_>& other_tree) {
+				if (this == &other_tree) {
+					return true;
+				}
+				linear_linked_list<data_> this_list = this->in_order_itereator();
+				linear_linked_list<data_> other_list = other_tree.in_order_itereator();
+				return this_list >= other_list;
+			}
+
+			bool operator<=(binary_search_tree<data_>& other_tree) {
+				if (this == &other_tree) {
+					return true;
+				}
+				linear_linked_list<data_> this_list = this->in_order_itereator();
+				linear_linked_list<data_> other_list = other_tree.in_order_itereator();
+				return this_list <= other_list;
 			}
 
 			unsigned long get_height() const {
