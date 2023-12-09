@@ -287,16 +287,6 @@ namespace data_structures {
 			}
 
 			
-			// linear_linked_list<data_> operator-(linear_linked_list<data_> other) {
-			// 	linear_linked_list<data_> the_answer;
-			// 	signed long index;
-			// 	for (index = 0; index < other.length(); index = index + 1) {
-			// 		if (other.contains(this->peek(index)) == -1) {
-			// 			the_answer.push(this->peek(index));
-			// 		}
-			// 	}
-			// 	return the_answer;
-			// }
 
 			/**
 			 * @brief Check if the current linked list is empty or not.
