@@ -1,4 +1,4 @@
 objects/
-.vscode/
+.vscode/*
 Makefile
 tests/data_structure_tests
