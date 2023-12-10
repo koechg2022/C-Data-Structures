@@ -1,25 +1,12 @@
+
+
 /**
  * @author Geoffrey Koech
  * @since Nov 23rd 2023
- * @version 0.8
+ * @version 0.9
  * 
- * 
- * 
- * 
- * 
- * 
- * <p>
- * 
- * Some functions that I find useful. I tried to implement
- * then without the use of any imported functions.
- * 
- * </p>
- * 
- * 
- * 
- * 
- * 
- * 
+ * @package useful_functions
+ * @namespace useful_functions
  * 
  * 
 */

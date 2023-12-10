@@ -1,5 +1,19 @@
-#include <iostream>
+/**
+ * @author Geoffrey Koech
+ * 
+ * @brief My implementation of some basic data structures.
+ * @version 1.0
+ * 
+ * @package data_structures
+ * @namespace data_structures
+ * 
+*/
 
+
+
+#ifndef EOF
+#include <iostream>
+#endif
 
 
 
@@ -572,9 +586,6 @@ namespace data_structures {
 	};
 
 
-	/**
-	 * @namespace data_structures
-	*/
 	template <typename data_> class binary_search_tree {
 
 		private:
@@ -582,7 +593,6 @@ namespace data_structures {
 			signed long height;
 			bst_node<data_>* root;
 		
-
 			void push_new_data(bst_node<data_>* current, data_ new_data, signed long current_height) {
 				// fprintf(stdout, "Inside the push_new_data\n");
 				if (current == nullptr) {
@@ -652,24 +662,6 @@ namespace data_structures {
 				free_tree(current->get_left_child());
 				free_tree(current->get_right_child());
 				delete current;
-			}
-
-			bst_node<data_>* get_most_child(bst_node<data_>* current, bool left = true) {
-				if (current == nullptr) {
-					return nullptr;
-				}
-				if (left) {
-					if (current->get_left_child() == nullptr) {
-						return current;
-					}
-					return this->get_most_child(current->get_left_child(), true);
-				}
-				else {
-					if (current->get_right_child() == nullptr) {
-						return current;
-					}
-					return this->get_most_child(current->get_right_child(), false);
-				}
 			}
 
 			void order_iterator(bst_node<data_>* current, linear_linked_list<data_>* to_fill, char* type = (char*) "pre-order") {
