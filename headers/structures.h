@@ -108,21 +108,17 @@ namespace data_structures {
 		template <typename data_> class bst_node : public node_root<data_> {
 
 			private:
-				bst_node<data_> *left_child, *right_child, *parent;
+				bst_node<data_> *left_child, *right_child;
 
 			public:
 
 				bst_node() {
-					this->left_child = this->right_child = this->parent = nullptr;
+					this->left_child = this->right_child = nullptr;
 				}
 
 				bst_node(data_ new_data) {
 					this->this_data = new_data;
-					this->left_child = this->right_child = this->parent = nullptr;
-				}
-
-				void set_parent(bst_node<data_>* new_parent) {
-					this->parent = new_parent;
+					this->left_child = this->right_child = nullptr;
 				}
 
 				void set_left_child(bst_node<data_>* left) {
@@ -131,10 +127,6 @@ namespace data_structures {
 
 				void set_right_child(bst_node<data_>* right) {
 					this->right_child = right;
-				}
-
-				bst_node<data_>* get_parent() {
-					return this->parent;
 				}
 
 				bst_node<data_>* get_left_child() {
@@ -217,7 +209,6 @@ namespace data_structures {
 			// Operator Overloading.
 
 			// Comparison operators
-
 			bool operator==(linear_linked_list<data_>& other) {
 				// fprintf(stderr, "== operator not yet implemented\n");
 				// exit(EXIT_FAILURE);
@@ -293,8 +284,6 @@ namespace data_structures {
 			}
 
 			// assignment operator
-
-
 			linear_linked_list<data_> operator=(linear_linked_list<data_> other) {
 				// this->reset();
 				signed long index;
@@ -305,7 +294,6 @@ namespace data_structures {
 			}
 
 			// arithmetic operators
-
 			linear_linked_list<data_> operator+(linear_linked_list<data_> other) {
 				linear_linked_list<data_> the_answer(*this);
 				signed long index;
@@ -602,7 +590,7 @@ namespace data_structures {
 					if (current->get_right_child() == nullptr) {
 						// set the child here.
 						current->set_right_child(new bst_node<data_>(new_data));
-						current->get_right_child()->set_parent(current);
+						// current->get_right_child()->set_parent(current);
 						this->size = this->size + 1;
 						if (current_height + 1 > this->height) {
 							this->height = this->height + 1;
@@ -616,7 +604,7 @@ namespace data_structures {
 					if (current->get_left_child() == nullptr) {
 						// set the child here
 						current->set_left_child(new bst_node<data_>(new_data));
-						current->get_left_child()->set_parent(current);
+						// current->get_left_child()->set_parent(current);
 						this->size = this->size + 1;
 						if (current_height + 1 > this->height) {
 							this->height = this->height + 1;
@@ -627,39 +615,17 @@ namespace data_structures {
 				}
 			}
 
-			void push_to_subtree(bst_node<data_>* current, bst_node<data_>* to_add, signed long current_height) {
-				if (current == nullptr) {
-					return;
-				}
-				if (to_add->get_data() >= current->get_data()) {
-					if (current->get_right_child() == nullptr) {
-						current->set_right_child(to_add);
-						if (current_height > this->height) {
-							this->height = current_height;
-						}
-					}
-					else {
-						this->push_to_subtree(current->get_right_child(), to_add, current_height + 1);
-					}
-				}
-				else {
-					if (current->get_left_child() == nullptr) {
-						current->set_left_child(to_add);
-						if (current_height > this->height) {
-							this->height = current_height;
-						}
-					}
-					else {
-						this->push_to_subtree(current->get_left_child(), to_add, current_height + 1);
-					}
-				}
-			}
-
 			void update_heights(bst_node<data_>* current, signed long this_height) {
 				if (current == nullptr) {
+					if (current == this->root) {
+						this->height = -1;
+					}
 					return;
 				}
-				current->set_height(this_height);
+				// current->set_height(this_height);
+				if (this_height > this->height) {
+					this->height = this_height;
+				}
 				update_heights(current->get_left_child(), this_height + 1);
 				update_heights(current->get_right_child(), this_height + 1);
 				return;
@@ -703,75 +669,6 @@ namespace data_structures {
 				}
 			}
 
-			void remove_from_subtree(bst_node<data_>* current, data_ find, signed long current_height) {
-				if (current) {
-					if (current->get_data() == find) {
-
-						bst_node<data_>* temp;
-
-						// both children exist.
-						if (current->get_left_child() && current->get_right_child()) {
-							
-							// left most child.
-							temp = this->get_most_child(current->get_right_child());
-							current->set_data(temp->get_data());
-							if (temp->get_right_child()) {
-								// there are right children to consider.
-								temp = temp->get_right_child();
-								delete temp->get_parent();
-								this->push_to_subtree(current, temp, current_height);
-								this->update_heights(current, current_height);
-								return;
-							}
-							this->update_heights(current, current_height);
-							delete temp;
-
-						}
-
-						// only one child.
-						else if (current->get_left_child() || current->get_right_child()) {
-
-							temp = current;
-							
-							// left child, no right child.
-							if (current->get_left_child()) {
-								current->get_left_child()->set_parent(current->get_parent());
-								if (current->get_parent()->get_left_child() == current) {
-									current->get_parent()->set_left_child(current->get_left_child());
-									current = current->get_left_child();
-								}
-								else {
-									current->get_parent()->set_right_child(current->get_left_child());
-									current = current->get_right_child();
-								}
-							}
-							
-							// right child, no left child.
-							else {
-								current->get_right_child()->set_parent(current->get_parent());
-								if (current->get_parent()->get_left_child() == current) {
-									current->get_parent()->set_left_child(current->get_right_child());
-								}
-								else {
-									current->get_parent()->set_right_child(current->get_right_child());
-								}
-							}
-
-							delete temp;
-						}
-
-						// leaf node.
-						else {
-							temp = current->get_parent();
-							delete current;
-							this->update_heights(temp, current_height - 1);
-						}
-						return;
-					}
-					this->remove_from_subtree(find > current->get_data() ? current->get_right_child() : current->get_left_child(), find, current_height + 1);
-				}
-			}
-
 			void order_iterator(bst_node<data_>* current, linear_linked_list<data_>* to_fill, char* type = (char*) "pre-order") {
 				if (current == nullptr) {
 					return;
@@ -795,6 +692,76 @@ namespace data_structures {
 				else {
 					fprintf(stderr, "Not a recognized iterator \"%s\"\n", type);
 					return;
+				}
+			}
+
+			bst_node<data_>* remove_from_subtree(bst_node<data_>* current, data_ find_and_remove, signed long current_height = 0) {
+
+				// base case
+				if (!current) {
+					return current;
+				}
+
+				// recursive calls for ancestors of
+				// node to be deleted
+				if (find_and_remove > current->get_data()) {
+					current->set_right_child(this->remove_from_subtree(current->get_right_child(), find_and_remove, current_height + 1));
+					return current;
+				}
+
+				else if (find_and_remove < current->get_data()) {
+					current->set_left_child(this->remove_from_subtree(current->get_left_child(), find_and_remove, current_height + 1));
+					return current;
+				}
+
+				// We reach here when root is the node
+				// to be deleted.
+
+				// there are no children
+				if (!current->get_left_child() && !current->get_right_child()) {
+					delete current;
+					this->size = this->size - 1;
+					return nullptr;
+				}
+
+				// there is a right child only.
+				else if (!current->get_left_child() && current->get_right_child()) {
+					bst_node<data_>* temp = current->get_right_child();
+					delete current;
+					this->size = this->size - 1;
+					return temp;
+				}
+
+				// there is a left child only.
+				else if (current->get_left_child() && !current->get_right_child()) {
+					bst_node<data_>* temp = current->get_left_child();
+					delete current;
+					this->size = this->size - 1;
+					return temp;
+				}
+
+				// there are children on both sides.
+				else {
+					bst_node<data_>* child_parent = current, *child = current->get_right_child();
+
+					while (child->get_left_child()) {
+						child_parent = child;
+						child = child->get_left_child();
+						current_height = current_height + 1;
+					}
+
+					if (child_parent != current) {
+						child_parent->set_left_child(child->get_right_child());
+					}
+					else {
+						child_parent->set_right_child(child->get_right_child());
+					}
+
+					current->set_data(child->get_data());
+
+					delete child;
+					this->size = this->size - 1;
+					return current;
 				}
 			}
 
@@ -894,6 +861,9 @@ namespace data_structures {
 				return this_list <= other_list;
 			}
 
+
+			// 
+
 			unsigned long get_height() const {
 				return this->height;
 			}
@@ -954,7 +924,9 @@ namespace data_structures {
 			}
 
 			void remove(data_ to_remove) {
-				this->remove_from_subtree(this->root, to_remove, 0);
+				this->root = this->remove_from_subtree(this->root, to_remove);
+				this->height = -1;
+				this->update_heights(this->root, 0);
 			}
 
 

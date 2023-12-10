@@ -525,6 +525,8 @@ void binary_search_tree_tests() {
     
     for (index = 0; index < list.length(); index = index + 1) {
         other_tree.remove(list[index]);
-        other_tree.contains(list[index]) ? passed++ : failed++;
+        other_tree.contains(list[index]) ? failed++ : passed++;
     }
+    other_tree.empty() ? passed++ : failed++;
+    other_tree.get_height() == -1 ? passed++ : failed++;
 }
