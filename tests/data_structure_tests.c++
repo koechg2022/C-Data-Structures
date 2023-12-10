@@ -521,6 +521,5 @@ void binary_search_tree_tests() {
     for (index = 0; index < tree_iterator.length() - 1; index = index + 1) {
         tree_iterator[index] <= tree_iterator[index + 1] ? passed++ : failed++;
         tree_iterator[index + 1] >= tree_iterator[index] ? passed++ : failed++;
-
     }
 }
