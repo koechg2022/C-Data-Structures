@@ -489,7 +489,6 @@ void linear_linked_lists_tests_2() {
     
 }
 
-
 void binary_search_tree_tests() {
     data_structures::linear_linked_list<unsigned long> list;
     data_structures::binary_search_tree<unsigned long> tree;
@@ -530,3 +529,4 @@ void binary_search_tree_tests() {
     other_tree.empty() ? passed++ : failed++;
     other_tree.get_height() == -1 ? passed++ : failed++;
 }
+
