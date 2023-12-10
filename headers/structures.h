@@ -572,6 +572,9 @@ namespace data_structures {
 	};
 
 
+	/**
+	 * @namespace data_structures
+	*/
 	template <typename data_> class binary_search_tree {
 
 		private:
@@ -862,20 +865,70 @@ namespace data_structures {
 			}
 
 
-			// 
+			// Assignment operator
+			binary_search_tree<data_> operator=(binary_search_tree<data_> other_tree) {
+				if (this == &other_tree) {
+					return *this;
+				}
+				this->reset();
+				linear_linked_list<data_> in_order = other_tree.pre_order_itereator();
+				signed long index;
+				for (index = 0; index < in_order.length(); index = index + 1) {
+					this->add(in_order[index]);
+				}
+				return *this;
+			}
 
+
+			// Arithmetic operator
+			binary_search_tree<data_> operator+(binary_search_tree<data_> other_tree) {
+				binary_search_tree<data_> the_answer(*this);
+				linear_linked_list<data_> pre_order = this->pre_order_iterator();
+				signed long index;
+				for (index = 0; index < pre_order.length(); index = index + 1) {
+					the_answer.add(pre_order[index]);
+				}
+				return the_answer;
+			}
+
+			/**
+			 * @brief Get the height of the binary search tree. Does not mutate the binary search tree.
+			 * 
+			 * @returns `(signed long)` : The height of the tree, -1 for an empty tree.
+			*/
 			unsigned long get_height() const {
 				return this->height;
 			}
 
+
+			/**
+			 * @brief Get the size of the binary search tree. Does not mutate the binary search tree.
+			 * 
+			 * @returns `(unsigned long)` : The size of the binary search tree. 0 is returned for an empty tree.
+			*/
 			signed long get_size() const {
 				return this->size;
 			}
 
+
+			/**
+			 * @brief Check if a binary search tree is empty or not. Returns a bool. 
+			 * Does not modify the binary search tree.
+			 * 
+			 * @returns `(bool)` : `true` if the binary search tree is empty, `false` otherwise.
+			*/
 			bool empty() const {
 				return this->size == 0;
 			}
 
+
+			/**
+			 * @brief Add new data to the binary search tree. Modifies the binary search tree.
+			 * 
+			 * @param new_data `(Generic)` : The data to be added to the binary search tree.
+			 * 
+			 * @returns `(void)`.
+			*/
 			void add(data_ new_data) {
 				if (this->size == 0) {
 					this->root = new bst_node<data_>(new_data);
@@ -887,6 +940,15 @@ namespace data_structures {
 				}
 			}
 
+
+			/**
+			 * @brief Check if the `binary_search_tree` contains the `to_find` data passed in.
+			 * 
+			 * @param `(Generic)` : The data to be found in the binary search tree.
+			 * 
+			 * @returns `(bool)` : `true` if `to_find` is found within the `binary_search_tree`, 
+			 * `false` otherwise.
+			*/
 			bool contains(data_ to_find) {
 				if (this->size == 0) {
 					return false;
@@ -894,6 +956,17 @@ namespace data_structures {
 				return this->height_of(this->root, to_find, 0) != -1;
 			}
 
+
+			/**
+			 * @brief Get the height of `to_find` within the `binary_search_tree`. -1 is 
+			 * returned if the `binary_search_tree` doesn't contain the data passed in, 
+			 * otherwise the height of the data within the tree is returned.
+			 * 
+			 * @param to_find `(Generic)` : The data to find in the `binary_search_tree`.
+			 * 
+			 * @returns `(signed long)` : The height of the data in the `binary_search_tree`, 
+			 * provided it exists, -1 otherwise.
+			*/
 			signed long data_height(data_ to_find) {
 				if (this->size == 0) {
 					return -1;
@@ -901,28 +974,67 @@ namespace data_structures {
 				return this->height_of(this->root, to_find, 0);
 			}
 
+
+			/**
+			 * @brief Reset the `binary_search_tree` and delete all it's data.
+			 * 
+			 * @returns `(void)`.
+			*/
 			void reset() {
 				this->free_tree(this->root);
 			}
 
+
+			/**
+			 * @brief Get a `linear_linked_list` containing all the data in `binary_search_tree` 
+			 * organized into a pre-ordered manner.
+			 * 
+			 * @returns `(linear_linked_list<Generic>)`.
+			*/
 			linear_linked_list<data_> pre_order_iterator() {
 				linear_linked_list<data_> the_answer;
 				this->order_iterator(this->root, &the_answer);
 				return the_answer;
 			}
 
+
+			/**
+			 * @brief Get a `linear_linked_list` containing all the data in `binary_search_tree` 
+			 * organized into a in-ordered manner.
+			 * 
+			 * @returns `(linear_linked_list<Generic>)`.
+			*/
 			linear_linked_list<data_> in_order_itereator() {
 				linear_linked_list<data_> the_answer;
 				this->order_iterator(this->root, &the_answer, (char *) "in-order");
 				return the_answer;
 			}
 
+
+			/**
+			 * @brief Get a `linear_linked_list` containing all the data in `binary_search_tree` 
+			 * organized into a post-ordered manner.
+			 * 
+			 * @returns `(linear_linked_list<Generic>)`.
+			*/
 			linear_linked_list<data_> post_order_iterator() {
 				linear_linked_list<data_> the_answer;
 				this->order_iterator(this->root, &the_answer, (char *) "post-order");
 				return the_answer;
 			}
 
+
+			/**
+			 * @brief Removes `to_remove` from the `binary_search_tree`, provided it exists in the 
+			 * `binary_search_tree`.
+			 * 
+			 * @note The data passed in is removed from the binary search tree, provided it exists, 
+			 * and the internal height and size of the `binary_search_tree` is updated accordingly.
+			 * 
+			 * @param `(Generic)` : The data to be removed.
+			 * 
+			 * @returns `(void)`.
+			*/
 			void remove(data_ to_remove) {
 				this->root = this->remove_from_subtree(this->root, to_remove);
 				this->height = -1;
