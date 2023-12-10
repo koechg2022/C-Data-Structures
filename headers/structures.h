@@ -720,8 +720,10 @@ namespace data_structures {
 								temp = temp->get_right_child();
 								delete temp->get_parent();
 								this->push_to_subtree(current, temp, current_height);
+								this->update_heights(current, current_height);
 								return;
 							}
+							this->update_heights(current, current_height);
 							delete temp;
 
 						}
@@ -760,7 +762,9 @@ namespace data_structures {
 
 						// leaf node.
 						else {
+							temp = current->get_parent();
 							delete current;
+							this->update_heights(temp, current_height - 1);
 						}
 						return;
 					}

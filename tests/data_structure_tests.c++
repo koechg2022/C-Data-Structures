@@ -522,4 +522,9 @@ void binary_search_tree_tests() {
         tree_iterator[index] <= tree_iterator[index + 1] ? passed++ : failed++;
         tree_iterator[index + 1] >= tree_iterator[index] ? passed++ : failed++;
     }
+    
+    for (index = 0; index < list.length(); index = index + 1) {
+        other_tree.remove(list[index]);
+        other_tree.contains(list[index]) ? passed++ : failed++;
+    }
 }
