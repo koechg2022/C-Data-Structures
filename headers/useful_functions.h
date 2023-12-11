@@ -12,6 +12,18 @@
 
 
 
+#ifndef EOF
+#include <stdio.h>
+#endif
+
+
+
+#ifndef NULL
+#include <stdlib.h>
+#endif
+
+
+
 
 
 
