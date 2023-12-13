@@ -834,11 +834,10 @@ namespace useful_functions {
         txt_color = (valid_text_color((unsigned char) txt_color)) ? (unsigned char) txt_color : (unsigned char) black_txt;
         txt_style = (valid_style((unsigned char) txt_style)) ? (unsigned char) txt_style : (unsigned char) no_style;
         bkg_color = (valid_bkg_color((unsigned char) bkg_color)) ? (unsigned char) bkg_color : (unsigned char) default_bkg;
-        /* 
-            Using escape sequence to print colors
-            esc_start<style>;<color>;<bkg>m<the_string>esc_stop
-        */
-
+        
+        // Using escape sequence to print colors
+        // esc_start<style>;<color>;<bkg>m<the_string>esc_stop
+        
         // const char* esc_start = "\033[";
         // const char* esc_stop = "\033[m";
         // 2 for style length + ";"
