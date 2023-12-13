@@ -830,6 +830,29 @@ namespace useful_functions {
     }
 
 
+    char* get_colored_string(char* the_string, unsigned char txt_color = (unsigned char) black_txt, unsigned char txt_style = (unsigned char) no_style, unsigned char bkg_color = (unsigned char) default_bkg) {
+        txt_color = (valid_text_color((unsigned char) txt_color)) ? (unsigned char) txt_color : (unsigned char) black_txt;
+        txt_style = (valid_style((unsigned char) txt_style)) ? (unsigned char) txt_style : (unsigned char) no_style;
+        bkg_color = (valid_bkg_color((unsigned char) bkg_color)) ? (unsigned char) bkg_color : (unsigned char) default_bkg;
+        /* 
+            Using escape sequence to print colors
+            esc_start<style>;<color>;<bkg>m<the_string>esc_stop
+        */
+
+        // const char* esc_start = "\033[";
+        // const char* esc_stop = "\033[m";
+        // 2 for style length + ";"
+        // 3 for text color + ";"
+        // 3 for background color + ";"
+        //---------------------------------
+        // 8 extra bytes needed.
+        char temp[(string_length((char *) esc_start) + 8 + string_length(the_string) + string_length((char *) esc_stop))];
+        sprintf(temp, "%s%d;%d;%dm%s%s", esc_start, txt_style, txt_color, bkg_color, the_string, esc_stop);
+        char* the_answer = temp;
+        return the_answer;
+    }
+
+
 
     /*=====================================useful functions for sorting algorithms=====================================*/
 

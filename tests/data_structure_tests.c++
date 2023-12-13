@@ -7,6 +7,12 @@
 
 
 
+#define passed_string(the_string) useful_functions::get_colored_string((char *) the_string, (unsigned char) green_txt, (unsigned char) bold_style, (unsigned char) default_bkg)
+#define some_pass_string(the_string) useful_functions::get_colored_string((char *) the_string, (unsigned char) yellow_txt, (unsigned char) bold_style, (unsigned char) default_bkg)
+#define all_fail_string(the_string) useful_functions::get_colored_string((char *) the_string, (unsigned char) red_txt, (unsigned char) bold_style, (unsigned char) default_bkg)
+
+
+
 
 unsigned long const limit = 1000;
 unsigned long passed = 0, failed = 0;
@@ -43,7 +49,8 @@ int main(int len, char** args) {
     linear_linked_list_tests();
     linear_linked_lists_tests_2();
     binary_search_tree_tests();
-    fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? "All passed" : (passed > 0 && failed > 0) ? "Partial success" : "All failed");
+    fprintf(stdout, "Test results : %lu / %lu. (%s)\n", passed, passed + failed, (failed == 0) ? passed_string("All passed") : (passed > 0 && failed > 0) ? some_pass_string("Partial success") : all_fail_string("All failed"));
+    // fprintf(stdout, "Final results : %s\n", useful_functions::get_colored_string((char *) "DONE", (unsigned char) green_txt, (unsigned char) bold_style, (unsigned char) default_bkg));
     return 0;
 }
 
