@@ -91,8 +91,8 @@ namespace useful_functions {
         #define MOD 1000000007
         #define NOT_IMPLEMENTED_LOGIC 1
 
-        const char* esc_start = "\033[";
-        const char* esc_stop = "\033[m";
+        const char* esc_start = "\x1B[";
+        const char* esc_stop = "\x1B[0m";
         
 
         const char* merge_const = "merge";
