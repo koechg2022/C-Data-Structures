@@ -18,7 +18,7 @@
 
 
 
-#ifndef NULL
+#ifndef EXIT_FAILURE
 #include <stdlib.h>
 #endif
 
