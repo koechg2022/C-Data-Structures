@@ -25,13 +25,15 @@
 
 
 
+#ifndef STDIN_FILENO
+#include <unistd.h>
+#endif
 
 
 
-
-
-
-
+#ifndef ECHO
+#include <termios.h>
+#endif
 
 
 namespace useful_functions {
@@ -90,9 +92,17 @@ namespace useful_functions {
 
         #define MOD 1000000007
         #define NOT_IMPLEMENTED_LOGIC 1
+        #define DEL 127
 
         const char* esc_start = "\x1B[";
         const char* esc_stop = "\x1B[0m";
+
+
+        typedef enum {
+            control = 0,
+            printable,
+            extended
+        } char_type;
         
 
         const char* merge_const = "merge";
@@ -447,6 +457,19 @@ namespace useful_functions {
         /*=====================================Quick Sort end=====================================*/
 
 
+        char_type get_char_type(int c) {
+            char_type the_answer;
+            if ((c >= 0 && c <= 31) || (c == DEL)) {
+                the_answer = control;
+            }
+            else if ((c >= 32) && (c <= (DEL - 1))) {
+                the_answer = printable;
+            }
+            else {
+                the_answer = extended;
+            }
+            return the_answer;
+        }
 
 
     }
@@ -823,10 +846,22 @@ namespace useful_functions {
         return (first[index] == sec[index] && first[index] == '\0');
     }
 
-
-    unsigned long substring_index(char* to_find, char* find_in, bool ignore_case = true) {
+    /**
+     * @brief Get the index of the substring `to_find` in the `find_in`.
+     * 
+     * @param to_find `(char *)` : The `char*` string to find in `find_in`.
+     * 
+     * @param find_in `(char *)` : The `char*` string to search for in `to_find` in.
+     * 
+     * @param ignore_case `(bool)` : A flag to indicate if the substring should be 
+     * searched for ignoring cases or not.
+     * 
+     * @returns `(signed long)` : The index of `to_find` in `to_search`, provided `find_in` exists 
+     * in `find_in`. If `to_find` Doesn't exist, `-1` is returned.
+    */
+    signed long substring_index(char* to_find, char* find_in, bool ignore_case = true) {
         unsigned long to_find_len = string_length(to_find), find_in_length = string_length(find_in);
-        return 1;
+        return -1;
     }
 
 
@@ -848,6 +883,84 @@ namespace useful_functions {
         char temp[(string_length((char *) esc_start) + 8 + string_length(the_string) + string_length((char *) esc_stop))];
         sprintf(temp, "%s%d;%d;%dm%s%s", esc_start, txt_style, txt_color, bkg_color, the_string, esc_stop);
         char* the_answer = temp;
+        return the_answer;
+    }
+
+
+
+    int get_char(bool echo = true) {
+        struct termios old_term, new_term;
+        int input;
+        tcgetattr(STDIN_FILENO, &old_term);
+        new_term = old_term;
+        new_term.c_lflag = new_term.c_lflag & ~ICANON;
+        new_term.c_lflag = new_term.c_lflag & ((echo) ? ECHO : ~ECHO);
+        tcsetattr(STDIN_FILENO, TCSANOW, &new_term);
+        input = getchar();
+        tcsetattr(STDIN_FILENO, TCSANOW, &old_term);
+        return input;
+    }
+
+
+
+    char* get_input(char* prompt, char end = '\n', bool flush_start = true, bool flush_end = true) {
+        (flush_start) ? fflush(stdin) : 0;
+        char* draft = (char *) malloc(sizeof(char)), *the_answer;
+        if (!draft) {
+            fprintf(stderr, "Could not create space for input\n");
+            exit(EXIT_FAILURE);
+        }
+        printf("%s", prompt);
+        unsigned long long length = 0, index;
+        int c;
+        while ((c = get_char())!= EOF && c != end) {
+
+            switch (get_char_type(c)) {
+
+                case control : {
+                    if (c == DEL) {
+                        if (length > 0) {
+                            length = length - 1;
+                            draft = (char *) realloc(draft, sizeof(char) * length);
+                            if (!draft) {
+                                fprintf(stderr, "Failed to reallocate more space for input\n");
+                                exit(EXIT_FAILURE);
+                            }
+                            printf("\x1B[1D");
+                            printf("\x1B[0K");
+                            // printf("%.*s", length, draft);
+                        }
+                    }
+                    continue;
+                }
+
+                case extended : {
+                    printf("\nExtended ascii key inputted\n");
+                    printf("%.*s", length, draft);
+                    continue;
+                }
+
+                default : {
+                    draft[length] = (char) c;
+                    length = length + 1;
+                    draft = (char *) realloc(draft, sizeof(char) * length);
+                    if (!draft) {
+                        length = length - 1;
+                        fprintf(stderr, "Failed to reallocate more space for input\n");
+                        exit(EXIT_FAILURE);
+                    }
+                }
+
+            }
+        }
+        draft[length] = '\0';
+        char answer[length];
+        for (index = 0; index <= length; index = index + 1) {
+            answer[index] = draft[index];
+        }
+        free(draft);
+        the_answer = answer;
+        (flush_end) ? fflush(stdin) : 0;
         return the_answer;
     }
 
