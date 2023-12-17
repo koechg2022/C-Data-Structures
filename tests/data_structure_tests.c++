@@ -2,7 +2,7 @@
 #include <vector>
 #include <random>
 #include <stdlib.h>
-#include <string.h>
+// #include <string.h>
 #include "../headers/useful_functions.h"
 #include "../headers/structures.h"
 
