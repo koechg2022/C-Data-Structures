@@ -36,6 +36,27 @@
 #endif
 
 
+#if defined(_WIN16) || defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__TOS_WIN__) || defined(__WINDOWS__)
+
+// crap operating system
+const char* operating system = "Windows";
+const bool is_unix = false;
+
+#elif defined (__unix__)
+
+const bool is_unix = true;
+
+#if defined(__MACH__) || defined(__APPLE__)
+const char* operating_system = "Machintosh";
+
+#else
+const char* operating_system = "Linux";
+
+#endif
+
+#endif
+
+
 namespace useful_functions {
 
 
@@ -113,6 +134,7 @@ namespace useful_functions {
 
         const char case_diff = 'a' - 'A';
         const char A = 'A', Z = 'Z', a = 'a', z = 'z', zero = '0', nine = '9';
+        const unsigned char total_chars = (unsigned char) - 1;
 
         void logic_not_implemented(char* message = (char*) "Logic not yet implemented") {
             fprintf(stderr, "%s", message);
@@ -469,6 +491,21 @@ namespace useful_functions {
                 the_answer = extended;
             }
             return the_answer;
+        }
+
+
+        void bad_char_heuristic(char* the_string, int* bad_chars) {
+            
+            int index;
+            for (index = 0; index <= total_chars; index = index + 1) {
+                bad_chars[index] = -1;
+            }
+
+            // fill the actual value of the last occurence of a character
+            unsigned long the_string_len = string_length(the_string);
+            for (index = 0; index < the_string_len; index = index + 1) {
+                bad_chars[(int) the_string[index]] = index;
+            }
         }
 
 
@@ -846,6 +883,16 @@ namespace useful_functions {
         return (first[index] == sec[index] && first[index] == '\0');
     }
 
+
+
+    // private namespace for heuristics in finding a substring
+    // namespace {
+
+        
+    // }
+
+
+
     /**
      * @brief Get the index of the substring `to_find` in the `find_in`.
      * 
@@ -859,8 +906,46 @@ namespace useful_functions {
      * @returns `(signed long)` : The index of `to_find` in `to_search`, provided `find_in` exists 
      * in `find_in`. If `to_find` Doesn't exist, `-1` is returned.
     */
-    signed long substring_index(char* to_find, char* find_in, bool ignore_case = true) {
-        unsigned long to_find_len = string_length(to_find), find_in_length = string_length(find_in);
+    signed long substring_index(char* to_find, char* find_in, bool ignore_case = true, bool bad_heuristic = false) {
+        unsigned long to_length = string_length(to_find), in_length = string_length(find_in), start, check;
+        if (bad_heuristic) {
+            int bad_chars[total_chars + 1];
+            bad_char_heuristic(to_find, bad_chars);
+            signed long pattern_shift = 0, pattern_index;
+            
+            while (pattern_shift < (in_length - to_length)) {
+                pattern_index = to_length - 1;
+
+                // Reducing pattern_index (the index in to_find)
+                // until we get a mismatch character at pattern_shift
+                while ((pattern_index >= 0) && (same_char(to_find[pattern_index], find_in[pattern_shift + pattern_index]), ignore_case)) {
+                    pattern_index = pattern_index - 1;
+                }
+
+                //
+                if (pattern_index < 0) {
+
+                }
+
+
+
+            }
+
+        }
+        for (start = 0; start < in_length - to_length + 1; start = start + 1) {
+            check = 0;
+
+            while (check < to_length) {
+                if (!same_char(to_find[check], find_in[start + check], ignore_case)) {
+                    break;
+                }
+                check = check + 1;
+            }
+            if (check == to_length) {
+                return start;
+            }
+
+        }
         return -1;
     }
 
@@ -967,10 +1052,6 @@ namespace useful_functions {
 
 
     /*=====================================useful functions for sorting algorithms=====================================*/
-
-
-
-
 
 
 
