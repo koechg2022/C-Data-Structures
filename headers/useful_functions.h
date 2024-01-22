@@ -153,6 +153,8 @@ namespace useful_functions {
             return (color >= (us) black_bkg) && (color <= (us) default_bkg);
         }
 
+        // unsigned long string_length(char* the_string);
+
 
         //-------------------------------------Sorting Algorithms-------------------------------------
 
@@ -491,21 +493,6 @@ namespace useful_functions {
                 the_answer = extended;
             }
             return the_answer;
-        }
-
-
-        void bad_char_heuristic(char* the_string, int* bad_chars) {
-            
-            int index;
-            for (index = 0; index <= total_chars; index = index + 1) {
-                bad_chars[index] = -1;
-            }
-
-            // fill the actual value of the last occurence of a character
-            unsigned long the_string_len = string_length(the_string);
-            for (index = 0; index < the_string_len; index = index + 1) {
-                bad_chars[(int) the_string[index]] = index;
-            }
         }
 
 
@@ -885,11 +872,24 @@ namespace useful_functions {
 
 
 
-    // private namespace for heuristics in finding a substring
-    // namespace {
+    // private namespace for heuristics in finding a substring.
+    // Goes here so that string_length can be used.
+    namespace {
 
-        
-    // }
+        void bad_char_heuristic(char* the_string, int* bad_chars) {
+            
+            int index;
+            for (index = 0; index <= total_chars; index = index + 1) {
+                bad_chars[index] = -1;
+            }
+
+            // fill the actual value of the last occurence of a character
+            unsigned long the_string_len = string_length(the_string);
+            for (index = 0; index < the_string_len; index = index + 1) {
+                bad_chars[(int) the_string[index]] = index;
+            }
+        }
+    }
 
 
 
@@ -922,9 +922,9 @@ namespace useful_functions {
                     pattern_index = pattern_index - 1;
                 }
 
-                //
+                // If the pattern is present at the current shift.
                 if (pattern_index < 0) {
-
+                    // Shift at which pattern occurs has been found.
                 }
 
 
