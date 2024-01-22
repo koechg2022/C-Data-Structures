@@ -951,6 +951,9 @@ namespace useful_functions {
 
 
     char* get_colored_string(char* the_string, unsigned char txt_color = (unsigned char) black_txt, unsigned char txt_style = (unsigned char) no_style, unsigned char bkg_color = (unsigned char) default_bkg) {
+        if (same_string((char *) operating_system, (char *) "Windows")) {
+            return the_string;
+        }
         txt_color = (valid_text_color((unsigned char) txt_color)) ? (unsigned char) txt_color : (unsigned char) black_txt;
         txt_style = (valid_style((unsigned char) txt_style)) ? (unsigned char) txt_style : (unsigned char) no_style;
         bkg_color = (valid_bkg_color((unsigned char) bkg_color)) ? (unsigned char) bkg_color : (unsigned char) default_bkg;
@@ -1021,7 +1024,7 @@ namespace useful_functions {
 
                 case extended : {
                     printf("\nExtended ascii key inputted\n");
-                    printf("%.*s", length, draft);
+                    printf("%.*s", (int) length, draft);
                     continue;
                 }
 
