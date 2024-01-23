@@ -41,18 +41,22 @@
 // crap operating system
 const char* operating system = "Windows";
 const bool is_unix = false;
-
-#elif defined (__unix__)
-
-const bool is_unix = true;
-
-#if defined(__MACH__) || defined(__APPLE__)
-const char* operating_system = "Machintosh";
-
-#else
-const char* operating_system = "Linux";
+// fprintf(stdout, "Crap os recognized.\n");
 
 #endif
+
+#if defined(__unix__) && defined(__MACH__) || defined(__APPLE__)
+
+const bool is_unix = true;
+const char* operating_system = "Machintosh";
+
+#endif
+
+
+#if defined(__unix__) && defined(__linux__)
+
+const char* operating_system = "Linux";
+const bool is_unix = true;
 
 #endif
 
@@ -969,7 +973,8 @@ namespace useful_functions {
         //---------------------------------
         // 8 extra bytes needed.
         char temp[(string_length((char *) esc_start) + 8 + string_length(the_string) + string_length((char *) esc_stop))];
-        sprintf(temp, "%s%d;%d;%dm%s%s", esc_start, txt_style, txt_color, bkg_color, the_string, esc_stop);
+        snprintf(temp, (string_length((char *) esc_start) + 8 + string_length(the_string) + string_length((char *) esc_stop)) + 1, 
+        "%s%d;%d;%dm%s%s", esc_start, txt_style, txt_color, bkg_color, the_string, esc_stop);
         char* the_answer = temp;
         return the_answer;
     }
